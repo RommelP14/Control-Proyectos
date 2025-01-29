@@ -1,0 +1,27 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 25 ene 2025, 17:08:26
+    Author     : romme
+*/
+.hidden {
+    display: none;
+}
+
+.switch-links {
+    color: white;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+.switch-links:hover {
+    font-weight: bold;
+    color: #f0f0f0;
+}
+
+.switch-links.active {
+    color: black;
+    font-weight: bold;
+}

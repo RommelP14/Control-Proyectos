@@ -1,0 +1,23 @@
+.spinnerFont{
+    text-align: center;
+}
+
+.fa-5x {
+    font-size: 10em;
+}
+
+.rowCourse{
+    background-color: #ffc107;
+}
+
+
+/*.dataTables_scrollHeadInner{
+    width:100% !important;
+}
+.dataTables_scrollHeadInner table{
+    width:100% !important;
+}
+
+.alignTableHead{
+    padding-right: 17px !important;
+}*/
