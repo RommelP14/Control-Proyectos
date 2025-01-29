@@ -128,6 +128,9 @@ public class Proyecto_SRV extends HttpServlet
                 // Agregar mensaje y status
                 jsonResponse.put("mensaje", respuesta.getMensaje());
                 jsonResponse.put("status", respuesta.getStatus());
+                
+                System.out.println("respuesta.getMensaje(): " + respuesta.getMensaje());
+                System.out.println("status: " + respuesta.getStatus());
 
                 // Enviar solo los datos requeridos
                 out.print(gson.toJson(jsonResponse));

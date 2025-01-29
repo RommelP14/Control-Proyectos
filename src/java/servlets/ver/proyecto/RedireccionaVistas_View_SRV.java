@@ -5,6 +5,7 @@
 package servlets.ver.proyecto;
 
 import com.google.gson.Gson;
+import dao.proyectos.Proyectos_DAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
@@ -70,16 +71,17 @@ public class RedireccionaVistas_View_SRV extends HttpServlet
         switch (request.getParameter("accion"))
         {
             case "aprobacion":
-                String proyectoJson = request.getParameter("proyecto_Mb");
-                if (proyectoJson != null)
+                String idFolioJson = request.getParameter("idFolio");
+                if (idFolioJson != null)
                 {
                     // Decodificar el JSON y convertirlo en un objeto Java
+                    Proyectos_DAO proyecto_dao = new Proyectos_DAO();
                     Gson gson = new Gson();
-                    Proyecto_MB proyecto_Mb = gson.fromJson(URLDecoder.decode(proyectoJson, "UTF-8"), Proyecto_MB.class);
+                    int noFolio = gson.fromJson(URLDecoder.decode(idFolioJson, "UTF-8"), Integer.class);
 
+                    Proyecto_MB proyecto_Mb = proyecto_dao.consultaProyectoPorId(noFolio);
                     // Aquí puedes hacer lo que necesites con el objeto Proyecto_MB
                     request.setAttribute("proyecto_Mb", proyecto_Mb);
-
                     dispatcher = request.getRequestDispatcher("/views/jefes/Paginas/ProyectoParaAprobacion.jsp");
                     dispatcher.forward(request, response);
                 } else

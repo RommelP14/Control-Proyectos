@@ -133,6 +133,7 @@
         <script type="text/javascript" src="/CDN-ITT/js/catalogos-tablas.estandarITT.js"></script>
         <script type="text/javascript" src="/CDN-ITT/js/bootstrap-datepicker.estandarITT.js"></script>
         <script type="text/javascript" src="/CDN-ITT/js/bootstrap-datepicker.es.estandarITT.js"></script>
+        <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/funciones.js"></script> 
         <script type="text/javascript" src ="${pageContext.request.contextPath}/js/lib/bootboxActions.js"></script>
         <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/constantes.js"></script>
         <script type="text/javascript" src="${pageContext.request.contextPath}/js/lib/bootbox.all.min.js" type="text/javascript"></script>

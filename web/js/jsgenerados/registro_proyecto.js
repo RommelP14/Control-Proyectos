@@ -92,35 +92,31 @@ function enviarDatosAlServlet(datos) {
  * @param {Object} response - Respuesta JSON del servidor.
  */
 function manejarRespuestaComparacion(response) {
-    const estatus = response.estatus; // "Revisar", "Requiere revisión", "Denegar"
-    const folio = response.folio; // Folio del proyecto
-
-    if (estatus === "Revisar") {
+    const estatus = response.estatus;
+    const folio = response.folio;
+    //console.log(estatus);
+    //console.log(folio);
+    if (estatus === "Para aprobación") {
         MensajeRedirect(
             iconoCorrecto,
             'Proyecto Aprobado Preliminarmente.',
             `El proyecto con folio <strong>${folio}</strong> cumple con los criterios y puede ser registrado.`,
-            '/ControlProyecto/views/Paginas/RegistroProyecto.jsp'
+            '/ControlProyecto/views/Paginas/RegistroDuenio.jsp'
         );
     } else if (estatus === "Requiere revisión") {
-        bootBoxAlert(
+        MensajeRedirect(
             iconoInfo,
             'Proyecto Requiere Revisión.',
-            `El proyecto con folio <strong>${folio}</strong> presenta similitudes con otros existentes. Necesita revisión manual.`
+            `El proyecto con folio <strong>${folio}</strong> presenta similitudes con otros existentes. Necesita revisión manual.`,
+            '/ControlProyecto/views/Paginas/RegistroDuenio.jsp'
         );
     } else if (estatus === "Denegar") {
-        bootBoxAlert(
-            iconoError,
+        MensajeRedirect(
+            iconoInfo,
             'Proyecto Denegado.',
-            `El proyecto con folio <strong>${folio}</strong> es demasiado similar a otros existentes y no puede ser registrado.`
-        );
-    } else {
-        bootBoxAlert(
-            iconoError,
-            'Error Desconocido.',
-            'No se pudo determinar el estatus del proyecto. Contacte al administrador.'
+            `El proyecto con folio <strong>${folio}</strong> es demasiado similar a otros existentes, consulta con tu administrador.`,
+            '/ControlProyecto/views/Paginas/RegistroDuenio.jsp'
         );
     }
-    // Registro en consola para depuración
-    console.log(`Estatus procesado: ${estatus}. Folio: ${folio}`);
+ 
 }

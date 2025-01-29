@@ -24,7 +24,6 @@ let idContacto, institutoName, datosProyecto, paisName, estadoName;
 
 let idProyecto, nombreProyecto, progresoProyecto, estadoProyecto, aprobacionProyecto;
 
-var nombre, appat, apmat, telefono, correo, sexo, institutoID;
 /**
  * Select Row
  */
@@ -101,7 +100,7 @@ $('#btnIrBuscaProyecto').click(function () {
     $.ajax({
         type: 'GET',
         url: "../../app/ver/Ver_Proyectos_View_SRV.do",
-        data: {accion: 'verificaEstado', idProyecto: idProyecto},
+        data: {accion: 'verificaEstado', idProyecto: idProyecto, estadoProyecto: estadoProyecto},
         dataType: 'JSON',
         beforeSend: function () {
             $("#pageLoader").show();
@@ -112,7 +111,7 @@ $('#btnIrBuscaProyecto').click(function () {
         success: function (response) {
             if (response.status === -1000) {
                 armaUrlAprobacion(response.responseObject);
-                getPDF(idProyecto);
+                //getPDF(idProyecto);
                 //MensajeRedirect(iconoCorrecto, 'Proyecto eliminado.', 'Se eliminó el Proyecto correctamente', '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
             } else if (response.status === -200) {
                 MensajeRedirect(iconoError, 'Error al eliminar el Proyecto', 'No se pudo eliminar el Proyecto' + "<br><br> Contacte con el administrador del sistema.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
@@ -129,11 +128,11 @@ $('#btnIrBuscaProyecto').click(function () {
     });
 });
 
-function armaUrlAprobacion(proyecto_Mb) {
+function armaUrlAprobacion(idNoFolio) {
     // Convertir el objeto a una cadena JSON y codificarlo
-    var proyectoStr = encodeURIComponent(JSON.stringify(proyecto_Mb));
+    var idNoFolioStr = encodeURIComponent(JSON.stringify(idNoFolio));
 
-    var url = `/ControlProyecto/app/ver/RedireccionaVistas_View_SRV.do?accion=aprobacion&proyecto_Mb=${proyectoStr}`;
+    var url = `/ControlProyecto/app/ver/RedireccionaVistas_View_SRV.do?accion=aprobacion&idFolio=${idNoFolioStr}`;
     console.log("Redirigiendo a: ", url);
     window.location.href = url;
 }

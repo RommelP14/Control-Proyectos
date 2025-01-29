@@ -3,12 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/dao/similitudes/Similitudes_DAO.java</file>
-            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/servlets/ver/proyecto/Ver_Proyectos_View_SRV.java</file>
-            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/views/jefes/Paginas/MisProyectos_view.jsp</file>
-            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/views/jefes/Paginas/tablaMisProyectos.jsp</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/views/Paginas/RegistroProyecto.jsp</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/servlet/master/Master_Srv.java</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/servlets/registro/proyecto/Proyecto_SRV.java</file>
             <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/js/jsgenerados/dataTableProyectos.js</file>
-            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/js/jsgenerados/Project.js</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/js/jsgenerados/registro_duenio.js</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/js/jsgenerados/registro_proyecto.js</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/dao/proyectos/Proyectos_DAO.java</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/views/Paginas/RegistroDuenio.jsp</file>
         </group>
     </open-files>
 </project-private>

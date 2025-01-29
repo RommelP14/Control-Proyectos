@@ -91,14 +91,12 @@ public class Ver_Proyectos_View_SRV extends HttpServlet
                 dispatcher.forward(request, response);
                 break;
             case "verificaEstado":
-                Similitudes_DAO similitudes = new Similitudes_DAO();
-                List<Integer> folios_revision;
                 String noFolio = request.getParameter("idProyecto");
+                String estado = request.getParameter("estadoProyecto");
                 System.out.println("noFolio_proyecto_tab_revision = " + noFolio);
-                if (!noFolio.isEmpty())
+                if (!noFolio.isEmpty() && !estado.isEmpty())
                 {
-                    Proyecto_MB proyecto_Mb = proyecto_dao.consultaProyectoPorId(Integer.parseInt(noFolio));
-                    muestraVistaDependiendoEstado(proyecto_Mb, dispatcher, respuesta, request);
+                    muestraVistaDependiendoEstado(estado, Integer.parseInt(noFolio), respuesta);
                 } else
                 {
                     respuesta.setStatus(-200);
@@ -118,21 +116,18 @@ public class Ver_Proyectos_View_SRV extends HttpServlet
         }
     }
 
-    public void muestraVistaDependiendoEstado(Proyecto_MB proyecto_Mb, RequestDispatcher dispatcher, GenericResponse respuesta, HttpServletRequest request) throws ServletException
+    public void muestraVistaDependiendoEstado(String estado, int idNoFolio, GenericResponse respuesta)
     {
-        if (proyecto_Mb != null)
+        switch (estado)
         {
-            if (proyecto_Mb.getEstado().equals("Para aprobación"))
-            {
+            case "Para aprobación":
                 respuesta.setStatus(-1000);
                 respuesta.setMensaje("");
-                respuesta.setResponseObject(proyecto_Mb); 
-            }
-
-        } else
-        {
-            respuesta.setStatus(-200);
-            respuesta.setMensaje("Error");
+                respuesta.setResponseObject(idNoFolio);
+                break;
+            default:
+                respuesta.setStatus(-200);
+                respuesta.setMensaje("Error");
         }
     }
 
