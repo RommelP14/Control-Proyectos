@@ -111,8 +111,6 @@ $('#btnIrBuscaProyecto').click(function () {
         success: function (response) {
             if (response.status === -1000) {
                 armaUrlAprobacion(response.responseObject);
-                //getPDF(idProyecto);
-                //MensajeRedirect(iconoCorrecto, 'Proyecto eliminado.', 'Se eliminó el Proyecto correctamente', '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
             } else if (response.status === -200) {
                 MensajeRedirect(iconoError, 'Error al eliminar el Proyecto', 'No se pudo eliminar el Proyecto' + "<br><br> Contacte con el administrador del sistema.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
             } else {
@@ -137,14 +135,13 @@ function armaUrlAprobacion(idNoFolio) {
     window.location.href = url;
 }
 
-
-
 function getPDF(folio) {
+    console.log("folio: ", folio);
     document.getElementById("proyectoFrame").innerHTML = "";
     $.ajax({
         type: 'Get',
-        url: 'PDF_SRV',
-        data: {noFolioR: folio},
+        url: '../../app/ver/Pdf_SRV.do',
+        data: {folio: folio},
         success: function (respuesta) {
             var iframe = document.createElement('iframe');
             var html = respuesta;
@@ -153,9 +150,9 @@ function getPDF(folio) {
             iframe.height = '400px';
             document.getElementById("proyectoFrame").appendChild(iframe);
         }
-
     });
 }
+
 function getPDF2(folio) {
     document.getElementById("pdfFolioA").innerHTML = "";
     $.ajax({

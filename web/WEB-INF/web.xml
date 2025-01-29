@@ -36,6 +36,10 @@
         <servlet-name>RedireccionaVistas_View_SRV</servlet-name>
         <servlet-class>servlets.ver.proyecto.RedireccionaVistas_View_SRV</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Pdf_SRV</servlet-name>
+        <servlet-class>servlets.ver.pdf.Pdf_SRV</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Master_Srv</servlet-name>
         <url-pattern>/Master_Srv</url-pattern>
@@ -71,6 +75,10 @@
     <servlet-mapping>
         <servlet-name>RedireccionaVistas_View_SRV</servlet-name>
         <url-pattern>/app/ver/RedireccionaVistas_View_SRV.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Pdf_SRV</servlet-name>
+        <url-pattern>/app/ver/Pdf_SRV.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -44,13 +44,11 @@ public class Proyectos_DAO
 
         try
         {
-            // Consulta para obtener los proyectos
             String query = "SELECT * FROM proyectos_tab WHERE noFolio = ?";
             pstmt = conexion.getCon().prepareStatement(query);
             pstmt.setInt(1, noFolio);
             rs = pstmt.executeQuery();
 
-            // Itera sobre los resultados
             if (rs.next())
             {
                 int noF = rs.getInt("noFolio");
@@ -74,7 +72,6 @@ public class Proyectos_DAO
             System.out.println("Error general en consultarProyectos: " + e.getMessage());
         } finally
         {
-            // Cerrar conexión y recursos
             if (rs != null)
             {
                 try
@@ -98,6 +95,81 @@ public class Proyectos_DAO
             conexion.disconnect();
         }
         return proyecto_mb;
+    }
+
+    public void consultaProyectoPorId(int noFolio, GenericResponse respuesta)
+    {
+        conexion = new Conexion();
+        conexion.connect(VariablesSistema.USERNAME_BD, VariablesSistema.PASSWORD_BD);
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<Proyecto_MB> proyectos = new ArrayList<>();;
+        Proyecto_MB proyecto_mb;
+        try
+        {
+            String query = "SELECT * FROM proyectos_tab WHERE noFolio = ?";
+            pstmt = conexion.getCon().prepareStatement(query);
+            pstmt.setInt(1, noFolio);
+            rs = pstmt.executeQuery();
+
+            if (rs.next())
+            {
+                int noF = rs.getInt("noFolio");
+                String nombre = rs.getString("nombre");
+                String planteamiento = rs.getString("planteamiento");
+                String alcances = rs.getString("alcances");
+                String justificacion = rs.getString("justificacion");
+                int id_duenio = rs.getInt("id_duenio");
+                int id_departamento_tab = rs.getInt("id_departamento_tab");
+                String estado = rs.getString("estado");
+
+                proyecto_mb = new Proyecto_MB(
+                        noF, nombre, planteamiento, alcances, justificacion, id_duenio, id_departamento_tab, estado
+                );
+                proyectos.add(proyecto_mb);
+                respuesta.setStatus(0);
+                respuesta.setMensaje("Proyecto Encontrado");
+                respuesta.setResponseObject(proyectos);
+            } else
+            {
+                respuesta.setStatus(-500);
+                respuesta.setMensaje("No se encontro Proyecto");
+                respuesta.setResponseObject(null);
+            }
+        } catch (SQLException e)
+        {
+            System.out.println("Error al consultar proyectos: " + e.getMessage());
+            respuesta.setStatus(-100);
+            respuesta.setMensaje("Ha ocurrido un error a la hora de buscar proyecto");
+            respuesta.setResponseObject(null);
+        } catch (Exception e)
+        {
+            System.out.println("Error general en consultarProyectos: " + e.getMessage());
+        } finally
+        {
+            if (rs != null)
+            {
+                try
+                {
+                    rs.close();
+                } catch (SQLException e)
+                {
+                    System.out.println("Error al cerrar ResultSet: " + e.getMessage());
+                }
+            }
+            if (pstmt != null)
+            {
+                try
+                {
+                    pstmt.close();
+                } catch (SQLException e)
+                {
+                    System.out.println("Error al cerrar PreparedStatement: " + e.getMessage());
+                }
+            }
+            conexion.disconnect();
+        }
     }
 
     public void eliminaProyecto(int noFolio, GenericResponse respuesta)

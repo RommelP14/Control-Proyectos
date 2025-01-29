@@ -2,27 +2,25 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package servlets.ver.proyecto;
+package servlets.ver.pdf;
 
-import com.google.gson.Gson;
 import dao.proyectos.Proyectos_DAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import manage.bean.proyectos.Proyecto_MB;
+import manageBean.general.GenericResponse;
 
 /**
  *
  * @author romme
  */
-public class RedireccionaVistas_View_SRV extends HttpServlet
+public class Pdf_SRV extends HttpServlet
 {
 
     /**
@@ -44,10 +42,10 @@ public class RedireccionaVistas_View_SRV extends HttpServlet
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RedireccionaVistas_View_SRV</title>");
+            out.println("<title>Servlet Pdf_SRV</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RedireccionaVistas_View_SRV at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Pdf_SRV at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -68,31 +66,29 @@ public class RedireccionaVistas_View_SRV extends HttpServlet
     {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-        RequestDispatcher dispatcher = null;
-        switch (request.getParameter("accion"))
-        {
-            case "aprobacion":
-                proyectoParaAprobacion(request.getParameter("idFolio"), request, response, dispatcher);
-                break;
-            default:
-                System.out.println("No esta ese parametro, ve a inicio de sesion");
-        }
-    }
 
-    public void proyectoParaAprobacion(String idFolioJson, HttpServletRequest request, HttpServletResponse response, RequestDispatcher dispatcher) throws UnsupportedEncodingException, ServletException, IOException
-    {
-        if (idFolioJson != null)
+        GenericResponse<List<Proyecto_MB>> respuesta = new GenericResponse<>();
+        Proyectos_DAO proyectos_Dao = new Proyectos_DAO();
+        String noFolio = request.getParameter("folio");
+
+        if (noFolio != null && !noFolio.isEmpty())
         {
-            Proyectos_DAO proyecto_dao = new Proyectos_DAO();
-            Gson gson = new Gson();
-            int noFolio = gson.fromJson(URLDecoder.decode(idFolioJson, "UTF-8"), Integer.class);
-            Proyecto_MB proyecto_Mb = proyecto_dao.consultaProyectoPorId(noFolio);
-            request.setAttribute("proyecto_Mb", proyecto_Mb);
-            dispatcher = request.getRequestDispatcher("/views/jefes/Paginas/ProyectoParaAprobacion.jsp");
-            dispatcher.forward(request, response);
+            proyectos_Dao.consultaProyectoPorId(Integer.parseInt(noFolio), respuesta);
+
+            if (respuesta.getResponseObject() != null && !respuesta.getResponseObject().isEmpty())
+            {
+                request.setAttribute("respuestaDetallesProyectos", respuesta);
+
+                // Captura el contenido de PDF.jsp y lo envía como respuesta AJAX
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/jefes/Paginas/PDF.jsp");
+                dispatcher.include(request, response);
+            } else
+            {
+                response.getWriter().write("<p class='text-danger'>No hay datos disponibles para mostrar.</p>");
+            }
         } else
         {
-            System.out.println("No esta ese parametro, ve a inicio de sesion");
+            response.getWriter().write("<p class='text-danger'>El folio está vacío.</p>");
         }
     }
 
