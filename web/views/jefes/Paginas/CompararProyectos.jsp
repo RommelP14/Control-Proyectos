@@ -47,11 +47,12 @@
                     </div>
                     <div class="panel-body">
                         <div class="col-md-12">
-                            <c:if test="${proyecto_Mb.estado}=='denegado'}">
-                                <h4>Estado: <b style="color: #e67e22"><c:out value="${proyecto_Mb.estado}"></c:out> </b></h4>
+                            <c:if test="${proyecto_Mb.estado eq 'Denegado'}">
+                                <h4>Estado: <b style="color: #B73C39"><c:out value="${proyecto_Mb.estado}"></c:out></b></h4>
                             </c:if>
-                            <c:if test="${proyecto_Mb.estado}=='Existe un proyecto igual de acuerdo al porcentaje'}">
-                                <h4>Estado: <b style="color: #B73C39"><c:out value="${proyecto_Mb.estado}"></c:out> </b></h4>
+                                
+                            <c:if test="${proyecto_Mb.estado eq 'Requiere revisión'}">
+                            <h4>Estado: <b style="color: #e67e22"><c:out value="${proyecto_Mb.estado}"></c:out></b></h4>
                             </c:if>
                         </div>
                         <form id="comparar_proyecto" name="comparar_proyecto">
@@ -90,20 +91,20 @@
                                 <textarea class="form-control" id="contenido-post" name="contenido-post" placeholder="Escribe algo"></textarea>
                             </div>
                             <div class="row text-center" style="margin: 1rem">
-                            <button class="btn btn-agregar btn-sm d-none"
-                                    type="button" 
-                                    id="aceptar_proyecto"
-                                    name="aceptar_proyecto"
-                                    >
-                                Aceptar proyecto
-                            </button>
-                            <button class="btn btn-borrar btn-sm" 
-                                    type="button" 
-                                    id="denegar_proyecto"
-                                    title="equipo">
-                                Denegar proyecto
-                            </button>
-                        </div>
+                                <button class="btn btn-agregar btn-sm d-none"
+                                        type="button" 
+                                        id="aceptar_proyecto"
+                                        name="aceptar_proyecto"
+                                        >
+                                    Aceptar proyecto
+                                </button>
+                                <button class="btn btn-borrar btn-sm" 
+                                        type="button" 
+                                        id="denegar_proyecto"
+                                        title="equipo">
+                                    Denegar proyecto
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

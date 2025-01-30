@@ -113,11 +113,11 @@ $('#btnIrBuscaProyecto').click(function () {
                 armaUrlAprobacion(response.responseObject);
             }else if(response.status === -2000)
             {
-                armaUrlDenegado(response.responseObject);
+                armaUrlParaRevision(response.responseObject);
             }else if (response.status === -200) {
-                MensajeRedirect(iconoError, 'Error al eliminar el Proyecto', 'No se pudo eliminar el Proyecto' + "<br><br> Contacte con el administrador del sistema.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
+                MensajeRedirect(iconoError, 'Error al consultar el Proyecto', 'No se pudo buscar el Proyecto' + "<br><br> Contacte con el administrador del sistema.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
             } else {
-                MensajeRedirect(iconoError, 'Error al eliminar el Proyecto', 'No se pudo eliminar el Proyecto' + "<br><br> Por favor, notifique a su administrador de este error.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
+                MensajeRedirect(iconoError, 'Error al consultar el Proyecto', 'No se pudo buscar el Proyecto' + "<br><br> Por favor, notifique a su administrador de este error.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
             }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -136,7 +136,7 @@ function armaUrlAprobacion(idNoFolio) {
     window.location.href = url;
 }
 
-function armaUrlDenegado(idNoFolio) {
+function armaUrlParaRevision(idNoFolio) {
     // Convertir el objeto a una cadena JSON y codificarlo
     var idNoFolioStr = encodeURIComponent(JSON.stringify(idNoFolio));
     var url = `/ControlProyecto/app/ver/RedireccionaVistas_View_SRV.do?accion=denegado&idFolio=${idNoFolioStr}`;

@@ -143,6 +143,7 @@ public class Ver_Proyectos_View_SRV extends HttpServlet
                 respuesta.setMensaje("");
                 respuesta.setResponseObject(idNoFolio);
                 break;
+            case "Requiere revisión":
             case "Denegado":
                 respuesta.setStatus(-2000);
                 respuesta.setMensaje("");

@@ -10,17 +10,20 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Registrar proyecto</title>
-        <link rel="icon" href="/CDN-ITT/img/logo.png">
-        <link href="/CDN-ITT/css/base.estandarITT.css" rel="stylesheet">
-        <link href="/CDN-ITT/css/font-awesome.estandarITT.css" rel="stylesheet">
+       <link href="/CDN-ITT/css/base.estandarITT.css" rel="stylesheet">
         <link href="/CDN-ITT/css/general.estandarITT.css" rel="stylesheet">
+        <link href="/CDN-ITT/css/font-awesome.estandarITT.css" rel="stylesheet">
         <link href="/CDN-ITT/css/tablas.estandarITT.css" rel="stylesheet">
         <link href="/CDN-ITT/css/botones.estandarITT.css" rel="stylesheet">
         <link href="/CDN-ITT/css/catalogos-modal.estandarITT.css" rel="stylesheet">
         <link href="/CDN-ITT/css/catalogos-tablas.estandarITT.css" rel="stylesheet">
+        <link href="/CDN-ITT/css/jquery-ui.estandarITT.css" rel="stylesheet">
         <link href="/CDN-ITT/css/spinner.estandarITT.css" rel="stylesheet">
         <link href="/CDN-ITT/css/bootstrap-datepicker.estandarITT.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link href="${pageContext.request.contextPath}/css/cssgenerados/general.css" rel="stylesheet">
+        <link rel="icon" href="/CDN-ITT/img/logo.png">
     </head>
     <body>
         <%@include file="/views/templates/header.jsp" %>
@@ -133,12 +136,12 @@
         <script type="text/javascript" src="/CDN-ITT/js/catalogos-tablas.estandarITT.js"></script>
         <script type="text/javascript" src="/CDN-ITT/js/bootstrap-datepicker.estandarITT.js"></script>
         <script type="text/javascript" src="/CDN-ITT/js/bootstrap-datepicker.es.estandarITT.js"></script>
-        <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/funciones.js"></script> 
+        <script src="${pageContext.request.contextPath}/js/lib/bootbox.all.min.js" type="text/javascript"></script>
+        <script src="${pageContext.request.contextPath}/js/lib/chart.min.js" type="text/javascript"></script>
         <script type="text/javascript" src ="${pageContext.request.contextPath}/js/lib/bootboxActions.js"></script>
-        <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/constantes.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/js/lib/bootbox.all.min.js" type="text/javascript"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/js/lib/chart.min.js" type="text/javascript"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/js/jsgenerados/Tabla.js" type="text/javascript"></script>
+        <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/constantes.js"></script> 
+        <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/validaInputs.js"></script> 
+        <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/funciones.js"></script> 
         <script type="text/javascript" src="${pageContext.request.contextPath}/js/jsgenerados/registro_proyecto.js" type="text/javascript"></script>
 
     </body>
