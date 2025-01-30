@@ -104,7 +104,6 @@ public class Proyectos_DAO
 
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        List<Proyecto_MB> proyectos = new ArrayList<>();;
         Proyecto_MB proyecto_mb;
         try
         {
@@ -127,10 +126,9 @@ public class Proyectos_DAO
                 proyecto_mb = new Proyecto_MB(
                         noF, nombre, planteamiento, alcances, justificacion, id_duenio, id_departamento_tab, estado
                 );
-                proyectos.add(proyecto_mb);
                 respuesta.setStatus(0);
                 respuesta.setMensaje("Proyecto Encontrado");
-                respuesta.setResponseObject(proyectos);
+                respuesta.setResponseObject(proyecto_mb);
             } else
             {
                 respuesta.setStatus(-500);
@@ -269,6 +267,74 @@ public class Proyectos_DAO
         return proyectoId;
     }
 
+    public List<Proyecto_MB> consultarProyectosDuenio(int id_departamento_tab)
+    {
+        conexion = new Conexion();
+        conexion.connect(VariablesSistema.USERNAME_BD, VariablesSistema.PASSWORD_BD);
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        ArrayList<Proyecto_MB> proyectos = new ArrayList<>();
+
+        try
+        {
+            // Consulta para obtener los proyectos
+            String query = "SELECT * FROM proyectos_tab WHERE id_departamento_tab = ?";
+            pstmt = conexion.getCon().prepareStatement(query);
+            pstmt.setInt(1, id_departamento_tab);
+            rs = pstmt.executeQuery();
+
+            // Itera sobre los resultados
+            while (rs.next())
+            {
+                int noFolio = rs.getInt("noFolio");
+                String nombre = rs.getString("nombre");
+                String planteamiento = rs.getString("planteamiento");
+                String alcances = rs.getString("alcances");
+                String justificacion = rs.getString("justificacion");
+                int id_duenio = rs.getInt("id_duenio");
+                String estado = rs.getString("estado");
+
+                // Crear objeto Proyecto_MB y agregar a la lista
+                Proyecto_MB proyecto_mb = new Proyecto_MB(
+                        noFolio, nombre, planteamiento, alcances, justificacion, id_duenio, id_departamento_tab, estado
+                );
+                proyectos.add(proyecto_mb);
+            }
+        } catch (SQLException e)
+        {
+            System.out.println("Error al consultar proyectos: " + e.getMessage());
+        } catch (Exception e)
+        {
+            System.out.println("Error general en consultarProyectos: " + e.getMessage());
+        } finally
+        {
+            // Cerrar conexión y recursos
+            if (rs != null)
+            {
+                try
+                {
+                    rs.close();
+                } catch (SQLException e)
+                {
+                    System.out.println("Error al cerrar ResultSet: " + e.getMessage());
+                }
+            }
+            if (pstmt != null)
+            {
+                try
+                {
+                    pstmt.close();
+                } catch (SQLException e)
+                {
+                    System.out.println("Error al cerrar PreparedStatement: " + e.getMessage());
+                }
+            }
+            conexion.disconnect();
+        }
+
+        return proyectos;
+    }
     public List<Proyecto_MB> consultarProyectos()
     {
         conexion = new Conexion();
@@ -365,7 +431,7 @@ public class Proyectos_DAO
             double similitud = calcularSimilitudLevenshtein(
                     titulo, proyecto.getNombre(),
                     planteamiento, proyecto.getPlanteamiento(),
-                    justificacion, proyecto.getJustificación(),
+                    justificacion, proyecto.getJustificacion(),
                     alcances, proyecto.getAlcances(),
                     levenshtein
             );
@@ -374,11 +440,12 @@ public class Proyectos_DAO
 
             if (titulo.equalsIgnoreCase(proyecto.getNombre())
                     && planteamiento.equalsIgnoreCase(proyecto.getPlanteamiento())
-                    && justificacion.equalsIgnoreCase(proyecto.getJustificación())
+                    && justificacion.equalsIgnoreCase(proyecto.getJustificacion())
                     && alcances.equalsIgnoreCase(proyecto.getAlcances()))
             {
                 estado = "Denegado";
                 System.out.println("Proyecto denegado por coincidencia exacta.");
+                proyectosSimilares.add(proyecto);
                 break;
             }
 
@@ -386,6 +453,7 @@ public class Proyectos_DAO
             {
                 estado = "Denegado";
                 System.out.println("Proyecto denegado. Similitud: " + similitud + "% (Mayor o igual que " + porcentajeMax + "%)");
+                proyectosSimilares.add(proyecto);
                 break;
             }
 
@@ -406,6 +474,7 @@ public class Proyectos_DAO
         {
             for (Proyecto_MB similar : proyectosSimilares)
             {
+                System.out.println("proyectosSimilares: " + similar);
                 similitudes_Dao.insertaSimilitud(proyectoId, similar.getNoFolio());
             }
         }

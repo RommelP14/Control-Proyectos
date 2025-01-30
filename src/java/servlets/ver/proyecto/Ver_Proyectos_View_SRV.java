@@ -5,6 +5,7 @@
 package servlets.ver.proyecto;
 
 import com.google.gson.Gson;
+import dao.departamento.Departamento_DAO;
 import dao.proyectos.Proyectos_DAO;
 import dao.similitudes.Similitudes_DAO;
 import java.io.IOException;
@@ -15,7 +16,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import manage.bean.departamento.Departamento_MB;
 import manage.bean.proyectos.Proyecto_MB;
+import manageBean.empleado.Empleado_MB;
 import manageBean.general.GenericResponse;
 
 /**
@@ -68,27 +72,41 @@ public class Ver_Proyectos_View_SRV extends HttpServlet
     {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-
+        
         RequestDispatcher dispatcher = null;
         GenericResponse respuesta = new GenericResponse();
-
+        
         Proyectos_DAO proyecto_dao = new Proyectos_DAO();
-        List<Proyecto_MB> misProyectos;
-
+        List<Proyecto_MB> misProyectos = null;
+        
         switch (request.getParameter("accion"))
         {
             case "listarMisProyectos":
-                misProyectos = proyecto_dao.consultarProyectos();
+                HttpSession session = request.getSession();
+                Empleado_MB empleado_Mb = (Empleado_MB) session.getAttribute("empleado");
+                if (empleado_Mb != null)
+                {
+                    Departamento_DAO departamento_Dao = new Departamento_DAO();
+                    Departamento_MB departamento_Mb = departamento_Dao.obtenerDepartamentoPorIdSAM(empleado_Mb.getDeptoID());
+                    if (departamento_Mb != null)
+                    {
+                        System.out.println("empleado_Mb.getDeptoID: " + departamento_Mb.getId_departamento_tab());
+                        misProyectos = proyecto_dao.consultarProyectosDuenio(departamento_Mb.getId_departamento_tab());
+                    }
+
 //                System.out.println("****************************");
 //                for (Proyecto_MB p : misProyectos)
 //                {
 //                    System.out.println(p.toString());
 //                }
 //                System.out.println("****************************");
-
-                request.setAttribute("proyectos", misProyectos);
-                dispatcher = getServletContext().getRequestDispatcher("/views/jefes/Paginas/MisProyectos_view.jsp");
-                dispatcher.forward(request, response);
+                    request.setAttribute("proyectos", misProyectos);
+                    dispatcher = getServletContext().getRequestDispatcher("/views/jefes/Paginas/MisProyectos_view.jsp");
+                    dispatcher.forward(request, response);
+                } else
+                {
+                    System.out.println("error inicia sesion");
+                }
                 break;
             case "verificaEstado":
                 String noFolio = request.getParameter("idProyecto");
@@ -102,7 +120,7 @@ public class Ver_Proyectos_View_SRV extends HttpServlet
                     respuesta.setStatus(-200);
                     respuesta.setMensaje("Error");
                 }
-
+                
                 break;
             default:
                 respuesta.setStatus(-100);
@@ -115,7 +133,7 @@ public class Ver_Proyectos_View_SRV extends HttpServlet
             out.print(json.toJson(respuesta));
         }
     }
-
+    
     public void muestraVistaDependiendoEstado(String estado, int idNoFolio, GenericResponse respuesta)
     {
         switch (estado)
@@ -125,24 +143,29 @@ public class Ver_Proyectos_View_SRV extends HttpServlet
                 respuesta.setMensaje("");
                 respuesta.setResponseObject(idNoFolio);
                 break;
+            case "Denegado":
+                respuesta.setStatus(-2000);
+                respuesta.setMensaje("");
+                respuesta.setResponseObject(idNoFolio);
+                break;
             default:
                 respuesta.setStatus(-200);
                 respuesta.setMensaje("Error");
         }
     }
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-
+        
         RequestDispatcher dispatcher;
         GenericResponse respuesta = new GenericResponse();
-
+        
         Proyectos_DAO proyecto_dao = new Proyectos_DAO();
-
+        
         switch (request.getParameter("accion"))
         {
             case "eliminar":

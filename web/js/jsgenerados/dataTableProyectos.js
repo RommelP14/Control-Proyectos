@@ -111,7 +111,10 @@ $('#btnIrBuscaProyecto').click(function () {
         success: function (response) {
             if (response.status === -1000) {
                 armaUrlAprobacion(response.responseObject);
-            } else if (response.status === -200) {
+            }else if(response.status === -2000)
+            {
+                armaUrlDenegado(response.responseObject);
+            }else if (response.status === -200) {
                 MensajeRedirect(iconoError, 'Error al eliminar el Proyecto', 'No se pudo eliminar el Proyecto' + "<br><br> Contacte con el administrador del sistema.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
             } else {
                 MensajeRedirect(iconoError, 'Error al eliminar el Proyecto', 'No se pudo eliminar el Proyecto' + "<br><br> Por favor, notifique a su administrador de este error.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
@@ -129,9 +132,14 @@ $('#btnIrBuscaProyecto').click(function () {
 function armaUrlAprobacion(idNoFolio) {
     // Convertir el objeto a una cadena JSON y codificarlo
     var idNoFolioStr = encodeURIComponent(JSON.stringify(idNoFolio));
-
     var url = `/ControlProyecto/app/ver/RedireccionaVistas_View_SRV.do?accion=aprobacion&idFolio=${idNoFolioStr}`;
-    console.log("Redirigiendo a: ", url);
+    window.location.href = url;
+}
+
+function armaUrlDenegado(idNoFolio) {
+    // Convertir el objeto a una cadena JSON y codificarlo
+    var idNoFolioStr = encodeURIComponent(JSON.stringify(idNoFolio));
+    var url = `/ControlProyecto/app/ver/RedireccionaVistas_View_SRV.do?accion=denegado&idFolio=${idNoFolioStr}`;
     window.location.href = url;
 }
 
@@ -156,17 +164,18 @@ function getPDF(folio) {
 function getPDF2(folio) {
     document.getElementById("pdfFolioA").innerHTML = "";
     $.ajax({
-        type: 'Get',
-        url: 'PDF_SRV',
-        data: {noFolioR: folio},
+        type: 'GET',
+        url: '../../app/ver/Pdf_SRV.do',
+        data: {folio: folio},
         success: function (respuesta) {
             var iframe = document.createElement('iframe');
-            var html = respuesta;
-            iframe.srcdoc = html;
+            iframe.srcdoc = respuesta;
             iframe.width = '100%';
             iframe.height = '400px';
             document.getElementById("pdfFolioA").appendChild(iframe);
+        },
+        error: function () {
+            document.getElementById("pdfFolioA").innerHTML = "<p class='text-danger'>Selecciona un Folio</p>";
         }
-
     });
 }

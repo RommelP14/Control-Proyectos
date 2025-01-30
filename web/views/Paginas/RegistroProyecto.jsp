@@ -101,8 +101,8 @@
                                                   name="alcances" 
                                                   id="alcances"  
                                                   placeholder="Ingrese el alcance 3-1000 caracteres" 
-                                                  maxlength="150"
-                                                  minlength="1"
+                                                  maxlength="1000"
+                                                  minlength="3"
                                                   autocomplete="off"
                                                   required
                                                   ></textarea>

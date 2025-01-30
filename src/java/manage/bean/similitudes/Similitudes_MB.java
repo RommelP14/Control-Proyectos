@@ -19,6 +19,11 @@ public class Similitudes_MB
         this.noFolio_proyecto_tab_parecido = noFolio_proyecto_tab_parecido;
     }
 
+    public Similitudes_MB(int noFolio_proyecto_tab_parecido)
+    {
+        this.noFolio_proyecto_tab_parecido = noFolio_proyecto_tab_parecido;
+    }
+    
     /**
      * @return the noFolio_proyecto_tab_revision
      */

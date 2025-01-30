@@ -24,32 +24,30 @@
     </head>
     <body>
         <%@include file="/views/templates/header.jsp" %>
-        <c:if test="${empty respuestaDetallesProyectos.responseObject}">
+        <c:if test="${empty proyecto_Mb.responseObject}">
             <div class="container">
                 <p class="text-center text-danger">No hay datos disponibles para mostrar.</p>
             </div>
         </c:if>
-
-        <c:forEach var="proyecto" items="${respuestaDetallesProyectos.responseObject}">
-            <div class="container">
-                <div class="col-md-12 text-center">
-                    <h5 id="titulo" name="titulo"><b><c:out value="${proyecto.nombre}"/></b></h5>
-                </div>
-                <div class="col-md-12">
-                    <label>No. Folio:</label>
-                    <p id="noFolio" name="noFolio"><c:out value="${proyecto.noFolio}"/></p>
-
-                    <label>Planteamiento del problema:</label>
-                    <p id="avance" name="avance"><c:out value="${proyecto.planteamiento}"/></p>
-
-                    <label>Justificación:</label>
-                    <p id="estado" name="estado"><c:out value="${proyecto.justificación}"/></p> 
-
-                    <label>Alcances:</label>
-                    <p id="aprobacion" name="aprobacion"><c:out value="${proyecto.alcances}"/></p>
-                </div>
+        <c:set var="proyecto" value="${proyecto_Mb.responseObject}" />
+        <div class="container">
+            <div class="col-md-12 text-center">
+                <h5 id="titulo" name="titulo"><b><c:out value="${proyecto.nombre}"/></b></h5>
             </div>
-        </c:forEach>
+            <div class="col-md-12">
+                <label>No. Folio:</label>
+                <p id="noFolio" name="noFolio"><c:out value="${proyecto.noFolio}"/></p>
+
+                <label>Planteamiento del problema:</label>
+                <p id="avance" name="avance"><c:out value="${proyecto.planteamiento}"/></p>
+
+                <label>Justificación:</label>
+                <p id="estado" name="estado"><c:out value="${proyecto.justificacion}"/></p> 
+
+                <label>Alcances:</label>
+                <p id="aprobacion" name="aprobacion"><c:out value="${proyecto.alcances}"/></p>
+            </div>
+        </div>
 
         <script type="text/javascript" src="/CDN-ITT/js/jquery.estandarITT.js"></script>
         <script type="text/javascript" src="/CDN-ITT/js/jquery-ui.estandarITT.js"></script>

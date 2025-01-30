@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import manage.bean.proyectos.Proyecto_MB;
+import manage.bean.similitudes.Similitudes_MB;
 import manageBean.general.GenericResponse;
 
 /**
@@ -67,28 +68,32 @@ public class Pdf_SRV extends HttpServlet
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
 
-        GenericResponse<List<Proyecto_MB>> respuesta = new GenericResponse<>();
-        Proyectos_DAO proyectos_Dao = new Proyectos_DAO();
-        String noFolio = request.getParameter("folio");
+        GenericResponse<Proyecto_MB> respuesta = new GenericResponse<>();
+        String noFolioParametro = request.getParameter("folio");
 
-        if (noFolio != null && !noFolio.isEmpty())
+        if (noFolioParametro != null && !noFolioParametro.isEmpty())
         {
-            proyectos_Dao.consultaProyectoPorId(Integer.parseInt(noFolio), respuesta);
-
-            if (respuesta.getResponseObject() != null && !respuesta.getResponseObject().isEmpty())
-            {
-                request.setAttribute("respuestaDetallesProyectos", respuesta);
-
-                // Captura el contenido de PDF.jsp y lo envía como respuesta AJAX
-                RequestDispatcher dispatcher = request.getRequestDispatcher("/views/jefes/Paginas/PDF.jsp");
-                dispatcher.include(request, response);
-            } else
-            {
-                response.getWriter().write("<p class='text-danger'>No hay datos disponibles para mostrar.</p>");
-            }
+            int noFolio = Integer.parseInt(noFolioParametro);
+            BuscaUnSoloProyecto(noFolio, respuesta, request, response);
         } else
         {
             response.getWriter().write("<p class='text-danger'>El folio está vacío.</p>");
+        }
+    }
+
+    public void BuscaUnSoloProyecto(int noFolio, GenericResponse<Proyecto_MB> respuesta, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        Proyectos_DAO proyectos_Dao = new Proyectos_DAO();
+        proyectos_Dao.consultaProyectoPorId(noFolio, respuesta);
+
+        if (respuesta.getResponseObject() != null)
+        {
+            request.setAttribute("proyecto_Mb", respuesta);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/jefes/Paginas/PDF.jsp");
+            dispatcher.include(request, response);
+        } else
+        {
+            response.getWriter().write("<p class='text-danger'>No hay datos disponibles para mostrar.</p>");
         }
     }
 

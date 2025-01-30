@@ -10,33 +10,34 @@ package manage.bean.proyectos;
  */
 public class Proyecto_MB
 {
+
     private int noFolio;
     private String nombre;
     private String planteamiento;
     private String alcances;
-    private String justificación;
+    private String justificacion;
     private int id_duenio;
     private int id_departamento_tab;
     private String estado;
 
-    public Proyecto_MB(int noFolio, String nombre, String planteamiento, String alcances, String justificación, int id_duenio, int id_departamento_tab, String estado)
+    public Proyecto_MB(int noFolio, String nombre, String planteamiento, String alcances, String justificacion, int id_duenio, int id_departamento_tab, String estado)
     {
         this.noFolio = noFolio;
         this.nombre = nombre;
         this.planteamiento = planteamiento;
         this.alcances = alcances;
-        this.justificación = justificación;
+        this.justificacion = justificacion;
         this.id_duenio = id_duenio;
         this.id_departamento_tab = id_departamento_tab;
         this.estado = estado;
     }
 
-    public Proyecto_MB(String nombre, String planteamiento, String alcances, String justificación, int id_duenio, int id_departamento_tab)
+    public Proyecto_MB(String nombre, String planteamiento, String alcances, String justificacion, int id_duenio, int id_departamento_tab)
     {
         this.nombre = nombre;
         this.planteamiento = planteamiento;
         this.alcances = alcances;
-        this.justificación = justificación;
+        this.justificacion = justificacion;
         this.id_duenio = id_duenio;
         this.id_departamento_tab = id_departamento_tab;
     }
@@ -106,19 +107,19 @@ public class Proyecto_MB
     }
 
     /**
-     * @return the justificación
+     * @return the justificacion
      */
-    public String getJustificación()
+    public String getJustificacion()
     {
-        return justificación;
+        return justificacion;
     }
 
     /**
-     * @param justificación the justificación to set
+     * @param justificacion the justificacion to set
      */
-    public void setJustificación(String justificación)
+    public void setJustificacion(String justificacion)
     {
-        this.justificación = justificación;
+        this.justificacion = justificacion;
     }
 
     /**
@@ -172,6 +173,6 @@ public class Proyecto_MB
     @Override
     public String toString()
     {
-        return "Proyecto_MB{" + "noFolio=" + noFolio + ", nombre=" + nombre + ", planteamiento=" + planteamiento + ", alcances=" + alcances + ", justificaci\u00f3n=" + justificación + ", id_duenio=" + id_duenio + ", id_departamento_tab=" + id_departamento_tab + ", estado=" + estado + '}';
+        return "Proyecto_MB{" + "noFolio=" + noFolio + ", nombre=" + nombre + ", planteamiento=" + planteamiento + ", alcances=" + alcances + ", justificacion=" + justificacion + ", id_duenio=" + id_duenio + ", id_departamento_tab=" + id_departamento_tab + ", estado=" + estado + '}';
     }
 }

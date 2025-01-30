@@ -11,7 +11,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import manage.bean.proyectos.Proyecto_MB;
+import manage.bean.similitudes.Similitudes_MB;
 import manageBean.conexion.Conexion;
+import manageBean.general.GenericResponse;
 
 /**
  *
@@ -53,36 +55,50 @@ public class Similitudes_DAO
         }
     }
 
-    public List<Integer> consultaProyectosSimilaresPorId(int noFolio_proyecto_tab_revision)
+    public void consultaProyectosSimilaresPorId(int noFolio_proyecto_tab_revision, GenericResponse<List<Similitudes_MB>> respuesta)
     {
         conexion = new Conexion();
         conexion.connect(VariablesSistema.USERNAME_BD, VariablesSistema.PASSWORD_BD);
 
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        ArrayList<Integer> folios_Parecidos = new ArrayList<>();
+        List<Similitudes_MB> folios_Parecidos = new ArrayList<>();
+        Similitudes_MB similitudes_Mb;
 
         try
         {
             // Consulta para obtener los proyectos
             String query = "SELECT noFolio_proyecto_tab_parecido\n"
-                                + "FROM similitudes_tab\n"
-                                + "WHERE noFolio_proyecto_tab_revision = ?;";
+                    + "FROM similitudes_tab\n"
+                    + "WHERE noFolio_proyecto_tab_revision = ?;";
             pstmt = conexion.getCon().prepareStatement(query);
             pstmt.setInt(1, noFolio_proyecto_tab_revision);
             rs = pstmt.executeQuery();
 
             // Itera sobre los resultados
+            System.out.println("Iterando resultados********************");
             while (rs.next())
             {
-                folios_Parecidos.add(rs.getInt("noFolio_proyecto_tab_parecido"));
+                similitudes_Mb = new Similitudes_MB(rs.getInt("noFolio_proyecto_tab_parecido"));
+                System.out.println("ddd: " + rs.getInt("noFolio_proyecto_tab_parecido"));
+                folios_Parecidos.add(similitudes_Mb);
             }
+            respuesta.setStatus(0);
+            respuesta.setMensaje("Proyecto similares Encontrados");
+            respuesta.setResponseObject(folios_Parecidos);
+
         } catch (SQLException e)
         {
             System.out.println("Error al consultar proyectos similares: " + e.getMessage());
+            respuesta.setStatus(-100);
+            respuesta.setMensaje("Ha ocurrido un error a la hora de buscar proyecto");
+            respuesta.setResponseObject(null);
         } catch (Exception e)
         {
             System.out.println("Error general en consultarProyectos: " + e.getMessage());
+            respuesta.setStatus(-50);
+            respuesta.setMensaje("Ha ocurrido un error general");
+            respuesta.setResponseObject(null);
         } finally
         {
             // Cerrar conexión y recursos
@@ -108,7 +124,5 @@ public class Similitudes_DAO
             }
             conexion.disconnect();
         }
-
-        return folios_Parecidos;
     }
 }

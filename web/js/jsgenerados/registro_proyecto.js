@@ -94,8 +94,8 @@ function enviarDatosAlServlet(datos) {
 function manejarRespuestaComparacion(response) {
     const estatus = response.estatus;
     const folio = response.folio;
-    //console.log(estatus);
-    //console.log(folio);
+    console.log(estatus);
+    console.log(folio);
     if (estatus === "Para aprobación") {
         MensajeRedirect(
             iconoCorrecto,
@@ -110,7 +110,7 @@ function manejarRespuestaComparacion(response) {
             `El proyecto con folio <strong>${folio}</strong> presenta similitudes con otros existentes. Necesita revisión manual.`,
             '/ControlProyecto/views/Paginas/RegistroDuenio.jsp'
         );
-    } else if (estatus === "Denegar") {
+    } else if (estatus === "Denegado") {
         MensajeRedirect(
             iconoInfo,
             'Proyecto Denegado.',

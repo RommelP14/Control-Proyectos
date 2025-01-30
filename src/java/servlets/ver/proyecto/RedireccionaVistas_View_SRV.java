@@ -6,10 +6,12 @@ package servlets.ver.proyecto;
 
 import com.google.gson.Gson;
 import dao.proyectos.Proyectos_DAO;
+import dao.similitudes.Similitudes_DAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import manage.bean.proyectos.Proyecto_MB;
+import manage.bean.similitudes.Similitudes_MB;
+import manageBean.general.GenericResponse;
 
 /**
  *
@@ -69,31 +73,43 @@ public class RedireccionaVistas_View_SRV extends HttpServlet
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         RequestDispatcher dispatcher = null;
+        Proyectos_DAO proyecto_dao = new Proyectos_DAO();
+        String url = "";
+
+        int noFolio = convierteidFolioJson(request.getParameter("idFolio"));
+        Proyecto_MB proyecto_Mb = proyecto_dao.consultaProyectoPorId(noFolio);
+        request.setAttribute("proyecto_Mb", proyecto_Mb);
+        System.out.println("sssss: " + request.getParameter("accion"));
         switch (request.getParameter("accion"))
         {
             case "aprobacion":
-                proyectoParaAprobacion(request.getParameter("idFolio"), request, response, dispatcher);
+                url = "/views/jefes/Paginas/ProyectoParaAprobacion.jsp";
                 break;
+            case "denegado":
+                Similitudes_DAO similitudes_DAO = new Similitudes_DAO();
+                GenericResponse<List<Similitudes_MB>> respuestaSimilitudes = new GenericResponse<>();
+                similitudes_DAO.consultaProyectosSimilaresPorId(noFolio, respuestaSimilitudes);
+                request.setAttribute("respuestaSimilitudes", respuestaSimilitudes);
+                url = "/views/jefes/Paginas/CompararProyectos.jsp";
             default:
                 System.out.println("No esta ese parametro, ve a inicio de sesion");
         }
+        dispatcher = request.getRequestDispatcher(url);
+        dispatcher.forward(request, response);
     }
 
-    public void proyectoParaAprobacion(String idFolioJson, HttpServletRequest request, HttpServletResponse response, RequestDispatcher dispatcher) throws UnsupportedEncodingException, ServletException, IOException
+    public int convierteidFolioJson(String idFolioJson) throws UnsupportedEncodingException
     {
-        if (idFolioJson != null)
+        int idFolio = -1;
+        Gson gson = new Gson();
+        if (!idFolioJson.isEmpty())
         {
-            Proyectos_DAO proyecto_dao = new Proyectos_DAO();
-            Gson gson = new Gson();
-            int noFolio = gson.fromJson(URLDecoder.decode(idFolioJson, "UTF-8"), Integer.class);
-            Proyecto_MB proyecto_Mb = proyecto_dao.consultaProyectoPorId(noFolio);
-            request.setAttribute("proyecto_Mb", proyecto_Mb);
-            dispatcher = request.getRequestDispatcher("/views/jefes/Paginas/ProyectoParaAprobacion.jsp");
-            dispatcher.forward(request, response);
+            idFolio = gson.fromJson(URLDecoder.decode(idFolioJson, "UTF-8"), Integer.class);
         } else
         {
             System.out.println("No esta ese parametro, ve a inicio de sesion");
         }
+        return idFolio;
     }
 
     /**
