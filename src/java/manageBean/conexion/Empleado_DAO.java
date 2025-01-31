@@ -17,8 +17,8 @@ import manageBean.general.GenericResponse;
 /**
  *
  *
- * @author Alex Antonio Suárez Sánchez
- * @fecha_creacion 28/08/2024
+ * @author romme
+ * @fecha_creacion 08/01/2025
  * @fecha_actualizacion
  *
  */
@@ -108,20 +108,21 @@ public class Empleado_DAO
 
         try
         {
-            String sql = "SELECT em.id_empleado AS id_empleado, "
+            String sql = "SELECT em.id_empleado AS idEmpleado, "
                     + "em.nombre AS nombre, "
-                    + "em.apellidoPa AS apellido_paterno, "
-                    + "em.apellidoMa AS apellido_materno, "
-                    + "em.id_departamento AS departamento_id, "
-                    + "em.id_puesto AS puesto_id, "
-                    + "dep.nombre AS departamento_nombre, "
-                    + "p.nombre AS puesto_nombre, "
-                    + "em.correo AS correo_empleado, "
-                    + "p.correoPuesto AS correo_puesto "
+                    + "em.apellidoPa AS apellidoPaterno, "
+                    + "em.apellidoMa AS apellidoMaterno, "
+                    + "em.id_puesto AS puestoID, "
+                    + "em.id_departamento AS deptoID, "
+                    + "dep.nombre AS nombreDepartamento, "
+                    + "puesto.nombre AS nombrePuesto, "
+                    + "em.correo AS correoEmpleado, "
+                    + "puesto.correoPuesto AS correoPuesto, "
+                    + "em.telefono AS telefonoEmpleado "
                     + "FROM sesiones s "
                     + "JOIN empleados em ON em.id_empleado = s.id_empleado "
                     + "JOIN departamento dep ON em.id_departamento = dep.id_departamento "
-                    + "JOIN puesto p ON em.id_puesto = p.id_puesto "
+                    + "JOIN puesto ON em.id_puesto = puesto.id_puesto "
                     + "WHERE em.usuario = ?";
 
             pstmt = conexion.getConn_SAM().prepareStatement(sql);
@@ -139,6 +140,7 @@ public class Empleado_DAO
                 //response.setStatus(STATUS_REGISTRO_EXITOSO_BD);
                 gr.setResponseObject(empleado_MB);
                 gr.setMensaje("Usuario encontrado");
+                System.out.println("encontroUsuario");
             } else
             {
                 //response.setStatus(STATUS_REGISTRO_FALLIDO_BD);

@@ -18,8 +18,10 @@ var tablaProyectos = $('#tablaProyectos').DataTable({
 });
 $("#btnIrBuscaProyecto").hide();
 $("#btnBorrarProyecto").hide();
+$("#btnRegistroColaboradores").hide();
+$("#btnRegistroAvances").hide();
 
-let SeEstaModificandoContacto = false;
+let SeEstaModificandoProyecto = false;
 let idContacto, institutoName, datosProyecto, paisName, estadoName;
 
 let idProyecto, nombreProyecto, progresoProyecto, estadoProyecto, aprobacionProyecto;
@@ -28,7 +30,7 @@ let idProyecto, nombreProyecto, progresoProyecto, estadoProyecto, aprobacionProy
  * Select Row
  */
 $("#containerPrincipalContacto").on('click', '#tablaProyectos tbody tr td', function () {
-    if (!SeEstaModificandoContacto) {
+    if (!SeEstaModificandoProyecto) {
         datosProyecto = tablaProyectos.row($(this)).data();
         idProyecto = $(this).parent('tr').attr("id");
         console.log("idProyecto: " + idProyecto)
@@ -39,16 +41,20 @@ $("#containerPrincipalContacto").on('click', '#tablaProyectos tbody tr td', func
         if (!$(this).parent('tr').hasClass("selected")) {
             $("#btnIrBuscaProyecto").show();
             $("#btnBorrarProyecto").show();
+            $("#btnRegistroColaboradores").show();
+            $("#btnRegistroAvances").show();
         } else {
             $("#btnIrBuscaProyecto").hide();
             $("#btnBorrarProyecto").hide();
+            $("#btnRegistroColaboradores").hide();
+            $("#btnRegistroAvances").hide();
         }
         selectLib("tablaProyectos", $(this).parent().attr('id'));
     }
 });
 
 /**
- * Eliminar Contacto
+ * Eliminar Proyecto
  */
 $("#containerPrincipalContacto").on("click", '#btnBorrarProyecto', function () {
     let nombreP = datosProyecto[1];
@@ -96,6 +102,9 @@ function eliminarProyecto(idProyecto) {
     });
 }
 
+/**
+ * Consultar Proyecto
+ */
 $('#btnIrBuscaProyecto').click(function () {
     $.ajax({
         type: 'GET',
@@ -111,10 +120,10 @@ $('#btnIrBuscaProyecto').click(function () {
         success: function (response) {
             if (response.status === -1000) {
                 armaUrlAprobacion(response.responseObject);
-            }else if(response.status === -2000)
+            } else if (response.status === -2000)
             {
                 armaUrlParaRevision(response.responseObject);
-            }else if (response.status === -200) {
+            } else if (response.status === -200) {
                 MensajeRedirect(iconoError, 'Error al consultar el Proyecto', 'No se pudo buscar el Proyecto' + "<br><br> Contacte con el administrador del sistema.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
             } else {
                 MensajeRedirect(iconoError, 'Error al consultar el Proyecto', 'No se pudo buscar el Proyecto' + "<br><br> Por favor, notifique a su administrador de este error.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
@@ -128,6 +137,83 @@ $('#btnIrBuscaProyecto').click(function () {
         }
     });
 });
+
+/**
+ * Registrar Colaboradores
+ */
+$('#btnRegistroColaboradores').click(function () {
+    $.ajax({
+        type: 'GET',
+        url: "../../app/ver/Ver_Registro_Colaboradores_View_SRV.do",
+        data: {idProyecto: idProyecto},
+        dataType: 'JSON',
+        beforeSend: function () {
+            $("#pageLoader").show();
+        },
+        complete: function () {
+            $("#pageLoader").hide();
+        },
+        success: function (response) {
+            if (response.status === 0) {
+                armaUrlParaRegistroColaborador(response.responseObject);
+            } else {
+                MensajeRedirect(iconoError, 'Error al intentar registrar un colaborador', 'No se pudo registrar colaborador' + "<br><br> Por favor, notifique a su administrador de este error.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            bootBoxAlert(iconoError, 'Ocurrió un error.', 'Ocurrió un error al realizar la petición:<br/>' +
+                    'Estatus: ' + '<strong>' + textStatus + ' </strong><br/>' +
+                    'Error: ' + '<strong>' + errorThrown + '</strong><br/>' +
+                    'Por favor, notifique a su administrador de este error<br/>.');
+        }
+    });
+});
+
+
+/**
+ * Registrar Colaboradores
+ */
+$('#btnRegistroAvances').click(function () {
+    $.ajax({
+        type: 'GET',
+        url: "../../app/ver/Ver_Registro_Colaboradores_View_SRV.do",
+        data: {idProyecto: idProyecto},
+        dataType: 'JSON',
+        beforeSend: function () {
+            $("#pageLoader").show();
+        },
+        complete: function () {
+            $("#pageLoader").hide();
+        },
+        success: function (response) {
+            if (response.status === 0) {
+                armaUrlParaRegistroAvances(response.responseObject);
+            } else {
+                MensajeRedirect(iconoError, 'Error al intentar registrar un Avance', 'No se pudo registrar Avance' + "<br><br> Por favor, notifique a su administrador de este error.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
+            }
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            bootBoxAlert(iconoError, 'Ocurrió un error.', 'Ocurrió un error al realizar la petición:<br/>' +
+                    'Estatus: ' + '<strong>' + textStatus + ' </strong><br/>' +
+                    'Error: ' + '<strong>' + errorThrown + '</strong><br/>' +
+                    'Por favor, notifique a su administrador de este error<br/>.');
+        }
+    });
+});
+
+function armaUrlParaRegistroAvances(idNoFolio) {
+    // Convertir el objeto a una cadena JSON y codificarlo
+    var idNoFolioStr = encodeURIComponent(JSON.stringify(idNoFolio));
+    var url = `/ControlProyecto/app/ver/RedireccionaVistasAvances_View_SRV.do?idFolio=${idNoFolioStr}`;
+    window.location.href = url;
+}
+
+function armaUrlParaRegistroColaborador(idNoFolio) {
+    // Convertir el objeto a una cadena JSON y codificarlo
+    var idNoFolioStr = encodeURIComponent(JSON.stringify(idNoFolio));
+    var url = `/ControlProyecto/app/ver/RedireccionaVistasColaboradores_View_SRV.do?idFolio=${idNoFolioStr}`;
+    window.location.href = url;
+}
 
 function armaUrlAprobacion(idNoFolio) {
     // Convertir el objeto a una cadena JSON y codificarlo

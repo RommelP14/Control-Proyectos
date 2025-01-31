@@ -46,6 +46,8 @@
     </table>
 </div>
 <div class="row" align="right" style="margin: 1rem">
+    <button id="btnRegistroAvances"  class="btn btn-editar btn-sm" title="Registrar Avances"> <i class="fa fa-refresh"></i></button>
+    <button id="btnRegistroColaboradores"  class="btn btn-agregar btn-sm" title="Registrar Colaboradores"> <i class="fa fa-handshake"></i></button>
     <button id="btnIrBuscaProyecto"  class="btn btn-info btn-sm" title="Consultar Proyecto"> <i class="fa fa-search"></i></button>
-    <button id="btnBorrarProyecto"    class="btn btn-borrar btn-sm" title="Borrar Proyecto">  <i class="fa fa-trash"></i></button>
+    <button id="btnBorrarProyecto"    class="btn btn-borrar btn-sm" title="Borrar Proyecto"> <i class="fa fa-trash"></i></button>
 </div>

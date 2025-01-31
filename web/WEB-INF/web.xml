@@ -40,6 +40,22 @@
         <servlet-name>Pdf_SRV</servlet-name>
         <servlet-class>servlets.ver.pdf.Pdf_SRV</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Ver_Registro_Colaboradores_View_SRV</servlet-name>
+        <servlet-class>servlets.registro.colaboradores.Ver_Registro_Colaboradores_View_SRV</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RedireccionaVistasColaboradores_View_SRV</servlet-name>
+        <servlet-class>servlets.registro.colaboradores.RedireccionaVistasColaboradores_View_SRV</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Ver_Registro_Avances_View_SRV</servlet-name>
+        <servlet-class>servlets.registro.avances.Ver_Registro_Avances_View_SRV</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RedireccionaVistasAvances_View_SRV</servlet-name>
+        <servlet-class>servlets.registro.avances.RedireccionaVistasAvances_View_SRV</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Master_Srv</servlet-name>
         <url-pattern>/Master_Srv</url-pattern>
@@ -79,6 +95,22 @@
     <servlet-mapping>
         <servlet-name>Pdf_SRV</servlet-name>
         <url-pattern>/app/ver/Pdf_SRV.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Ver_Registro_Colaboradores_View_SRV</servlet-name>
+        <url-pattern>/app/ver/Ver_Registro_Colaboradores_View_SRV.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RedireccionaVistasColaboradores_View_SRV</servlet-name>
+        <url-pattern>/app/ver/RedireccionaVistasColaboradores_View_SRV.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Ver_Registro_Avances_View_SRV</servlet-name>
+        <url-pattern>/app/ver/Ver_Registro_Avances_View_SRV.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RedireccionaVistasAvances_View_SRV</servlet-name>
+        <url-pattern>/app/ver/RedireccionaVistasAvances_View_SRV.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

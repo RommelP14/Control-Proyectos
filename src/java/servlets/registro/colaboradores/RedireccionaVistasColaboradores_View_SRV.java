@@ -2,31 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package servlets.ver.proyecto;
+package servlets.registro.colaboradores;
 
-import com.google.gson.Gson;
 import dao.proyectos.Proyectos_DAO;
-import dao.similitudes.Similitudes_DAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import manage.bean.proyectos.Proyecto_MB;
-import manage.bean.similitudes.Similitudes_MB;
-import manageBean.general.GenericResponse;
+import static servlets.ver.proyecto.RedireccionaVistas_View_SRV.convierteidFolioJson;
 
 /**
  *
  * @author romme
  */
-public class RedireccionaVistas_View_SRV extends HttpServlet
+public class RedireccionaVistasColaboradores_View_SRV extends HttpServlet
 {
 
     /**
@@ -48,10 +40,10 @@ public class RedireccionaVistas_View_SRV extends HttpServlet
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RedireccionaVistas_View_SRV</title>");
+            out.println("<title>Servlet RedireccionaVistasColaboradores_View_SRV</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RedireccionaVistas_View_SRV at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet RedireccionaVistasColaboradores_View_SRV at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -73,43 +65,17 @@ public class RedireccionaVistas_View_SRV extends HttpServlet
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         RequestDispatcher dispatcher = null;
-        Proyectos_DAO proyecto_dao = new Proyectos_DAO();
         String url = "";
-
-        int noFolio = convierteidFolioJson(request.getParameter("idFolio"));//Validar esta parte en caso de que el id sea -1
-        Proyecto_MB proyecto_Mb = proyecto_dao.consultaProyectoPorId(noFolio);
-        request.setAttribute("proyecto_Mb", proyecto_Mb);
-        System.out.println("sssss: " + request.getParameter("accion"));
-        switch (request.getParameter("accion"))
+        int idFolio = convierteidFolioJson(request.getParameter("idFolio"));
+        if (idFolio != -1)
         {
-            case "aprobacion":
-                url = "/views/jefes/Paginas/ProyectoParaAprobacion.jsp";
-                break;
-            case "denegado":
-                Similitudes_DAO similitudes_DAO = new Similitudes_DAO();
-                GenericResponse<List<Similitudes_MB>> respuestaSimilitudes = new GenericResponse<>();
-                similitudes_DAO.consultaProyectosSimilaresPorId(noFolio, respuestaSimilitudes);
-                request.setAttribute("respuestaSimilitudes", respuestaSimilitudes);
-                url = "/views/jefes/Paginas/CompararProyectos.jsp";
-            default:
-                System.out.println("No esta ese parametro, ve a inicio de sesion");
+            request.setAttribute("idFolio", idFolio);
+            dispatcher = request.getRequestDispatcher("/views/Paginas/RegistroColaborador.jsp");
+            dispatcher.forward(request, response);
+        }else
+        {
+            System.out.println("No ha y folio al redireccionar a la vista colaboradores");
         }
-        dispatcher = request.getRequestDispatcher(url);
-        dispatcher.forward(request, response);
-    }
-
-    public static int convierteidFolioJson(String idFolioJson) throws UnsupportedEncodingException
-    {
-        int idFolio = -1;
-        Gson gson = new Gson();
-        if (!idFolioJson.isEmpty())
-        {
-            idFolio = gson.fromJson(URLDecoder.decode(idFolioJson, "UTF-8"), Integer.class);
-        } else
-        {
-            System.out.println("No esta ese parametro, ve a inicio de sesion");
-        }
-        return idFolio;
     }
 
     /**
@@ -124,7 +90,6 @@ public class RedireccionaVistas_View_SRV extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        processRequest(request, response);
     }
 
     /**

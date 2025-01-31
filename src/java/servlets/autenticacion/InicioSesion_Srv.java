@@ -59,6 +59,7 @@ public class InicioSesion_Srv extends HttpServlet
             Empleado_DAO empleado_DAO = new Empleado_DAO();
             GenericResponse<Empleado_MB> responseObject
                     = empleado_DAO.getEmpleadoUsuario(username);
+            System.out.println("username: " + username);
 
             if (responseObject.getResponseObject() != null)
             {
