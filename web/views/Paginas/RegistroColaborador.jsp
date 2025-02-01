@@ -54,6 +54,7 @@
                             </div>
                             <div class="panel panel-body">
                                 <form id="formulario_colaboradores">
+                                    <input type="hidden" id="idFolio" name="idFolio" value="${idFolio}">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
@@ -62,14 +63,14 @@
                                                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
                                                     <input type="text" 
                                                            class="form-control input-sm" 
-                                                           id="nombre_insert" 
-                                                           name="nombre_insert" 
+                                                           id="nombreE" 
+                                                           name="nombreE" 
                                                            placeholder="Nombre(s)"
-                                                           maxlength="100"
+                                                           maxlength="49"
                                                            minlength="3"
                                                            required
                                                            autocomplete="off"
-                                                           oninput="validarInputs(nombre_insert)">
+                                                           oninput="validarInputs(nombreE)">
                                                 </div>
                                             </div>                                  
                                         </div>
@@ -77,17 +78,17 @@
                                             <div class="form-group">
                                                 <label class="small">Primer apellido</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fas fa-id-card"></i></span>
+                                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
                                                     <input type="text" 
                                                            class="form-control input-sm" 
-                                                           id="appat_insert" 
-                                                           name="appat_insert" 
+                                                           id="primerApellidoE" 
+                                                           name="primerApellidoE" 
                                                            placeholder="Primer apellido"
-                                                           maxlength="100"
+                                                           maxlength="49"
                                                            minlength="3"
                                                            required
                                                            autocomplete="off"
-                                                           oninput="validarInputs(appat_insert)">
+                                                           oninput="validarInputs(primerApellidoE)">
                                                 </div>
                                             </div>                                  
                                         </div>
@@ -95,15 +96,17 @@
                                             <div class="form-group">
                                                 <label class="small">Segundo apellido</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fas fa-id-card"></i></span>
+                                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
                                                     <input type="text" 
-                                                           id="apmat_insert" 
-                                                           name="apmat_insert"
+                                                           id="segundoApellidoE" 
+                                                           name="segundoApellidoE"
                                                            class="form-control input-sm" 
                                                            placeholder="Segundo apellido"
-                                                           maxlength="100"
+                                                           maxlength="49"
+                                                           minlength="3"
+                                                           required
                                                            autocomplete="off"
-                                                           oninput="validarInputs(apmat_insert)">
+                                                           oninput="validarInputs(segundoApellidoE)">
                                                 </div>
                                             </div>                                  
                                         </div>
@@ -114,17 +117,17 @@
                                             <div class="form-group">
                                                 <label class="small">Carrera</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-mobile-phone"></i></span>
+                                                    <span class="input-group-addon"><i class="fas fa-cogs"></i></span>
                                                     <input type="text" 
-                                                           id="telefono_insert"
-                                                           name="telefono_insert"
+                                                           id="carrera"
+                                                           name="carrera"
                                                            class="form-control input-sm" 
-                                                           placeholder="Teléfono" 
-                                                           maxlength="30"
+                                                           placeholder="Carrera" 
+                                                           maxlength="38"  
+                                                           minlength="3"
                                                            required
-                                                           minlength="10"
                                                            autocomplete="off"
-                                                           oninput="validarInputs(telefono_insert)">
+                                                           oninput="validarInputs(carrera)">
                                                 </div>
                                             </div>
                                         </div>
@@ -134,40 +137,40 @@
                                                 <div class="input-group">
                                                     <span class="input-group-addon"><i class="fa fa-at"></i></span>
                                                     <input type="text" 
-                                                           id="correo_insert" 
-                                                           name="correo_insert" 
+                                                           id="correoP" 
+                                                           name="correoP" 
                                                            class="form-control input-sm" 
-                                                           maxlength="50"
+                                                           maxlength="38"
                                                            minlength="7"
                                                            required
-                                                           placeholder="correo"
+                                                           placeholder="Correo electrónico"
                                                            autocomplete="off"
-                                                           oninput="validarInputs(correo_insert)">
+                                                           oninput="validarInputs(correoP)">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label class="small">N0.control</label>
+                                                <label class="small">Número de Control</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-mobile-phone"></i></span>
+                                                    <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
                                                     <input type="text" 
-                                                           id="telefono_insert"
-                                                           name="telefono_insert"
                                                            class="form-control input-sm" 
-                                                           placeholder="Teléfono" 
-                                                           maxlength="30"
-                                                           required
-                                                           minlength="10"
+                                                           id="noControl" 
+                                                           name="noControl" 
+                                                           placeholder="Número de Control" 
+                                                           maxlength="11"
+                                                           minlength="3"
                                                            autocomplete="off"
-                                                           oninput="validarInputs(telefono_insert)">
+                                                           required
+                                                           oninput="validarInputs(noControl)">
                                                 </div>
-                                            </div>
+                                            </div>                                  
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12" align="right">
-                                            <button type="button" class="btn btn-default" onclick="redirectToContactos()">
+                                            <button type="button" class="btn btn-default" onclick="redirectProyectos()">
                                                 <i class="fa fa-minus-circle"></i> Cancelar
                                             </button>
                                             <button type="submit" class="btn btn-primary">
@@ -200,10 +203,10 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/js/jsgenerados/dataTableContactos.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/js/jsgenerados/dataTableProyectos.js"></script>
         <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/constantes.js"></script>  
         <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/funciones.js"></script> 
-        <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/validarInputs.js"></script> 
+        <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/validaInputs.js"></script> 
         <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/registro_colaboradores.js"></script> 
     </body>
 </html>

@@ -5,6 +5,7 @@
 package servlets.ver.proyecto;
 
 import com.google.gson.Gson;
+import dao.colaborador.Colaborador_DAO;
 import dao.departamento.Departamento_DAO;
 import dao.proyectos.Proyectos_DAO;
 import dao.similitudes.Similitudes_DAO;
@@ -72,13 +73,20 @@ public class Ver_Proyectos_View_SRV extends HttpServlet
     {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-        
+
         RequestDispatcher dispatcher = null;
         GenericResponse respuesta = new GenericResponse();
-        
+
         Proyectos_DAO proyecto_dao = new Proyectos_DAO();
         List<Proyecto_MB> misProyectos = null;
-        
+        String noFolio = request.getParameter("idProyecto");
+        String estado = request.getParameter("estadoProyecto");
+//        if (noFolio.isEmpty() || estado.isEmpty())
+//        {
+//            respuesta.setStatus(-200);
+//            respuesta.setMensaje("Error");
+//            return;
+//        }
         switch (request.getParameter("accion"))
         {
             case "listarMisProyectos":
@@ -109,18 +117,11 @@ public class Ver_Proyectos_View_SRV extends HttpServlet
                 }
                 break;
             case "verificaEstado":
-                String noFolio = request.getParameter("idProyecto");
-                String estado = request.getParameter("estadoProyecto");
-                System.out.println("noFolio_proyecto_tab_revision = " + noFolio);
-                if (!noFolio.isEmpty() && !estado.isEmpty())
-                {
-                    muestraVistaDependiendoEstado(estado, Integer.parseInt(noFolio), respuesta);
-                } else
-                {
-                    respuesta.setStatus(-200);
-                    respuesta.setMensaje("Error");
-                }
-                
+                muestraVistaDependiendoEstado(estado, Integer.parseInt(noFolio), respuesta);
+                break;
+            case "consultaColaborador":
+                Colaborador_DAO colaborador_Dao =  new Colaborador_DAO();
+                colaborador_Dao.consultaColaboradorPorId(Integer.parseInt(noFolio), respuesta);
                 break;
             default:
                 respuesta.setStatus(-100);
@@ -133,7 +134,7 @@ public class Ver_Proyectos_View_SRV extends HttpServlet
             out.print(json.toJson(respuesta));
         }
     }
-    
+
     public void muestraVistaDependiendoEstado(String estado, int idNoFolio, GenericResponse respuesta)
     {
         switch (estado)
@@ -154,19 +155,19 @@ public class Ver_Proyectos_View_SRV extends HttpServlet
                 respuesta.setMensaje("Error");
         }
     }
-    
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
-        
+
         RequestDispatcher dispatcher;
         GenericResponse respuesta = new GenericResponse();
-        
+
         Proyectos_DAO proyecto_dao = new Proyectos_DAO();
-        
+
         switch (request.getParameter("accion"))
         {
             case "eliminar":

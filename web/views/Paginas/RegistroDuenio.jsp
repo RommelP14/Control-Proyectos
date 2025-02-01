@@ -168,7 +168,7 @@
                                                    id="telefono" 
                                                    name="telefono" 
                                                    placeholder="Teléfono" 
-                                                   maxlength="25"
+                                                   maxlength="30"
                                                    minlength="10"
                                                    readonly
                                                    autocomplete="off"

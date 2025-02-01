@@ -3,7 +3,10 @@ $("#pageLoader").hide();
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#formulario_colaboradores").addEventListener('submit', function (event) {
         event.preventDefault();
-        const datos = obtenerDatosFormularioProyecto();
+        if (!validarFormularioColaborador()) {
+            return; 
+        }
+        const datos = obtenerDatosFormularioColaborador();
         console.log(datos);
         mostrarConfirmacion(datos);
     });
@@ -13,14 +16,32 @@ document.addEventListener("DOMContentLoaded", () => {
  * Obtiene los datos del formulario.
  * @returns {Object} - Objeto con los datos del formulario.
  */
-function obtenerDatosFormularioProyecto() {
+function obtenerDatosFormularioColaborador() {
     return {
-        titulo: $("#titulo").val(),
-        tipo: $("#tipo").val(),
-        planteamiento: $("#planteamiento").val(),
-        justificacion: $("#justificacion").val(),
-        alcances: $("#alcances").val()
+        idFolio: $("#idFolio").val() ,
+        nombreE: $("#nombreE").val(),
+        primerApellidoE: $("#primerApellidoE").val(),
+        segundoApellidoE: $("#segundoApellidoE").val(),
+        carrera: $("#carrera").val(),
+        correoP: $("#correoP").val(),
+        noControl: $("#noControl").val()
     };
+}
+
+/**
+ * Valida todos los campos del formulario del dueño.
+ * @returns {boolean} - Retorna true si todos los campos son válidos.
+ */
+function validarFormularioColaborador() {
+    const campos = [
+        '#nombreE',
+        '#primerApellidoE',
+        '#segundoApellidoE',
+        '#carrera',
+        '#correoP',
+        '#noControl'
+    ];
+    return campos.every(campo => validarDuenio($(campo)));
 }
 
 /**
@@ -30,10 +51,14 @@ function obtenerDatosFormularioProyecto() {
 function mostrarConfirmacion(datos) {
     bootBoxConfirm(
             iconoInfo,
-            "Agregar Proyecto.",
-            `Confirme algunos datos del Proyecto:<br><br>
-        <b>Título del Proyecto:</b> ${datos.titulo}<br>
-        <b>Tipo de Proyecto:</b> ${datos.tipo}<br>`,
+            "Agregar Colaborador.",
+            `Confirme algunos datos del Colaborador:<br><br>
+        <b>Nombre del colaborador:</b> ${datos.nombreE}<br>
+        <b>Primer apellido:</b> ${datos.primerApellidoE}<br>
+        <b>Segundo apellido:</b> ${datos.segundoApellidoE}<br>
+        <b>Carrera:</b> ${datos.carrera}<br>
+        <b>Correo electrónico:</b> ${datos.correoP}<br>
+        <b>N0.Control:</b> ${datos.noControl}<br>`,
             function (result) {
                 if (result) {
                     enviarDatosAlServlet(datos);
@@ -49,14 +74,16 @@ function mostrarConfirmacion(datos) {
 function enviarDatosAlServlet(datos) {
     $.ajax({
         type: 'POST',
-        url: "../../app/registro/Proyecto_SRV.do",
+        url: "../../app/registro/Registro_Colaborador_SRV.do",
         data: {
-            accion: 'comparar',
-            titulo: datos.titulo,
-            tipo: datos.tipo,
-            planteamiento: datos.planteamiento,
-            justificacion: datos.justificacion,
-            alcances: datos.alcances
+            accion: 'registro',
+            idFolio: datos.idFolio,
+            nombreE: datos.nombreE,
+            primerApellidoE: datos.primerApellidoE,
+            segundoApellidoE: datos.segundoApellidoE,
+            carrera: datos.carrera,
+            correoP: datos.correoP,
+            noControl: datos.noControl
         },
         dataType: 'JSON',
         beforeSend: function () {
@@ -67,13 +94,9 @@ function enviarDatosAlServlet(datos) {
         },
         success: function (response) {
             if (response.status === 0) {
-                manejarRespuestaComparacion(response); // Llama a la función para manejar el resultado
-            } else {
-                bootBoxAlert(
-                    iconoError,
-                    'Error al comparar',
-                    'No se pudo realizar la comparación. Intente más tarde.'
-                );
+                MensajeRedirect(iconoCorrecto, 'Colaborador Insertado.', 'Se inserto el Colaborador correctamente', '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
+            } else if (response.status === -100) {
+                MensajeRedirect(iconoError, 'Error al insertar', 'No se agrego el Colaborador', '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
             }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {

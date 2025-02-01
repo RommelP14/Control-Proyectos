@@ -3,14 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/WEB-INF/web.xml</file>
-            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/views/Paginas/RegistroColaborador.jsp</file>
-            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/js/jsgenerados/registro_avances.js</file>
-            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/views/Paginas/RegistroAvances.jsp</file>
-            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/servlets/registro/avances/RedireccionaVistasAvances_View_SRV.java</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/dao/colaborador/Colaborador_DAO.java</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/servlets/ver/proyecto/Ver_Proyectos_View_SRV.java</file>
             <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/js/jsgenerados/dataTableProyectos.js</file>
-            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/views/jefes/Paginas/tablaMisProyectos.jsp</file>
-            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/js/jsgenerados/registro_colaboradores.js</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/dao/proyectos/Proyectos_DAO.java</file>
         </group>
     </open-files>
 </project-private>

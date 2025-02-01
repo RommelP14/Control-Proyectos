@@ -3,37 +3,65 @@ function validarDuenio(input) {
     var inputValue = input.val().trim();
     var mensaje = "";
     var isValid = true;
+    var minLength, maxLength;
 
     switch (inputId) {
         case "nombreE":
+        case "primerApellidoE":
+        case "segundoApellidoE":
+        case "carrera":
             var nombreExp = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
-            if (!inputValue.match(nombreExp) || inputValue.length > 25 || inputValue.length < 3) {
+            if (!inputValue.match(nombreExp) || inputValue.length > 43 || inputValue.length < 3) {
                 isValid = false;
             }
             break;
         case "nombreEmpresa":
         case "nombreCompleto":
-        case "primerApellidoE":
-        case "segundoApellidoE":
             var apellidoExp = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
-            if (!inputValue.match(apellidoExp) || inputValue.length > 100 || inputValue.length < 3) {
+            if (!inputValue.match(apellidoExp) || inputValue.length > 98 || inputValue.length < 3) {
                 isValid = false;
             }
             break;
         case "telefono":
             var telefonoExp = /^(\+)?(\d{1,4})?[\s-]?(\(?\d{1,4}\)?[\s-]?)*\d{1,4}([\s-]?\d{1,4}){1,4}$/;
-            if (!inputValue.match(telefonoExp) || inputValue.length > 30 || inputValue.length < 10) {
+            if (!inputValue.match(telefonoExp) || inputValue.length > 28 || inputValue.length < 10) {
                 isValid = false;
             }
             break;
         case "emailEmpresa":
         case "correoP":
             var correoExp = /^[\w.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            if (!inputValue.match(correoExp) || inputValue.length > 50 || inputValue.length < 7) {
+            if (!inputValue.match(correoExp) || inputValue.length > 48 || inputValue.length < 7) {
                 isValid = false;
             }
             break;
-
+        case "titulo":
+            var nombreProyecto = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
+            if (!inputValue.match(nombreProyecto) || inputValue.length > 148 || inputValue.length < 7) {
+                isValid = false;
+            }
+            break;
+        case "planteamiento":
+        case "justificacion":
+        case "alcances":
+            var planteamientoExpr = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
+            if (!inputValue.match(planteamientoExpr) || inputValue.length > 998 || inputValue.length < 7) {
+                isValid = false;
+            }
+            break;
+        case "tipo":
+            if (inputValue === "0") {
+                isValid = false;
+            }
+            break;
+        case "noControl":
+            var controlExp = /^[a-zA-Z0-9]+([0-9]*)?$/i;
+            minLength = 5;
+            maxLength = 11;
+            if (!inputValue.match(controlExp) || inputValue.length < minLength || inputValue.length > maxLength) {
+                isValid = false;
+            }
+            break;
         default:
             break;
     }
@@ -58,6 +86,7 @@ function validarInputs(inputElement) {
         return;
 
     var valor = inputElement.value;
+
     var valoresValidos;
     var valoresRemplazo;
 
@@ -72,6 +101,11 @@ function validarInputs(inputElement) {
         case "segundoApellidoE":
         case "nombreEmpresa":
         case "nombreCompleto":
+        case "titulo":
+        case "planteamiento":
+        case "justificacion":
+        case "alcances":
+        case "carrera":
             valoresValidos = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
             valoresRemplazo = /[^\sa-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+/g;
             validarDuenio($(inputElement));
@@ -85,6 +119,14 @@ function validarInputs(inputElement) {
         case "emailEmpresa":
             valoresValidos = /^[\w.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             valoresRemplazo = /[^a-zA-Z0-9.@_-]/g;
+            validarDuenio($(inputElement));
+            break;
+        case "tipo":
+            validarDuenio($(inputElement));
+            break;
+        case "noControl":
+            valoresValidos = /^[a-zA-Z0-9]+([0-9]*)?$/i;
+            valoresRemplazo = /[^a-zA-Z0-9]/ig;
             validarDuenio($(inputElement));
             break;
         default:

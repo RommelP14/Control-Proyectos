@@ -1,8 +1,11 @@
+$("#pageLoader").hide();
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelector("#formulario_proyecto").addEventListener('submit', function (event) {
         event.preventDefault();
+        if (!validarFormularioProyecto()) {
+            return; 
+        }
         const datos = obtenerDatosFormularioProyecto();
-        console.log(datos);
         mostrarConfirmacion(datos);
     });
 });
@@ -19,6 +22,21 @@ function obtenerDatosFormularioProyecto() {
         justificacion: $("#justificacion").val(),
         alcances: $("#alcances").val()
     };
+}
+
+/**
+ * Valida todos los campos del formulario del dueño.
+ * @returns {boolean} - Retorna true si todos los campos son válidos.
+ */
+function validarFormularioProyecto() {
+    const campos = [
+        '#titulo',
+        '#tipo',
+        '#planteamiento',
+        '#justificacion',
+        '#alcances'
+    ];
+    return campos.every(campo => validarDuenio($(campo)));
 }
 
 /**

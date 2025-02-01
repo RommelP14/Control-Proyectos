@@ -22,36 +22,105 @@ $("#btnRegistroColaboradores").hide();
 $("#btnRegistroAvances").hide();
 
 let SeEstaModificandoProyecto = false;
-let idContacto, institutoName, datosProyecto, paisName, estadoName;
-
-let idProyecto, nombreProyecto, progresoProyecto, estadoProyecto, aprobacionProyecto;
+let idProyecto, nombreProyecto, estadoProyecto, tipo_proyecto, aprobacionProyecto, progresoProyecto;
 
 /**
  * Select Row
  */
-$("#containerPrincipalContacto").on('click', '#tablaProyectos tbody tr td', function () {
+$("#containerPrincipalContacto").on('click', '#tablaProyectos tbody tr', function () {
     if (!SeEstaModificandoProyecto) {
-        datosProyecto = tablaProyectos.row($(this)).data();
-        idProyecto = $(this).parent('tr').attr("id");
-        console.log("idProyecto: " + idProyecto)
-        nombreProyecto = $(this).parent('tr').attr("nombre-proyecto");
-        progresoProyecto = $(this).parent('tr').attr("progreso-proyecto");
-        estadoProyecto = $(this).parent('tr').attr("estado-proyecto");
-        aprobacionProyecto = $(this).parent('tr').attr("aprobacion-proyecto");
-        if (!$(this).parent('tr').hasClass("selected")) {
-            $("#btnIrBuscaProyecto").show();
-            $("#btnBorrarProyecto").show();
-            $("#btnRegistroColaboradores").show();
-            $("#btnRegistroAvances").show();
-        } else {
-            $("#btnIrBuscaProyecto").hide();
-            $("#btnBorrarProyecto").hide();
-            $("#btnRegistroColaboradores").hide();
-            $("#btnRegistroAvances").hide();
+        let filaSeleccionada = $(this);
+        // Si ya estaba seleccionada, la deseleccionamos
+        if (filaSeleccionada.hasClass("selected")) {
+            ocultarBotones();
+            filaSeleccionada.removeClass("selected");
+            return;
         }
-        selectLib("tablaProyectos", $(this).parent().attr('id'));
+
+        datosProyecto = tablaProyectos.row(filaSeleccionada).data();
+        idProyecto = filaSeleccionada.attr("id");
+        console.log("idProyecto: " + idProyecto);
+        nombreProyecto = filaSeleccionada.attr("nombre-proyecto");
+        estadoProyecto = filaSeleccionada.attr("estado-proyecto");
+        tipo_proyecto = filaSeleccionada.attr("tipo_proyecto");
+        aprobacionProyecto = filaSeleccionada.attr("situacion-proyecto");
+        progresoProyecto = filaSeleccionada.attr("progreso-proyecto");
+
+        seleccionarFilaTabla(idProyecto);
+        mostrarBotones(idProyecto);
     }
 });
+
+
+
+/**
+ * Seleccionar fila en la tabla
+ */
+function seleccionarFilaTabla(idProyecto) {
+    $("#tablaProyectos tbody tr").removeClass("selected"); // Quitamos selección de otras filas
+    $("#tablaProyectos tbody tr[id='" + idProyecto + "']").addClass("selected"); // Seleccionamos la fila actual
+}
+
+/**
+ * Mostrar botones según la aprobación del proyecto
+ */
+function mostrarBotones(idProyecto) {
+    $("#btnBorrarProyecto").show();
+
+    if (aprobacionProyecto === 'Por aprobar') {
+        $("#btnIrBuscaProyecto").show();
+    } else {
+        $("#btnIrBuscaProyecto").hide();
+    }
+
+    if (aprobacionProyecto === 'proyecto aceptado') {
+        $("#btnRegistroColaboradores").show();
+    } else {
+        $("#btnRegistroColaboradores").hide();
+    }
+
+    consultarColaboradores(idProyecto).then(function (numeroEncontrados) {
+        console.log("Número encontrados: " + numeroEncontrados);
+        if (numeroEncontrados >= 1) {
+            $("#btnRegistroAvances").show();
+        } else {
+            $("#btnRegistroAvances").hide();
+        }
+    });
+}
+
+/**
+ * Oculta todos los botones
+ */
+function ocultarBotones() {
+    $("#btnIrBuscaProyecto").hide();
+    $("#btnBorrarProyecto").hide();
+    $("#btnRegistroColaboradores").hide();
+    $("#btnRegistroAvances").hide();
+}
+
+/**
+ * Realiza una consulta AJAX para obtener el estado del proyecto
+ */
+function consultarColaboradores(idProyecto) {
+    return $.ajax({
+        type: 'GET',
+        url: "../../app/ver/Ver_Proyectos_View_SRV.do",
+        data: {accion: 'consultaColaborador', idProyecto: idProyecto},
+        dataType: 'JSON'
+    }).then(function (response) {
+        if (response.status === 0) {
+            console.log("Número de colaboradores encontrados: " + response.responseObject);
+            return response.responseObject; // Devuelve el número de colaboradores encontrados
+        } else {
+            console.error("Error en la respuesta del servidor");
+            return 0; // En caso de error, asumimos que no hay colaboradores
+        }
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.error("Error en la petición AJAX:", textStatus, errorThrown);
+        return 0; // En caso de error, asumimos que no hay colaboradores
+    });
+}
 
 /**
  * Eliminar Proyecto
@@ -142,6 +211,7 @@ $('#btnIrBuscaProyecto').click(function () {
  * Registrar Colaboradores
  */
 $('#btnRegistroColaboradores').click(function () {
+    console.log("idProyecto: " + idProyecto)
     $.ajax({
         type: 'GET',
         url: "../../app/ver/Ver_Registro_Colaboradores_View_SRV.do",
@@ -264,4 +334,9 @@ function getPDF2(folio) {
             document.getElementById("pdfFolioA").innerHTML = "<p class='text-danger'>Selecciona un Folio</p>";
         }
     });
+}
+
+// cancelar 
+function redirectProyectos() {
+    window.location.href = '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos';
 }

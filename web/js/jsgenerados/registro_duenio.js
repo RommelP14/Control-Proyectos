@@ -1,12 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
+
     const linkRegistroEmpresa = document.getElementById("linkRegistroEmpresa");
     const linkMiProyecto = document.getElementById("linkMiProyecto");
 
     const inputsMiProyecto = document.getElementById("inputsMiProyecto");
     const inputsRegistroEmpresa = document.getElementById("inputsRegistroEmpresa");
+    var tipo = "";
 
     linkRegistroEmpresa.addEventListener("click", (e) => {
-        e.preventDefault();
+        tipo = "registroEmpresa";
         limpiarInputs(inputsMiProyecto);
         hacerReadonly(inputsMiProyecto); // Hacer `readonly` los inputs de Mi Proyecto
         inputsMiProyecto.classList.add("hidden"); // Oculta la sección de Mi Proyecto
@@ -21,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     linkMiProyecto.addEventListener("click", (e) => {
-        e.preventDefault();
+        tipo = "miProyecto";
         limpiarInputs(inputsRegistroEmpresa);
         hacerReadonly(inputsRegistroEmpresa); // Hacer `readonly` los inputs de Registro Empresa
         inputsRegistroEmpresa.classList.add("hidden"); // Oculta la sección de Registro Empresa
@@ -39,11 +41,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelector("#formulario_duenio").addEventListener('submit', function (event) {
         event.preventDefault(); // Detiene el envío del formulario
+        if (!validarFormularioDuenio(tipo)) {
+            return;
+        }
         const datos = obtenerDatosFormulario();
         console.log(datos);
         mostrarConfirmacion(datos);
     });
 });
+
+/**
+ * Valida los campos del formulario dependiendo de la sección activa.
+ * @param {string} tipo - Puede ser 'miProyecto' o 'registroEmpresa'.
+ * @returns {boolean} - Retorna true si todos los campos son válidos.
+ */
+function validarFormularioDuenio(tipo) {
+    let campos = [];
+
+    if (tipo === "miProyecto") {
+        campos = ['#nombreE', '#primerApellidoE', '#segundoApellidoE', '#correoP'];
+    } else if (tipo === "registroEmpresa") {
+        campos = ['#nombreCompleto', '#nombreEmpresa', '#telefono', '#emailEmpresa'];
+    }
+    return campos.every(campo => validarDuenio($(campo)));
+}
 
 /**
  * Cambia el ícono de un elemento.
@@ -85,9 +106,9 @@ function cargarDatosFormulario(url, formularioId) {
                 const duenio = data.responseObject;
 
                 // Llena los campos del formulario con los datos del dueño
-                document.getElementById(formularioId).querySelector("#nombreE").value = duenio.nombreE ;
-                document.getElementById(formularioId).querySelector("#primerApellidoE").value = duenio.primerApellidoE ;
-                document.getElementById(formularioId).querySelector("#segundoApellidoE").value = duenio.segundoApellidoT ;
+                document.getElementById(formularioId).querySelector("#nombreE").value = duenio.nombreE;
+                document.getElementById(formularioId).querySelector("#primerApellidoE").value = duenio.primerApellidoE;
+                document.getElementById(formularioId).querySelector("#segundoApellidoE").value = duenio.segundoApellidoT;
                 document.getElementById(formularioId).querySelector("#correoP").value = duenio.correo;
             } else {
                 console.error("Error: No se recibieron datos válidos.");
@@ -98,25 +119,6 @@ function cargarDatosFormulario(url, formularioId) {
         }
     });
 }
-
-///**
-// * Valida todos los campos del formulario del dueño.
-// * @returns {boolean} - Retorna true si todos los campos son válidos.
-// */
-//function validarFormularioDuenio() {
-//    const campos = [
-//        '#nombreE',
-//        '#primerApellidoE',
-//        '#segundoApellidoE',
-//        '#correoP',
-//        '#nombreCompleto',
-//        '#nombreEmpresa',
-//        '#telefono',
-//        '#emailEmpresa'
-//    ];
-//
-//    return campos.every(campo => validarDuenio($(campo)));
-//}
 
 /**
  * Obtiene los datos del formulario.
@@ -141,18 +143,18 @@ function obtenerDatosFormulario() {
  */
 function mostrarConfirmacion(datos) {
     bootBoxConfirm(
-        iconoInfo,
-        "Agregar Dueño.",
-        `Confirme los datos del Dueño:<br><br>
+            iconoInfo,
+            "Agregar Dueño.",
+            `Confirme los datos del Dueño:<br><br>
         <b>Nombre Completo:</b> ${datos.nombreCompleto.trim() === '' ? datos.nombreE : datos.nombreCompleto}<br>
         <b>Nombre Empresa:</b> ${datos.nombreEmpresa.trim() === '' ? datos.primerApellidoE : datos.nombreEmpresa}<br>
         <b>Teléfono:</b> ${datos.telefono.trim() === '' ? datos.segundoApellidoE : datos.telefono}<br>
-        <b>Correo Electrónico:</b> ${datos.emailEmpresa.trim() === '' ?  datos.correoP : datos.emailEmpresa}<br>`,
-        function (result) {
-            if (result) {
-                insertDuenio(datos.nombreE, datos.primerApellidoE, datos.segundoApellidoE, datos.correoP, datos.nombreCompleto, datos.nombreEmpresa, datos.telefono, datos.emailEmpresa);
+        <b>Correo Electrónico:</b> ${datos.emailEmpresa.trim() === '' ? datos.correoP : datos.emailEmpresa}<br>`,
+            function (result) {
+                if (result) {
+                    insertDuenio(datos.nombreE, datos.primerApellidoE, datos.segundoApellidoE, datos.correoP, datos.nombreCompleto, datos.nombreEmpresa, datos.telefono, datos.emailEmpresa);
+                }
             }
-        }
     );
 }
 
@@ -165,7 +167,7 @@ function mostrarConfirmacion(datos) {
 function limpiarInputs(contenedor) {
     // Selecciona todos los elementos de entrada (input) dentro del contenedor proporcionado
     const inputs = contenedor.querySelectorAll('input');
-    
+
     // Recorre cada input y establece su valor a una cadena vacía
     inputs.forEach(input => {
         input.value = '';
@@ -212,7 +214,7 @@ function insertDuenio(nombreE, primerApellidoE, segundoApellidoE, correoP, nombr
         success: function (response) {
             if (response.status === 0) {
                 MensajeRedirect(iconoCorrecto, 'Dueño Insertado.', 'Se inserto el Dueño correctamente', '/ControlProyecto/views/Paginas/RegistroProyecto.jsp');
-            }  else if (response.status === -100) {
+            } else if (response.status === -100) {
                 MensajeRedirect(iconoError, 'Error al insertar', 'No se agrego el Dueño', '/ControlProyecto/views/Paginas/RegistroDuenio.jsp');
             }
 

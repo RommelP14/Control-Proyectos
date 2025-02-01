@@ -49,14 +49,15 @@
                                                maxlength="150"
                                                minlength="3"
                                                autocomplete="off"
-                                               required>
+                                               required
+                                               oninput="validarInputs(titulo)">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="small">Tipo de proyecto</label>
                                     <div>
                                         <span></span>
-                                        <select id="tipo" name="tipo" class="form-control input-sm">
+                                        <select id="tipo" name="tipo" class="form-control input-sm" onchange="validarInputs(tipo)">
                                             <option value="0">Seleccione una opción</option>
                                             <option value="residencia">Residencia</option>
                                             <option value="titulacion">Titulación</option>
@@ -75,7 +76,8 @@
                                                   maxlength="1000"
                                                   minlength="3"
                                                   autocomplete="off"
-                                                  required></textarea>
+                                                  required
+                                                  oninput="validarInputs(planteamiento)"></textarea>
                                     </div>
                                 </div> 
                                 <div class="form-group">
@@ -91,7 +93,7 @@
                                                   minlength="3"
                                                   autocomplete="off"
                                                   required
-                                                  ></textarea>
+                                                  oninput="validarInputs(justificacion)"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -107,7 +109,7 @@
                                                   minlength="3"
                                                   autocomplete="off"
                                                   required
-                                                  ></textarea>
+                                                  oninput="validarInputs(alcances)"></textarea>
                                     </div>
                                 </div>              
                             </div>
