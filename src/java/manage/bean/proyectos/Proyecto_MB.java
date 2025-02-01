@@ -10,7 +10,6 @@ package manage.bean.proyectos;
  */
 public class Proyecto_MB
 {
-
     private int noFolio;
     private String nombre;
     private String planteamiento;
@@ -19,8 +18,13 @@ public class Proyecto_MB
     private int id_duenio;
     private int id_departamento_tab;
     private String estado;
+    private String tipo_proyecto;
+    
+    /*Atributos para poder consultar los datos y mostrarlos en tabla*/
+    private double porcentaje_avance;
+    private String estado_aprobacion;
 
-    public Proyecto_MB(int noFolio, String nombre, String planteamiento, String alcances, String justificacion, int id_duenio, int id_departamento_tab, String estado)
+    public Proyecto_MB(int noFolio, String nombre, String planteamiento, String alcances, String justificacion, int id_duenio, int id_departamento_tab, String estado, String tipo_proyecto)
     {
         this.noFolio = noFolio;
         this.nombre = nombre;
@@ -30,6 +34,7 @@ public class Proyecto_MB
         this.id_duenio = id_duenio;
         this.id_departamento_tab = id_departamento_tab;
         this.estado = estado;
+        this.tipo_proyecto = tipo_proyecto;
     }
 
     public Proyecto_MB(String nombre, String planteamiento, String alcances, String justificacion, int id_duenio, int id_departamento_tab)
@@ -40,6 +45,16 @@ public class Proyecto_MB
         this.justificacion = justificacion;
         this.id_duenio = id_duenio;
         this.id_departamento_tab = id_departamento_tab;
+    }
+
+    public Proyecto_MB(int noFolio, String nombre, String estado, String tipo_proyecto, double porcentaje_avance, String estado_aprobacion)
+    {
+        this.noFolio = noFolio;
+        this.nombre = nombre;
+        this.estado = estado;
+        this.tipo_proyecto = tipo_proyecto;
+        this.porcentaje_avance = porcentaje_avance;
+        this.estado_aprobacion = estado_aprobacion;
     }
 
     /**
@@ -170,9 +185,57 @@ public class Proyecto_MB
         this.estado = estado;
     }
 
+    /**
+     * @return the tipo_proyecto
+     */
+    public String getTipo_proyecto()
+    {
+        return tipo_proyecto;
+    }
+
+    /**
+     * @param tipo_proyecto the tipo_proyecto to set
+     */
+    public void setTipo_proyecto(String tipo_proyecto)
+    {
+        this.tipo_proyecto = tipo_proyecto;
+    }
+
+    /**
+     * @return the porcentaje_avance
+     */
+    public double getPorcentaje_avance()
+    {
+        return porcentaje_avance;
+    }
+
+    /**
+     * @param porcentaje_avance the porcentaje_avance to set
+     */
+    public void setPorcentaje_avance(double porcentaje_avance)
+    {
+        this.porcentaje_avance = porcentaje_avance;
+    }
+
+    /**
+     * @return the estado_aprobacion
+     */
+    public String getEstado_aprobacion()
+    {
+        return estado_aprobacion;
+    }
+
+    /**
+     * @param estado_aprobacion the estado_aprobacion to set
+     */
+    public void setEstado_aprobacion(String estado_aprobacion)
+    {
+        this.estado_aprobacion = estado_aprobacion;
+    }
+    
     @Override
     public String toString()
     {
-        return "Proyecto_MB{" + "noFolio=" + noFolio + ", nombre=" + nombre + ", planteamiento=" + planteamiento + ", alcances=" + alcances + ", justificacion=" + justificacion + ", id_duenio=" + id_duenio + ", id_departamento_tab=" + id_departamento_tab + ", estado=" + estado + '}';
+        return "Proyecto_MB{" + "noFolio=" + noFolio + ", nombre=" + nombre + ", planteamiento=" + planteamiento + ", alcances=" + alcances + ", justificacion=" + justificacion + ", id_duenio=" + id_duenio + ", id_departamento_tab=" + id_departamento_tab + ", estado=" + estado + ", tipo_proyecto=" + tipo_proyecto + '}';
     }
 }

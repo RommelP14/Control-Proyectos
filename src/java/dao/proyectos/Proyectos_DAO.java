@@ -59,9 +59,10 @@ public class Proyectos_DAO
                 int id_duenio = rs.getInt("id_duenio");
                 int id_departamento_tab = rs.getInt("id_departamento_tab");
                 String estado = rs.getString("estado");
+                String tipo_proyecto = rs.getString("tipo_proyecto");
 
                 proyecto_mb = new Proyecto_MB(
-                        noF, nombre, planteamiento, alcances, justificacion, id_duenio, id_departamento_tab, estado
+                        noF, nombre, planteamiento, alcances, justificacion, id_duenio, id_departamento_tab, estado, tipo_proyecto
                 );
             }
         } catch (SQLException e)
@@ -122,9 +123,10 @@ public class Proyectos_DAO
                 int id_duenio = rs.getInt("id_duenio");
                 int id_departamento_tab = rs.getInt("id_departamento_tab");
                 String estado = rs.getString("estado");
+                String tipo_proyecto = rs.getString("tipo_proyecto");
 
                 proyecto_mb = new Proyecto_MB(
-                        noF, nombre, planteamiento, alcances, justificacion, id_duenio, id_departamento_tab, estado
+                        noF, nombre, planteamiento, alcances, justificacion, id_duenio, id_departamento_tab, estado, tipo_proyecto
                 );
                 respuesta.setStatus(0);
                 respuesta.setMensaje("Proyecto Encontrado");
@@ -206,7 +208,7 @@ public class Proyectos_DAO
         }
     }
 
-    public int insertaProyecto(String nombre, String planteamiento, String alcances, String justificacion, int id_duenio, int id_departamento_tab, String estado)
+    public int insertaProyecto(String nombre, String planteamiento, String alcances, String justificacion, int id_duenio, int id_departamento_tab, String estado, String tipo)
     {
         conexion = new Conexion();
         conexion.connect(VariablesSistema.USERNAME_BD, VariablesSistema.PASSWORD_BD);
@@ -218,8 +220,8 @@ public class Proyectos_DAO
         try
         {
             String query = "INSERT INTO proyectos_tab "
-                    + "(nombre, planteamiento, alcances, justificacion, id_duenio, id_departamento_tab, estado) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    + "(nombre, planteamiento, alcances, justificacion, id_duenio, id_departamento_tab, estado, tipo_proyecto) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             pstmt = conexion.getCon().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, nombre);
             pstmt.setString(2, planteamiento);
@@ -228,6 +230,7 @@ public class Proyectos_DAO
             pstmt.setInt(5, id_duenio);
             pstmt.setInt(6, id_departamento_tab);
             pstmt.setString(7, estado);
+            pstmt.setString(8, tipo);
 
             pstmt.executeUpdate();
 
@@ -279,7 +282,26 @@ public class Proyectos_DAO
         try
         {
             // Consulta para obtener los proyectos
-            String query = "SELECT * FROM proyectos_tab WHERE id_departamento_tab = ?";
+            String query = "SELECT \n"
+                    + "    p.noFolio,\n"
+                    + "    p.nombre,\n"
+                    + "    p.estado,\n"
+                    + "    p.tipo_proyecto,\n"
+                    + "    COALESCE(a.porcentaje, 0.0) AS porcentaje_avance,\n"
+                    + "    CASE \n"
+                    + "        WHEN p.tipo_proyecto = 'Titulación' THEN COALESCE(t.estado_aprobacion_titulacion, 'Por aprobar')\n"
+                    + "        WHEN p.tipo_proyecto = 'Residencia' THEN COALESCE(r.estado_aprobacion_residencia, 'Por aprobar')\n"
+                    + "        ELSE 'No aplica'\n"
+                    + "    END AS estado_aprobacion\n"
+                    + "FROM proyectos_tab p\n"
+                    + "LEFT JOIN (\n"
+                    + "    SELECT noFolio, MAX(porcentaje) AS porcentaje\n"
+                    + "    FROM avances_tab\n"
+                    + "    GROUP BY noFolio\n"
+                    + ") a ON p.noFolio = a.noFolio\n"
+                    + "LEFT JOIN titulacion_tab t ON p.noFolio = t.noFolio AND p.tipo_proyecto = 'Titulación'\n"
+                    + "LEFT JOIN residencia_tab r ON p.noFolio = r.noFolio AND p.tipo_proyecto = 'Residencia'\n"
+                    + "WHERE p.id_departamento_tab = ?;";
             pstmt = conexion.getCon().prepareStatement(query);
             pstmt.setInt(1, id_departamento_tab);
             rs = pstmt.executeQuery();
@@ -289,18 +311,15 @@ public class Proyectos_DAO
             {
                 int noFolio = rs.getInt("noFolio");
                 String nombre = rs.getString("nombre");
-                String planteamiento = rs.getString("planteamiento");
-                String alcances = rs.getString("alcances");
-                String justificacion = rs.getString("justificacion");
-                int id_duenio = rs.getInt("id_duenio");
                 String estado = rs.getString("estado");
+                String tipo_proyecto = rs.getString("tipo_proyecto");
+                String estado_aprobacion = rs.getString("estado_aprobacion");
+                double porcentaje = rs.getDouble("porcentaje_avance");
 
-                // Crear objeto Proyecto_MB y agregar a la lista
-                Proyecto_MB proyecto_mb = new Proyecto_MB(
-                        noFolio, nombre, planteamiento, alcances, justificacion, id_duenio, id_departamento_tab, estado
-                );
+                Proyecto_MB proyecto_mb = new Proyecto_MB(noFolio, nombre, estado, tipo_proyecto, porcentaje, estado_aprobacion);
                 proyectos.add(proyecto_mb);
             }
+
         } catch (SQLException e)
         {
             System.out.println("Error al consultar proyectos: " + e.getMessage());
@@ -332,9 +351,9 @@ public class Proyectos_DAO
             }
             conexion.disconnect();
         }
-
         return proyectos;
     }
+
     public List<Proyecto_MB> consultarProyectos()
     {
         conexion = new Conexion();
@@ -363,10 +382,11 @@ public class Proyectos_DAO
                 int id_duenio = rs.getInt("id_duenio");
                 int id_departamento_tab = rs.getInt("id_departamento_tab");
                 String estado = rs.getString("estado");
+                String tipo_proyecto = rs.getString("tipo_proyecto");
 
                 // Crear objeto Proyecto_MB y agregar a la lista
                 Proyecto_MB proyecto_mb = new Proyecto_MB(
-                        noFolio, nombre, planteamiento, alcances, justificacion, id_duenio, id_departamento_tab, estado
+                        noFolio, nombre, planteamiento, alcances, justificacion, id_duenio, id_departamento_tab, estado, tipo_proyecto
                 );
                 proyectos.add(proyecto_mb);
             }
@@ -468,7 +488,7 @@ public class Proyectos_DAO
             }
         }
 
-        int proyectoId = insertaProyecto(titulo, planteamiento, alcances, justificacion, id_duenio, departamento_Mb.getId_departamento_tab(), estado);
+        int proyectoId = insertaProyecto(titulo, planteamiento, alcances, justificacion, id_duenio, departamento_Mb.getId_departamento_tab(), estado, tipo);
 
         if (!proyectosSimilares.isEmpty())
         {

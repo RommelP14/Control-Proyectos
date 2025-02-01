@@ -2,31 +2,26 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package servlets.ver.proyecto;
+package servlets.registro.tr;
 
 import com.google.gson.Gson;
 import dao.proyectos.Proyectos_DAO;
-import dao.similitudes.Similitudes_DAO;
+import dao.residencia.Residencia_DAO;
+import dao.titulacion.Titulacion_DAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.List;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import manage.bean.proyectos.Proyecto_MB;
-import manage.bean.similitudes.Similitudes_MB;
 import manageBean.general.GenericResponse;
 
 /**
  *
- * @author romme
+ * @author mauro
  */
-public class RedireccionaVistas_View_SRV extends HttpServlet
+public class Registro_TR_SRV extends HttpServlet
 {
 
     /**
@@ -48,10 +43,10 @@ public class RedireccionaVistas_View_SRV extends HttpServlet
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet RedireccionaVistas_View_SRV</title>");
+            out.println("<title>Servlet Registro_TR_SRV</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet RedireccionaVistas_View_SRV at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet Registro_TR_SRV at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -70,45 +65,7 @@ public class RedireccionaVistas_View_SRV extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        response.setContentType("text/html;charset=UTF-8");
-        request.setCharacterEncoding("UTF-8");
-        RequestDispatcher dispatcher = null;
-        Proyectos_DAO proyecto_dao = new Proyectos_DAO();
-        String url = "";
-
-        int noFolio = convierteidFolioJson(request.getParameter("idFolio"));//Validar esta parte en caso de que el id sea -1
-        Proyecto_MB proyecto_Mb = proyecto_dao.consultaProyectoPorId(noFolio);
-        request.setAttribute("proyecto_Mb", proyecto_Mb);
-        switch (request.getParameter("accion"))
-        {
-            case "aprobacion":
-                url = "/views/jefes/Paginas/ProyectoParaAprobacion.jsp";
-                break;
-            case "denegado":
-                Similitudes_DAO similitudes_DAO = new Similitudes_DAO();
-                GenericResponse<List<Similitudes_MB>> respuestaSimilitudes = new GenericResponse<>();
-                similitudes_DAO.consultaProyectosSimilaresPorId(noFolio, respuestaSimilitudes);
-                request.setAttribute("respuestaSimilitudes", respuestaSimilitudes);
-                url = "/views/jefes/Paginas/CompararProyectos.jsp";
-            default:
-                System.out.println("No esta ese parametro, ve a inicio de sesion");
-        }
-        dispatcher = request.getRequestDispatcher(url);
-        dispatcher.forward(request, response);
-    }
-
-    public static int convierteidFolioJson(String idFolioJson) throws UnsupportedEncodingException
-    {
-        int idFolio = -1;
-        Gson gson = new Gson();
-        if (!idFolioJson.isEmpty())
-        {
-            idFolio = gson.fromJson(URLDecoder.decode(idFolioJson, "UTF-8"), Integer.class);
-        } else
-        {
-            System.out.println("No esta ese parametro, ve a inicio de sesion");
-        }
-        return idFolio;
+        processRequest(request, response);
     }
 
     /**
@@ -123,7 +80,42 @@ public class RedireccionaVistas_View_SRV extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        GenericResponse respuesta = new GenericResponse();
+        Proyectos_DAO proyectos_Dao = new Proyectos_DAO();
+        Proyecto_MB proyecto_Mb = null;
+        Titulacion_DAO titulacion_Dao = new Titulacion_DAO();
+        Residencia_DAO residencia_Dao = new Residencia_DAO();
+
+        String idFolio = request.getParameter("noFolio");
+        String estado = request.getParameter("btnPresionado");
+        estado = estado.equals("proyecto_Aceptado")?"proyecto aceptado":"proyecto denegado";
+
+        proyecto_Mb = proyectos_Dao.consultaProyectoPorId(Integer.parseInt(idFolio));
+
+        switch (proyecto_Mb.getTipo_proyecto())
+        {
+            case "residencia":
+                residencia_Dao.insertaResidencia(Integer.parseInt(idFolio), estado, respuesta);
+                break;
+            case "titulacion":
+                titulacion_Dao.insertaTitulacion(Integer.parseInt(idFolio), estado, respuesta);
+                break;
+            default:
+                System.out.println("El proyecto no es de titulación ni residencia");
+                break;
+        }
+
+        System.out.println("el tipo es " + proyecto_Mb.getTipo_proyecto());
+
+        try (PrintWriter out = response.getWriter())
+        {
+            response.setContentType("application/json");
+            Gson json = new Gson();
+            out.print(json.toJson(respuesta));
+        }
+
     }
 
     /**

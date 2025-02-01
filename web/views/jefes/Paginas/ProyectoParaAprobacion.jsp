@@ -53,8 +53,11 @@
                             <div id="proyectoFrame"></div>
                         </div>
                         <div class="row text-center" style="margin: 1rem">
-                            <button class="btn btn-borrar btn-sm" id="denegar_proyecto">Denegar proyecto</button>
-                            <button class="btn btn-agregar btn-sm d-none" id="aceptar_proyecto">Aceptar proyecto</button>
+                            <form id="form_registroTituResi_aprobado">
+                                <input type="hidden" id="idNoFolio" name="idNoFolio" value="${proyecto_Mb.noFolio}"/>
+                                <button class="btn btn-borrar btn-sm" id="denegar_proyecto">Denegar proyecto</button>
+                                <button class="btn btn-agregar btn-sm d-none" id="aceptar_proyecto">Aceptar proyecto</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -80,6 +83,7 @@
         <script src="${pageContext.request.contextPath}/js/jsgenerados/dataTableProyectos.js"></script>
         <script src="${pageContext.request.contextPath}/js/jsgenerados/constantes.js"></script>  
         <script src="${pageContext.request.contextPath}/js/jsgenerados/funciones.js"></script>
+        <script src="${pageContext.request.contextPath}/js/jsgenerados/registro_tablas_T_R.js"></script>
 
         <script>
             $(document).ready(function () {

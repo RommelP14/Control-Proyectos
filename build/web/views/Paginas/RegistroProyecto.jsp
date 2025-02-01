@@ -60,7 +60,6 @@
                                             <option value="0">Seleccione una opción</option>
                                             <option value="residencia">Residencia</option>
                                             <option value="titulacion">Titulación</option>
-                                            <option value="escolar">Escolar</option>
                                         </select>
                                     </div>
                                 </div>

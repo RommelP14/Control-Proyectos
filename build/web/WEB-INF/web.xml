@@ -56,6 +56,10 @@
         <servlet-name>RedireccionaVistasAvances_View_SRV</servlet-name>
         <servlet-class>servlets.registro.avances.RedireccionaVistasAvances_View_SRV</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Registro_TR_SRV</servlet-name>
+        <servlet-class>servlets.registro.tr.Registro_TR_SRV</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Master_Srv</servlet-name>
         <url-pattern>/Master_Srv</url-pattern>
@@ -111,6 +115,10 @@
     <servlet-mapping>
         <servlet-name>RedireccionaVistasAvances_View_SRV</servlet-name>
         <url-pattern>/app/ver/RedireccionaVistasAvances_View_SRV.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Registro_TR_SRV</servlet-name>
+        <url-pattern>/app/registro/Registro_TR_SRV.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
