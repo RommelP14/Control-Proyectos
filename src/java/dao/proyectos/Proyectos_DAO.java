@@ -291,6 +291,7 @@ public class Proyectos_DAO
                     + "    CASE \n"
                     + "        WHEN p.tipo_proyecto = 'Titulación' THEN COALESCE(t.estado_aprobacion_titulacion, 'Por aprobar')\n"
                     + "        WHEN p.tipo_proyecto = 'Residencia' THEN COALESCE(r.estado_aprobacion_residencia, 'Por aprobar')\n"
+                    + "        WHEN p.tipo_proyecto = 'Proyecto' THEN COALESCE(pc.estado_aprobacion_proyecto_colab, 'Por aprobar')\n"
                     + "        ELSE 'No aplica'\n"
                     + "    END AS estado_aprobacion\n"
                     + "FROM proyectos_tab p\n"
@@ -301,6 +302,7 @@ public class Proyectos_DAO
                     + ") a ON p.noFolio = a.noFolio\n"
                     + "LEFT JOIN titulacion_tab t ON p.noFolio = t.noFolio AND p.tipo_proyecto = 'Titulación'\n"
                     + "LEFT JOIN residencia_tab r ON p.noFolio = r.noFolio AND p.tipo_proyecto = 'Residencia'\n"
+                    + "LEFT JOIN proyecto_colab_tab pc ON p.noFolio = pc.noFolio AND p.tipo_proyecto = 'Proyecto'\n"
                     + "WHERE p.id_departamento_tab = ?;";
             pstmt = conexion.getCon().prepareStatement(query);
             pstmt.setInt(1, id_departamento_tab);
@@ -499,8 +501,6 @@ public class Proyectos_DAO
             }
         }
 
-        insertaEnTablaCorrespondiente(tipo, proyectoId);
-
         respuesta.setStatus(0);
         respuesta.setMensaje("Comparación completada.");
 
@@ -539,27 +539,4 @@ public class Proyectos_DAO
 
         return (longitudTotal == 0) ? 0.0 : (1.0 - (double) distancia / longitudTotal) * 100;
     }
-
-    public void insertaEnTablaCorrespondiente(String tipo, int proyectoId)
-    {
-
-        if (proyectoId != -1)
-        {
-            switch (tipo.toLowerCase())
-            {
-                case "titulacion":
-                    //insertaTitulacion(proyectoId);
-                    System.out.println("Se ha insertado en titulacion");
-                    break;
-                case "residencia":
-                    //insertaResidencia(proyectoId);
-                    System.out.println("Se ha insertado en residencia");
-
-                    break;
-                default:
-                    System.out.println("Tipo de proyecto no reconocido: " + tipo);
-            }
-        }
-    }
-
 }

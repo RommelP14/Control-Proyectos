@@ -70,7 +70,6 @@ public class Pdf_SRV extends HttpServlet
 
         GenericResponse<Proyecto_MB> respuesta = new GenericResponse<>();
         String noFolioParametro = request.getParameter("folio");
-
         if (noFolioParametro != null && !noFolioParametro.isEmpty())
         {
             int noFolio = Integer.parseInt(noFolioParametro);

@@ -62,6 +62,15 @@ function validarDuenio(input) {
                 isValid = false;
             }
             break;
+        case "porcentaje":
+            var porcentajeExp = /^(0[1-9]|[1-9]\d|100)(\.\d{1,2})?$/;
+            var minLength = 4; // "01.0" es el mínimo con 4 caracteres
+            var maxLength = 6; // "100.00" es el máximo con 6 caracteres
+
+            if (!inputValue.match(porcentajeExp) || parseFloat(inputValue) < 1 || parseFloat(inputValue) > 100.00 || inputValue.length < minLength || inputValue.length > maxLength) {
+                isValid = false;
+            }
+            break;
         default:
             break;
     }
@@ -127,6 +136,12 @@ function validarInputs(inputElement) {
         case "noControl":
             valoresValidos = /^[a-zA-Z0-9]+([0-9]*)?$/i;
             valoresRemplazo = /[^a-zA-Z0-9]/ig;
+            validarDuenio($(inputElement));
+            break;
+        case "porcentaje":
+            valoresValidos = /^(0[1-9]|[1-9]\d|100)(\.\d{1,2})?$/;
+            valoresRemplazo = /[^0-9.]/g;
+
             validarDuenio($(inputElement));
             break;
         default:

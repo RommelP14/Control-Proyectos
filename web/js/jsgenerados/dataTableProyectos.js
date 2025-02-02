@@ -20,6 +20,8 @@ $("#btnIrBuscaProyecto").hide();
 $("#btnBorrarProyecto").hide();
 $("#btnRegistroColaboradores").hide();
 $("#btnRegistroAvances").hide();
+$("#modal_ver_datos").hide();
+$("#btnCalificacionResidencia").hide();
 
 let SeEstaModificandoProyecto = false;
 let idProyecto, nombreProyecto, estadoProyecto, tipo_proyecto, aprobacionProyecto, progresoProyecto;
@@ -39,7 +41,6 @@ $("#containerPrincipalContacto").on('click', '#tablaProyectos tbody tr', functio
 
         datosProyecto = tablaProyectos.row(filaSeleccionada).data();
         idProyecto = filaSeleccionada.attr("id");
-        console.log("idProyecto: " + idProyecto);
         nombreProyecto = filaSeleccionada.attr("nombre-proyecto");
         estadoProyecto = filaSeleccionada.attr("estado-proyecto");
         tipo_proyecto = filaSeleccionada.attr("tipo_proyecto");
@@ -66,22 +67,35 @@ function seleccionarFilaTabla(idProyecto) {
  */
 function mostrarBotones(idProyecto) {
     $("#btnBorrarProyecto").show();
+    $("#modal_ver_datos").show();
 
     if (aprobacionProyecto === 'Por aprobar') {
         $("#btnIrBuscaProyecto").show();
     } else {
         $("#btnIrBuscaProyecto").hide();
     }
-
-    if (aprobacionProyecto === 'proyecto aceptado') {
-        $("#btnRegistroColaboradores").show();
+    
+    if (aprobacionProyecto === 'proyecto aceptado' && tipo_proyecto === 'residencia') {
+        $("#btnCalificacionResidencia").show();
     } else {
-        $("#btnRegistroColaboradores").hide();
+        $("#btnCalificacionResidencia").hide();
     }
 
     consultarColaboradores(idProyecto).then(function (numeroEncontrados) {
-        console.log("Número encontrados: " + numeroEncontrados);
-        if (numeroEncontrados >= 1) {
+        if (aprobacionProyecto === 'proyecto aceptado' && numeroEncontrados < 5 && tipo_proyecto === 'proyecto')
+        {
+            $("#btnRegistroColaboradores").show();
+        } else {
+            if (aprobacionProyecto === 'proyecto aceptado' && (tipo_proyecto === 'residencia' || tipo_proyecto === 'titulacion') && numeroEncontrados === 0)
+            {
+                $("#btnRegistroColaboradores").show();
+            } else
+            {
+                $("#btnRegistroColaboradores").hide();
+            }
+        }
+
+        if (numeroEncontrados >= 1 && progresoProyecto < 100) {
             $("#btnRegistroAvances").show();
         } else {
             $("#btnRegistroAvances").hide();
@@ -97,6 +111,7 @@ function ocultarBotones() {
     $("#btnBorrarProyecto").hide();
     $("#btnRegistroColaboradores").hide();
     $("#btnRegistroAvances").hide();
+    $("#modal_ver_datos").hide();
 }
 
 /**
@@ -211,7 +226,6 @@ $('#btnIrBuscaProyecto').click(function () {
  * Registrar Colaboradores
  */
 $('#btnRegistroColaboradores').click(function () {
-    console.log("idProyecto: " + idProyecto)
     $.ajax({
         type: 'GET',
         url: "../../app/ver/Ver_Registro_Colaboradores_View_SRV.do",
@@ -241,12 +255,12 @@ $('#btnRegistroColaboradores').click(function () {
 
 
 /**
- * Registrar Colaboradores
+ * Registrar Avances
  */
 $('#btnRegistroAvances').click(function () {
     $.ajax({
         type: 'GET',
-        url: "../../app/ver/Ver_Registro_Colaboradores_View_SRV.do",
+        url: "../../app/ver/Ver_Registro_Avances_View_SRV.do",
         data: {idProyecto: idProyecto},
         dataType: 'JSON',
         beforeSend: function () {
@@ -264,6 +278,55 @@ $('#btnRegistroAvances').click(function () {
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             bootBoxAlert(iconoError, 'Ocurrió un error.', 'Ocurrió un error al realizar la petición:<br/>' +
+                    'Estatus: ' + '<strong>' + textStatus + ' </strong><br/>' +
+                    'Error: ' + '<strong>' + errorThrown + '</strong><br/>' +
+                    'Por favor, notifique a su administrador de este error<br/>.');
+        }
+    });
+});
+
+//Modal ver datos
+$('#modal_ver_datos').on("click", function (e) {
+    console.log("foliooooooo: " + idProyecto);
+    document.getElementById("proyectoFrame").innerHTML = "";
+    $.ajax({
+        type: 'Get',
+        url: '../../app/ver/Pdf_SRV.do',
+        data: {folio: idProyecto},
+        success: function (respuesta) {
+            var iframe = document.createElement('iframe');
+            var html = respuesta;
+            iframe.srcdoc = html;
+            iframe.width = '100%';
+            iframe.height = '400px';
+            document.getElementById("proyectoFrame").appendChild(iframe);
+        }
+    });
+});
+
+
+/**
+ * Asignar calificación
+ */
+$('#btnCalificacionResidencia').click(function () {
+    $.ajax({
+        type: 'POST',
+        url: "../../app/registro/Residencia_SRV.do",
+        data: {accion: 'agregar', idProyecto: idProyecto},
+        dataType: 'HTML',
+        beforeSend: function () {
+            $("#pageLoader").show();
+        },
+        complete: function () {
+            $("#pageLoader").hide();
+        },
+        success: function (response) {
+            $("#modal_editar_calificacion_resi .modal-body").html(response);
+
+            $("#modal_editar_calificacion_resi").modal("show");
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            bootBoxAlert('<i class=\"fa fa-info-circle fa-lg iconoError\"></i> ', 'Ocurrió un error.', 'Ocurrió un error al realizar la petición:<br/>' +
                     'Estatus: ' + '<strong>' + textStatus + ' </strong><br/>' +
                     'Error: ' + '<strong>' + errorThrown + '</strong><br/>' +
                     'Por favor, notifique a su administrador de este error<br/>.');
@@ -300,7 +363,6 @@ function armaUrlParaRevision(idNoFolio) {
 }
 
 function getPDF(folio) {
-    console.log("folio: ", folio);
     document.getElementById("proyectoFrame").innerHTML = "";
     $.ajax({
         type: 'Get',

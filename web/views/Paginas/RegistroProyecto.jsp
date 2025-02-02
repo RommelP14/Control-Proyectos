@@ -61,6 +61,7 @@
                                             <option value="0">Seleccione una opción</option>
                                             <option value="residencia">Residencia</option>
                                             <option value="titulacion">Titulación</option>
+                                            <option value="proyecto">Proyecto</option>
                                         </select>
                                     </div>
                                 </div>

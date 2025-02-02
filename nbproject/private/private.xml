@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>src/java/servlets/registro/colaboradores/RedireccionaVistasColaboradores_View_SRV.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>0</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/dao/colaborador/Colaborador_DAO.java</file>
-            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/servlets/ver/proyecto/Ver_Proyectos_View_SRV.java</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/servlets/registro/avance/Registro_Avance_SRV.java</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/dao/avance/Avance_DAO.java</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/views/Paginas/RegistroAvances.jsp</file>
             <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/js/jsgenerados/dataTableProyectos.js</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/js/jsgenerados/registro_colaboradores.js</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/views/jefes/Paginas/tablaMisProyectos.jsp</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/js/jsgenerados/validaInputs.js</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/views/Paginas/RegistroProyecto.jsp</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/web/js/jsgenerados/registro_avances.js</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/servlets/ver/proyecto/Ver_Proyectos_View_SRV.java</file>
             <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/dao/proyectos/Proyectos_DAO.java</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/servlets/registro/tr/Registro_TR_SRV.java</file>
+            <file>file:/C:/Users/romme/Documents/NetBeansProjects/ControlProyecto/src/java/dao/departamento/Departamento_DAO.java</file>
         </group>
     </open-files>
 </project-private>

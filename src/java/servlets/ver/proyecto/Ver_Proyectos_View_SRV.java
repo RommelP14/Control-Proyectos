@@ -98,7 +98,6 @@ public class Ver_Proyectos_View_SRV extends HttpServlet
                     Departamento_MB departamento_Mb = departamento_Dao.obtenerDepartamentoPorIdSAM(empleado_Mb.getDeptoID());
                     if (departamento_Mb != null)
                     {
-                        System.out.println("empleado_Mb.getDeptoID: " + departamento_Mb.getId_departamento_tab());
                         misProyectos = proyecto_dao.consultarProyectosDuenio(departamento_Mb.getId_departamento_tab());
                     }
 

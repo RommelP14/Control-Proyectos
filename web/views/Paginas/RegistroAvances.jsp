@@ -54,81 +54,67 @@
                             </div>
                             <div class="panel panel-body">
                                 <form id="formulario_avances">
+                                    <input type="hidden" id="idFolio" name="idFolio" value="${idFolio}">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="small">Porcentaje</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                    <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
                                                     <input type="text" 
                                                            class="form-control input-sm" 
-                                                           id="nombre_insert" 
-                                                           name="nombre_insert" 
-                                                           placeholder="Nombre(s)"
-                                                           maxlength="100"
-                                                           minlength="3"
-                                                           required
+                                                           placeholder="00.00" 
+                                                           maxlength="5" 
+                                                           id="porcentaje" 
+                                                           name="porcentaje" 
+                                                           required 
                                                            autocomplete="off"
-                                                           oninput="validarInputs(nombre_insert)">
+                                                           oninput="validarInputs(porcentaje)">  
                                                 </div>
                                             </div>                                  
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="small">Descripcion</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fas fa-id-card"></i></span>
-                                                    <input type="text" 
-                                                           class="form-control input-sm" 
-                                                           id="appat_insert" 
-                                                           name="appat_insert" 
-                                                           placeholder="Primer apellido"
-                                                           maxlength="100"
-                                                           minlength="3"
-                                                           required
-                                                           autocomplete="off"
-                                                           oninput="validarInputs(appat_insert)">
-                                                </div>
-                                            </div>                                  
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="small">Evidencia</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-mobile-phone"></i></span>
+                                                    <span class="input-group-addon"><i class="fa fa-print" aria-hidden="true"></i></span>
                                                     <input type="text" 
-                                                           id="telefono_insert"
-                                                           name="telefono_insert"
+                                                           id="nombreEmpresa"
+                                                           name="nombreEmpresa"
                                                            class="form-control input-sm" 
-                                                           placeholder="Teléfono" 
-                                                           maxlength="30"
+                                                           placeholder="https://www.evidencia.com" 
+                                                           maxlength="100"
                                                            required
-                                                           minlength="10"
+                                                           minlength="3"
                                                            autocomplete="off"
-                                                           oninput="validarInputs(telefono_insert)">
+                                                           oninput="validarInputs(nombreEmpresa)">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
                                             <div class="form-group">
-                                                <label class="small">Fecha de registro</label>
+                                                <label class="small">Descripción</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                                                    <input type="date"
-                                                           id="fechaRegistro" 
-                                                           name="fechaRegistro"  
-                                                           class="form-control input-sm"
-                                                           required/>
+                                                    <span class="input-group-addon"><i class="fa fa-commenting" aria-hidden="true"></i></span>
+                                                    <input type="text" 
+                                                           class="form-control input-sm" 
+                                                           id="nombreCompleto" 
+                                                           name="nombreCompleto" 
+                                                           placeholder="Descripción"
+                                                           maxlength="100"
+                                                           minlength="3"
+                                                           required
+                                                           autocomplete="off"
+                                                           oninput="validarInputs(nombreCompleto)">
                                                 </div>
                                             </div>                                  
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12" align="right">
-                                            <button type="button" class="btn btn-default" onclick="redirectToContactos()">
+                                            <button type="button" class="btn btn-default" onclick="redirectProyectos()">
                                                 <i class="fa fa-minus-circle"></i> Cancelar
                                             </button>
                                             <button type="submit" class="btn btn-primary">
@@ -161,10 +147,10 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-        <script type="text/javascript" src="${pageContext.request.contextPath}/js/jsgenerados/dataTableContactos.js"></script>
+        <script type="text/javascript" src="${pageContext.request.contextPath}/js/jsgenerados/dataTableProyectos.js"></script>
         <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/constantes.js"></script>  
         <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/funciones.js"></script> 
-        <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/validarInputs.js"></script> 
-        <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/registro_colaboradores.js"></script> 
+        <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/validaInputs.js"></script> 
+        <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/registro_avances.js"></script> 
     </body>
 </html>

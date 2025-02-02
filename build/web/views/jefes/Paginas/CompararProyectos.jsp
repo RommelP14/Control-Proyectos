@@ -85,26 +85,12 @@
                         <div class="col-md-6">
                             <div id="pdfFolioA"></div>
                         </div>
-                        <div class="col-md-12" id="comentarios">
-                            <div class="form-group">
-                                <label class="">Comentarios</label>
-                                <textarea class="form-control" id="contenido-post" name="contenido-post" placeholder="Escribe algo"></textarea>
-                            </div>
-                            <div class="row text-center" style="margin: 1rem">
-                                <button class="btn btn-agregar btn-sm d-none"
-                                        type="button" 
-                                        id="aceptar_proyecto"
-                                        name="aceptar_proyecto"
-                                        >
-                                    Aceptar proyecto
-                                </button>
-                                <button class="btn btn-borrar btn-sm" 
-                                        type="button" 
-                                        id="denegar_proyecto"
-                                        title="equipo">
-                                    Denegar proyecto
-                                </button>
-                            </div>
+                        <div class="row text-center" style="margin: 1rem">
+                            <form id="form_registroTituResi_aprobado">
+                                <input type="hidden" id="idNoFolio" name="idNoFolio" value="${proyecto_Mb.noFolio}"/>
+                                <button class="btn btn-borrar btn-sm" id="denegar_proyecto">Denegar proyecto</button>
+                                <button class="btn btn-agregar btn-sm d-none" id="aceptar_proyecto">Aceptar proyecto</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -130,6 +116,7 @@
         <script src="${pageContext.request.contextPath}/js/jsgenerados/dataTableProyectos.js"></script>
         <script src="${pageContext.request.contextPath}/js/jsgenerados/constantes.js"></script>  
         <script src="${pageContext.request.contextPath}/js/jsgenerados/funciones.js"></script>
+        <script src="${pageContext.request.contextPath}/js/jsgenerados/registro_tablas_T_R.js"></script>
 
         <script>
             $(document).ready(function () {

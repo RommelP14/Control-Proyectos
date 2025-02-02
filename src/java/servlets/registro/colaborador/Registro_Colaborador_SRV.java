@@ -93,10 +93,8 @@ public class Registro_Colaborador_SRV extends HttpServlet
         String carrera = request.getParameter("carrera");
         String correo = request.getParameter("correoP");
         String no_control = request.getParameter("noControl");
-        System.out.println("idFolio recibido en servlet: " + idFolio);
 
         String opc = request.getParameter("accion");
-        System.out.println("opc = " + opc);
         switch (opc)
         {
             case "registro":

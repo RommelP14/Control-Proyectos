@@ -5,6 +5,7 @@
 package servlets.registro.tr;
 
 import com.google.gson.Gson;
+import dao.proyecto_colab.Proyecto_Colab_DAO;
 import dao.proyectos.Proyectos_DAO;
 import dao.residencia.Residencia_DAO;
 import dao.titulacion.Titulacion_DAO;
@@ -87,6 +88,7 @@ public class Registro_TR_SRV extends HttpServlet
         Proyecto_MB proyecto_Mb = null;
         Titulacion_DAO titulacion_Dao = new Titulacion_DAO();
         Residencia_DAO residencia_Dao = new Residencia_DAO();
+        Proyecto_Colab_DAO proyecto_colab_Dao = new Proyecto_Colab_DAO();
 
         String idFolio = request.getParameter("noFolio");
         String estado = request.getParameter("btnPresionado");
@@ -102,6 +104,8 @@ public class Registro_TR_SRV extends HttpServlet
             case "titulacion":
                 titulacion_Dao.insertaTitulacion(Integer.parseInt(idFolio), estado, respuesta);
                 break;
+            case "proyecto":
+                proyecto_colab_Dao.insertaProyectoColab(Integer.parseInt(idFolio), estado, respuesta);
             default:
                 System.out.println("El proyecto no es de titulación ni residencia");
                 break;

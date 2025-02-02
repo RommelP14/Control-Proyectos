@@ -51,6 +51,62 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="modal fade" id="ver_datos" tabindex="-1" role="dialog" aria-labelledby="ittCatalogoLabel" data-backdrop="false">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="ittCatalogoTitle">
+                            <i class="fa fa-info-circle fa-lg iconoInfo"></i>
+                            Ver datos
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="ittCatalogoContainer" class="row">
+                            <div class="col-md-12">
+                                <div id="proyectoFrame">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="ittCatalogoError" class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-10 text-justify catalogo-error">
+
+
+                            </div>
+                            <div class="col-md-1"></div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal_editar_calificacion_resi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Asignar calificación de Residencia</h4>
+                    </div>
+                    <form id="formulario_asigna_calificacion_resi">
+                        <div class="modal-body">
+                            <p>Contenido del modal</p>
+                        </div> 
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><i class= "fa fa-minus-circle"></i> Cancelar</button>
+                            <button type="submit" class="btn btn-primary" ><i class= "fa fa-floppy-o"></i> Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         <%@include file="/views/templates/footer.jsp"%>
         <script type="text/javascript" src ="/CDN-ITT/js/jquery.estandarITT.js"></script>
         <script type="text/javascript" src ="/CDN-ITT/js/jquery-ui.estandarITT.js"></script>
@@ -72,6 +128,8 @@
         <script type="text/javascript" src="${pageContext.request.contextPath}/js/jsgenerados/dataTableProyectos.js"></script>
         <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/constantes.js"></script>  
         <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/funciones.js"></script> 
+        <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/validaInputs.js"></script> 
+        <script type="text/javascript" src ="${pageContext.request.contextPath}/js/jsgenerados/registro_calificacion_residencia.js"></script> 
     </body>
 </html>
 

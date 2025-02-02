@@ -1,8 +1,3 @@
-<%--
-    Document   : project_registration
-    Created on : 13/03/2023, 07:47:37 PM
-    Author     : Carolina
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -25,7 +20,7 @@
     <body>
         <%@include file="/views/templates/header.jsp" %>
         <div class="container">
-            <%@include file="/views/templates/navbarInicio.jsp" %>
+            <%@include file="/views/templates/navbarJefeDepto.jsp" %>
             <div id="containerPrincipal">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
@@ -108,8 +103,6 @@
                         },
                         callback: function (result) {
                             if (result) {
-                                // Aquí puedes realizar la acción de guardar
-                                // Puedes llamar a la función que maneja el envío del formulario
                                 enviarFormulario();
                             }
                         }
@@ -117,10 +110,8 @@
                 }
 
                 function enviarFormulario() {
-                    // Aquí puedes realizar el envío del formulario
                     // Puedes agregar cualquier otra lógica que necesites antes o después del envío
-                    console.log("HOLAAAAAAAAAAAA");
-                    document.getElementById("myForm").submit(); // Reemplaza "myForm" por el ID de tu formulario
+                    document.getElementById("myForm").submit();
                 }
 
             </script>

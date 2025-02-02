@@ -67,6 +67,42 @@ public class Residencia_DAO
             }
         }
     }
+    
+    public void actualizaCalificacionResidencia(int noFolio, double calificacion, GenericResponse response)
+    {
+        conexion = new Conexion();
+        conexion.connect(VariablesSistema.USERNAME_BD, VariablesSistema.PASSWORD_BD);
+        PreparedStatement pstmt = null;
+        try
+        {
+            String query = "UPDATE residencia_tab SET calificacion = ? WHERE noFolio = ?";
+            pstmt = conexion.getCon().prepareStatement(query);
+            pstmt.setInt(1, noFolio);
+            pstmt.setDouble(2, calificacion);
+            
+            pstmt.executeUpdate();
+            response.setStatus(0);
+            response.setMensaje("Se ha asignado la calificacion al proyecto con folio: " + noFolio);
+        } catch (Exception e)
+        {
+            System.out.println("Error en asignador la calificacion: " + e);
+            response.setStatus(-701);
+            response.setMensaje("Ha ocurrido un error al asignador la calificacion");
+        } finally
+        {
+            conexion.disconnect();
+            if (pstmt != null)
+            {
+                try
+                {
+                    pstmt.close();
+                } catch (SQLException e)
+                {
+                    System.out.println("Error al cerrar PreparedStatement " + e.getMessage());
+                }
+            }
+        }
+    }
 
     private String obtenerFechaSistema()
     {
