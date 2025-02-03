@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import manage.bean.departamento.Departamento_MB;
 import manageBean.conexion.Conexion;
 
@@ -20,50 +21,63 @@ import manageBean.conexion.Conexion;
  */
 public class Departamento_DAO
 {
-    
+
     private Conexion conexion;
-    
-    public void insertaDepartamento(int id_departamento_sam)
+
+    public int insertaDepartamento(int id_departamento_sam)
     {
         conexion = new Conexion();
         conexion.connect(VariablesSistema.USERNAME_BD, VariablesSistema.PASSWORD_BD);
-        
+
         PreparedStatement pstmt = null;
-        
+        ResultSet generatedKeys = null;
+        int idGenerado = -1; // Valor por defecto en caso de error
+
         try
         {
-            String query = "INSERT INTO " + "departamento_tab"
-                    + " (id_departamento_sam) "
-                    + "VALUES (?)";
-            pstmt = conexion.getCon().prepareStatement(query);
+            String query = "INSERT INTO departamento_tab (id_departamento_sam) VALUES (?)";
+            pstmt = conexion.getCon().prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             pstmt.setInt(1, id_departamento_sam);
             pstmt.executeUpdate();
+
+            generatedKeys = pstmt.getGeneratedKeys();
+            if (generatedKeys.next())
+            {
+                idGenerado = generatedKeys.getInt(1);
+            }
+
         } catch (Exception e)
         {
             System.out.println("Error en insertar departamento: " + e);
         } finally
         {
-            conexion.disconnect();
-            if (pstmt != null)
+            try
             {
-                try
+                if (generatedKeys != null)
+                {
+                    generatedKeys.close();
+                }
+                if (pstmt != null)
                 {
                     pstmt.close();
-                } catch (SQLException e)
-                {
-                    System.out.println("Error al cerrar PreparedStatement " + e.getMessage());
                 }
+                conexion.disconnect();
+            } catch (SQLException e)
+            {
+                System.out.println("Error al cerrar recursos: " + e.getMessage());
             }
         }
+
+        return idGenerado;
     }
-    
+
     public void actualizaPorcentajeDepto(int id_departamento_sam, double porcentaje_min, double porcentaje_max)
     {
         conexion = new Conexion();
         conexion.connect(VariablesSistema.USERNAME_BD, VariablesSistema.PASSWORD_BD);
-        
+
         PreparedStatement pstmt = null;
-        
+
         try
         {
             String query = "UPDATE departamento_tab SET porcentaje_min = ?, porcentaje_max = ? WHERE id_departamento_sam = ?";
@@ -90,29 +104,29 @@ public class Departamento_DAO
             }
         }
     }
-    
+
     public Departamento_MB obtenerDepartamentoPorIdSAM(int id_departamento_sam)
     {
         conexion = new Conexion();
         conexion.connect(VariablesSistema.USERNAME_BD, VariablesSistema.PASSWORD_BD);
-        
+
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         Departamento_MB departamento_mb = null;
         try
         {
             String query = "SELECT * FROM departamento_tab WHERE id_departamento_sam = ?";
-            
+
             pstmt = conexion.getCon().prepareStatement(query);
             pstmt.setInt(1, id_departamento_sam);
-            
+
             rs = pstmt.executeQuery();
             if (rs.next())
             {
-                departamento_mb = new Departamento_MB(rs.getInt("id_departamento_tab"),rs.getInt("id_departamento_sam"), rs.getDouble("porcentaje_min"), rs.getDouble("porcentaje_max"));
+                departamento_mb = new Departamento_MB(rs.getInt("id_departamento_tab"), rs.getInt("id_departamento_sam"), rs.getDouble("porcentaje_min"), rs.getDouble("porcentaje_max"));
             } else
             {
-                insertaDepartamento(id_departamento_sam);
+                departamento_mb = new Departamento_MB(insertaDepartamento(id_departamento_sam), id_departamento_sam, -1, -1);
             }
         } catch (Exception e)
         {
@@ -141,40 +155,25 @@ public class Departamento_DAO
                 }
             }
         }
-        
+
         return departamento_mb;
     }
-    
+
     public void actualizaFormatoDepto(int id_departamento_sam, InputStream imageStream)
-    {
-        Departamento_MB departamento_Mb = obtenerDepartamentoPorIdSAM(id_departamento_sam);
-        if (departamento_Mb != null)
-        {
-            if (departamento_Mb.getId_departamento_tab() == -1)
-            {
-                insertaDepartamento(id_departamento_sam);
-                System.out.println("No hay departamento");
-            }
-            actualizaFormato(id_departamento_sam, imageStream);
-        }
-        
-    }
-    
-    private void actualizaFormato(int id_departamento_sam, InputStream imageStream)
     {
         conexion = new Conexion();
         conexion.connect(VariablesSistema.USERNAME_BD, VariablesSistema.PASSWORD_BD);
-        
+        obtenerDepartamentoPorIdSAM(id_departamento_sam);
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        
+
         try
         {
             // La ruta ya no es necesaria; usamos imageStream directamente
             String query = "UPDATE departamento_tab SET formato = ? WHERE id_departamento_sam = ?";
-            
+
             pstmt = conexion.getCon().prepareStatement(query);
-            
+
             pstmt.setBinaryStream(1, imageStream); // Se pasa el InputStream como un flujo binario
             pstmt.setInt(2, id_departamento_sam); // Usamos el id_departamento_sam como parámetro
 
@@ -211,5 +210,4 @@ public class Departamento_DAO
             }
         }
     }
-    
 }

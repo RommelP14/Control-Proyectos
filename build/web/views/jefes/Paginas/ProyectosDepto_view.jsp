@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Mis proyectos</title>
+        <title>Proyectos Departamento</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -41,13 +41,13 @@
                     <div class="panel-heading">
                         <div class="panel-title">
                             <div class="form-inline">
-                                <b>Mis Proyectos</b>
+                                <b>Proyectos del Departamento</b>
                             </div>
                         </div>
                     </div>
                     <div class="panel panel-body" style="overflow-x: auto;">
                         <%@include file="/views/jefes/Paginas/tablaMisProyectos.jsp" %>
-                        <%@include file="/views/jefes/Paginas/botonesMisProyectos.jsp" %>
+                        <%@include file="/views/jefes/Paginas/botonesVerProyectos.jsp" %>
                     </div>
                 </div>
             </div>

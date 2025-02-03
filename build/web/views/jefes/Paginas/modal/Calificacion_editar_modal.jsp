@@ -1,4 +1,8 @@
-
+<%-- 
+    Document   : Ver_datos_proyecto_modal_proyecto_colab
+    Created on : 2 feb 2025, 21:57:10
+    Author     : romme
+--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <link href="/CDN-ITT/css/botones.estandarITT.css" rel="stylesheet">

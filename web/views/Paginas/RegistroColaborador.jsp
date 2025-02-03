@@ -1,5 +1,8 @@
-
-
+<%-- 
+    Document   : Ver_datos_proyecto_modal_proyecto_colab
+    Created on : 2 feb 2025, 21:57:10
+    Author     : romme
+--%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 

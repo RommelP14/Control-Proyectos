@@ -19,6 +19,25 @@ public class Residencia_MB
     private double calificacion;
     private String estado_aprobacion_residencia;
 
+    /*Atributos para poder consultar los datos de un proyecto de residencia*/
+    private String nombreProyecto;
+    private String nombreColaborador;
+    private String correoColaborador;
+
+    public Residencia_MB(int noFolio, String fecha_inicio, String primer_seguimiento, String segundo_seguimiento, String fecha_fin, double calificacion, String nombreProyecto, String nombreColaborador, String correoColaborador)
+    {
+        this.noFolio = noFolio;
+        this.fecha_inicio = fecha_inicio;
+        this.primer_seguimiento = primer_seguimiento;
+        this.segundo_seguimiento = segundo_seguimiento;
+        this.fecha_fin = fecha_fin;
+        this.calificacion = calificacion;
+        this.nombreProyecto = nombreProyecto;
+        this.nombreColaborador = nombreColaborador;
+        this.correoColaborador = correoColaborador;
+    }
+
+    
     public Residencia_MB(int id_residencia, int noFolio, String fecha_inicio, String primer_seguimiento, String segundo_seguimiento, String fecha_fin, double calificacion, String estado_aprobacion_residencia)
     {
         this.id_residencia = id_residencia;
@@ -163,18 +182,64 @@ public class Residencia_MB
     }
 
     /**
-     * @param estado_aprobacion_residencia the estado_aprobacion_residencia to set
+     * @param estado_aprobacion_residencia the estado_aprobacion_residencia to
+     * set
      */
     public void setEstado_aprobacion_residencia(String estado_aprobacion_residencia)
     {
         this.estado_aprobacion_residencia = estado_aprobacion_residencia;
     }
 
+    /**
+     * @return the nombreProyecto
+     */
+    public String getNombreProyecto()
+    {
+        return nombreProyecto;
+    }
+
+    /**
+     * @param nombreProyecto the nombreProyecto to set
+     */
+    public void setNombreProyecto(String nombreProyecto)
+    {
+        this.nombreProyecto = nombreProyecto;
+    }
+
+    /**
+     * @return the nombreColaborador
+     */
+    public String getNombreColaborador()
+    {
+        return nombreColaborador;
+    }
+
+    /**
+     * @param nombreColaborador the nombreColaborador to set
+     */
+    public void setNombreColaborador(String nombreColaborador)
+    {
+        this.nombreColaborador = nombreColaborador;
+    }
+
+    /**
+     * @return the correoColaborador
+     */
+    public String getCorreoColaborador()
+    {
+        return correoColaborador;
+    }
+
+    /**
+     * @param correoColaborador the correoColaborador to set
+     */
+    public void setCorreoColaborador(String correoColaborador)
+    {
+        this.correoColaborador = correoColaborador;
+    }
     @Override
     public String toString()
     {
         return "Residencia_MB{" + "id_residencia=" + id_residencia + ", noFolio=" + noFolio + ", fecha_inicio=" + fecha_inicio + ", primer_seguimiento=" + primer_seguimiento + ", segundo_seguimiento=" + segundo_seguimiento + ", fecha_fin=" + fecha_fin + ", calificacion=" + calificacion + ", estado_aprobacion_residencia=" + estado_aprobacion_residencia + '}';
     }
-    
-    
 }

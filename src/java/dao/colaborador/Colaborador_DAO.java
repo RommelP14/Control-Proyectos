@@ -8,6 +8,9 @@ import Utils.constantes.VariablesSistema;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import manage.bean.colaborador.Colaborador_MB;
 import manageBean.conexion.Conexion;
 import manageBean.general.GenericResponse;
 
@@ -18,6 +21,69 @@ import manageBean.general.GenericResponse;
 public class Colaborador_DAO
 {
     private Conexion conexion;
+
+    public List<Colaborador_MB> consultaColaboradores(int noFolio)
+    {
+        conexion = new Conexion();
+        conexion.connect(VariablesSistema.USERNAME_BD, VariablesSistema.PASSWORD_BD);
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<Colaborador_MB> colaboradores = new ArrayList<>();
+        Colaborador_MB colaborador_Mb = null;
+
+        try
+        {
+            String query = "SELECT * FROM colaboradores_tab WHERE noFolio = ?;";
+            pstmt = conexion.getCon().prepareStatement(query);
+            pstmt.setInt(1, noFolio);
+            rs = pstmt.executeQuery();
+
+            while (rs.next())
+            {
+                int id_colaborador = rs.getInt("id_colaborador");
+                String nombre = rs.getString("nombre");
+                String primerApellido = rs.getString("primerApellido");
+                String segundoApellido = rs.getString("segundoApellido");
+                String carrera = rs.getString("carrera");
+                String correo = rs.getString("correo");
+                String no_control = rs.getString("no_control");
+                colaborador_Mb = new Colaborador_MB(id_colaborador, noFolio, nombre, primerApellido, segundoApellido, carrera, correo, no_control);
+                colaboradores.add(colaborador_Mb);
+            }
+        } catch (SQLException e)
+        {
+            System.out.println("Error al consultar proyectos similares: " + e.getMessage());
+        } catch (Exception e)
+        {
+            System.out.println("Error general en consultarProyectos: " + e.getMessage());
+        } finally
+        {
+            // Cerrar conexión y recursos
+            if (rs != null)
+            {
+                try
+                {
+                    rs.close();
+                } catch (SQLException e)
+                {
+                    System.out.println("Error al cerrar ResultSet: " + e.getMessage());
+                }
+            }
+            if (pstmt != null)
+            {
+                try
+                {
+                    pstmt.close();
+                } catch (SQLException e)
+                {
+                    System.out.println("Error al cerrar PreparedStatement: " + e.getMessage());
+                }
+            }
+            conexion.disconnect();
+        }
+        return colaboradores;
+    }
 
     public void insertaColaborador(int noFolio, String nombre, String primerApellido, String segundoApellido, String carrera, String correo, String no_control, GenericResponse respuesta)
     {

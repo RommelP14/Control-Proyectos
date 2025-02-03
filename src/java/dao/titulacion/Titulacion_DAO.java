@@ -7,8 +7,10 @@ package dao.titulacion;
 import Utils.constantes.VariablesSistema;
 import java.util.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import manage.bean.titulacion.Titulacion_MB;
 import manageBean.conexion.Conexion;
 import manageBean.general.GenericResponse;
 
@@ -20,6 +22,76 @@ public class Titulacion_DAO
 {
 
     private Conexion conexion;
+
+    public Titulacion_MB consultaProyectoTitulacionParaVerDatos(int noFolio, GenericResponse respuesta)
+    {
+        conexion = new Conexion();
+        conexion.connect(VariablesSistema.USERNAME_BD, VariablesSistema.PASSWORD_BD);
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Titulacion_MB titulacion_Mb = null;
+
+        try
+        {
+            String query = "SELECT \n"
+                    + "    p.noFolio, \n"
+                    + "    COALESCE(p.nombre, 'Aún no registrado') AS nombreProyecto, \n"
+                    + "    COALESCE(c.nombre, 'Aún no registrado') AS nombreColaborador, \n"
+                    + "    COALESCE(c.correo, 'Aún no registrado') AS correoColaborador, \n"
+                    + "    COALESCE(t.fecha_aprobacion, 'Aún no registrado') AS fecha_aprobacion, \n"
+                    + "    COALESCE(t.fecha_liberacion, 'Aún no registrado') AS fecha_liberacion\n"
+                    + "FROM proyectos_tab p\n"
+                    + "LEFT JOIN colaboradores_tab c ON p.noFolio = c.noFolio\n"
+                    + "LEFT JOIN titulacion_tab t ON p.noFolio = t.noFolio\n"
+                    + "WHERE p.noFolio = ?";
+
+            pstmt = conexion.getCon().prepareStatement(query);
+            pstmt.setInt(1, noFolio);
+            rs = pstmt.executeQuery();
+
+            if (rs.next())
+            {
+                String nombreProyecto = rs.getString("nombreProyecto");
+                String nombreColaborador = rs.getString("nombreColaborador");
+                String correoColaborador = rs.getString("correoColaborador");
+                String fecha_aprobacion = rs.getString("fecha_aprobacion");
+                String fecha_liberacion = rs.getString("fecha_liberacion");
+
+                titulacion_Mb = new Titulacion_MB(noFolio, fecha_aprobacion, fecha_liberacion, nombreProyecto, nombreColaborador, correoColaborador);
+            } else
+            {
+                respuesta.setStatus(-10);
+                respuesta.setMensaje("No se encontro el proyecto con ese noFolio");
+            }
+        } catch (SQLException e)
+        {
+            System.out.println("Error al consultar titulacion: " + e.getMessage());
+            respuesta.setStatus(-3);
+            respuesta.setMensaje("Ha ocurrido un error en consultar un proyecto de titulacion");
+        } catch (Exception e)
+        {
+            System.out.println("Error general en consultarProyectoTitulacion: " + e.getMessage());
+        } finally
+        {
+            try
+            {
+                if (rs != null)
+                {
+                    rs.close();
+                }
+                if (pstmt != null)
+                {
+                    pstmt.close();
+                }
+                conexion.disconnect();
+            } catch (SQLException e)
+            {
+                System.out.println("Error al cerrar recursos: " + e.getMessage());
+            }
+        }
+        return titulacion_Mb;
+    }
 
     public void insertaTitulacion(int noFolio, String estado_aprobacion_titulacion, GenericResponse response)
     {
@@ -39,7 +111,7 @@ public class Titulacion_DAO
             response.setResponseObject(estado_aprobacion_titulacion);
         } catch (Exception e)
         {
-            System.out.println("Error en Similitudes: " + e);
+            System.out.println("Error en Titulación: " + e);
             response.setStatus(-100);
             response.setMensaje("Ha ocurrido un error al insertar la titulación");
         } finally

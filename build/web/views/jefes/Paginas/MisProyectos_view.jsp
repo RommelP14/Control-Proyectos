@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Contactos</title>
+        <title>Mis proyectos</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -47,6 +47,7 @@
                     </div>
                     <div class="panel panel-body" style="overflow-x: auto;">
                         <%@include file="/views/jefes/Paginas/tablaMisProyectos.jsp" %>
+                        <%@include file="/views/jefes/Paginas/botonesMisProyectos.jsp" %>
                     </div>
                 </div>
             </div>
@@ -107,6 +108,20 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="modal_datos_proyecto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Datos del proyecto</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Contenido del modal</p>
+                    </div> 
+                </div>
+            </div>
+        </div>            
         <%@include file="/views/templates/footer.jsp"%>
         <script type="text/javascript" src ="/CDN-ITT/js/jquery.estandarITT.js"></script>
         <script type="text/javascript" src ="/CDN-ITT/js/jquery-ui.estandarITT.js"></script>

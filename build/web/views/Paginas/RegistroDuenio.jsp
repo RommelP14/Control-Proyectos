@@ -1,3 +1,8 @@
+<%-- 
+    Document   : Ver_datos_proyecto_modal_proyecto_colab
+    Created on : 2 feb 2025, 21:57:10
+    Author     : romme
+--%>
 
 <%@page import="manageBean.empleado.Empleado_MB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

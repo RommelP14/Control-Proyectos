@@ -38,7 +38,7 @@
 
                     <ul class="dropdown-menu dropdown-user">
                         <li>
-                            <a href="${pageContext.request.contextPath}/views/Bienvenida/BienvenidaJefe.jsp" id="menu_inicio">
+                            <a href="${pageContext.request.contextPath}/views/Bienvenida/BienvenidaDocente.jsp" id="menu_inicio">
                                 <i class="fa fa-home" aria-hidden="true"></i>
                                 Inicio
                             </a>
@@ -52,50 +52,11 @@
                             </a>
                         </li>
                         <li>
-                            <a href="${pageContext.request.contextPath}/app/ver/Ver_Proyectos_View_SRV.do?accion=listarProyectosDepto" id="" >
-                                <i class="fa fa-list" aria-hidden="true"></i>
-                                Ver Proyectos
-                            </a>
-                        </li>
-                        <li>
-                            <a href="${pageContext.request.contextPath}/app/registro/Porcentaje_SRV.do" id="">
-                                <i class="fa fa-percent"></i>
-                                Porcentaje
-                            </a>
-                        </li>
-                        <li>
                             <a href="${pageContext.request.contextPath}/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos" id="" >
                                 <i class="fa fa-info-circle"></i>
                                 Mis Proyectos
                             </a>
                         </li>
-                        <li class="divider"></li>
-                        <li class="dropdown-header">Residencia</li>
-                        <li>
-                            <a href="/web_transporte/app/mantenimientosdrmys/crudunidad.do?accion=unidades" id="" >
-                                <i class="fa fa-users" aria-hidden="true"></i>
-                                Asesores
-                            </a>
-                        </li>
-                        
-                        <li class="divider"></li>
-                        <li class="dropdown-header">Titulación</li>
-                        <li>
-                            <a href="/web_transporte/app/salidasdrmys/crudcalendar.do?accion=solpendrmys" id="" >
-                                <i class="fa fa-users" aria-hidden="true"></i>
-                                Revisores
-                            </a>
-                        </li>
-                        
-                        <li class="divider"></li>
-                        <li class="dropdown-header">Documento</li>
-                        <li>
-                            <a href="${pageContext.request.contextPath}/views/EdicionFormatos/imagenes.jsp" >
-                                <i class="fa fa-book"></i>
-                                <m class="traductor">     Edición de Formatos</m>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
                         <li>
                             <a href="/SAM">
                                 <i class="fa fa-sign-out"></i>

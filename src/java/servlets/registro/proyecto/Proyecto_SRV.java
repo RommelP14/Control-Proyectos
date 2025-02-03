@@ -5,8 +5,12 @@
 package servlets.registro.proyecto;
 
 import com.google.gson.Gson;
+import dao.colaborador.Colaborador_DAO;
 import dao.departamento.Departamento_DAO;
+import dao.proyecto_colab.Proyecto_Colab_DAO;
 import dao.proyectos.Proyectos_DAO;
+import dao.residencia.Residencia_DAO;
+import dao.titulacion.Titulacion_DAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -15,12 +19,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import manage.bean.colaborador.Colaborador_MB;
 import manage.bean.departamento.Departamento_MB;
+import manage.bean.proyecto_colab.Proyecto_Colab_MB;
+import manage.bean.proyectos.Proyecto_MB;
+import manage.bean.residencia.Residencia_MB;
+import manage.bean.titulacion.Titulacion_MB;
 import manageBean.empleado.Empleado_MB;
 import manageBean.general.GenericResponse;
 
@@ -58,7 +68,61 @@ public class Proyecto_SRV extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        request.getRequestDispatcher("/views/asesor/owner_registration.jsp").forward(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+
+        GenericResponse respuesta = new GenericResponse();
+        RequestDispatcher dispatcher;
+
+        String accion = request.getParameter("accion");
+        String noFolio = "";
+        switch (accion)
+        {
+            case "obtenerDatosProyecto":
+                noFolio = request.getParameter("idProyecto");
+                String tipo_proyecto = request.getParameter("tipo_proyecto");
+                switch (tipo_proyecto)
+                {
+                    case "residencia":
+                        Residencia_DAO residencia_Dao = new Residencia_DAO();
+                        Residencia_MB residencia_Mb = residencia_Dao.consultaProyectoResidenciaParaVerDatos(Integer.parseInt(noFolio), respuesta);
+                        request.setAttribute("residencia_Mb", residencia_Mb);
+                        dispatcher = getServletContext().getRequestDispatcher("/views/jefes/Paginas/modal/Ver_datos_proyecto_modal_residencia.jsp");
+                        dispatcher.forward(request, response);
+                        break;
+                    case "titulacion":
+                        Titulacion_DAO titulacion_Dao = new Titulacion_DAO();
+                        Titulacion_MB titulacion_Mb = titulacion_Dao.consultaProyectoTitulacionParaVerDatos(Integer.parseInt(noFolio), respuesta);
+                        request.setAttribute("titulacion_Mb", titulacion_Mb);
+                        dispatcher = getServletContext().getRequestDispatcher("/views/jefes/Paginas/modal/Ver_datos_proyecto_modal_titulacion.jsp");
+                        dispatcher.forward(request, response);
+                        break;
+                    case "proyecto":
+                        Proyecto_Colab_DAO proyecto_Colab_Dao = new Proyecto_Colab_DAO();
+                        Colaborador_DAO colaborador_DAO = new Colaborador_DAO();
+                        
+                        Proyecto_Colab_MB proyecto_colab_Mb = proyecto_Colab_Dao.consultaProyectoProyectoColabParaVerDatos(Integer.parseInt(noFolio), respuesta);
+                        List<Colaborador_MB> colaboradores = colaborador_DAO.consultaColaboradores(Integer.parseInt(noFolio));
+                        
+                        request.setAttribute("colaboradores", colaboradores);
+                        request.setAttribute("proyecto_colab_Mb", proyecto_colab_Mb);
+                        dispatcher = getServletContext().getRequestDispatcher("/views/jefes/Paginas/modal/Ver_datos_proyecto_modal_proyecto_colab.jsp");
+                        dispatcher.forward(request, response);
+                        break;
+                    default:
+                        throw new AssertionError();
+                }
+                break;
+            default:
+            //throw new AssertionError();
+        }
+
+        try (PrintWriter out = response.getWriter())
+        {
+            response.setContentType("application/json");
+            Gson json = new Gson();
+            out.print(json.toJson(respuesta));
+        }
     }
 
     @Override
@@ -128,7 +192,7 @@ public class Proyecto_SRV extends HttpServlet
                 // Agregar mensaje y status
                 jsonResponse.put("mensaje", respuesta.getMensaje());
                 jsonResponse.put("status", respuesta.getStatus());
-                
+
                 System.out.println("respuesta.getMensaje(): " + respuesta.getMensaje());
                 System.out.println("status: " + respuesta.getStatus());
 

@@ -77,29 +77,20 @@ public class Ver_Proyectos_View_SRV extends HttpServlet
         RequestDispatcher dispatcher = null;
         GenericResponse respuesta = new GenericResponse();
 
+        Departamento_DAO departamento_Dao = new Departamento_DAO();
+        Departamento_MB departamento_Mb = null;
         Proyectos_DAO proyecto_dao = new Proyectos_DAO();
         List<Proyecto_MB> misProyectos = null;
         String noFolio = request.getParameter("idProyecto");
         String estado = request.getParameter("estadoProyecto");
-//        if (noFolio.isEmpty() || estado.isEmpty())
-//        {
-//            respuesta.setStatus(-200);
-//            respuesta.setMensaje("Error");
-//            return;
-//        }
+        HttpSession session = request.getSession();
+        Empleado_MB empleado_Mb = (Empleado_MB) session.getAttribute("empleado");
+
         switch (request.getParameter("accion"))
         {
             case "listarMisProyectos":
-                HttpSession session = request.getSession();
-                Empleado_MB empleado_Mb = (Empleado_MB) session.getAttribute("empleado");
-                if (empleado_Mb != null)
-                {
-                    Departamento_DAO departamento_Dao = new Departamento_DAO();
-                    Departamento_MB departamento_Mb = departamento_Dao.obtenerDepartamentoPorIdSAM(empleado_Mb.getDeptoID());
-                    if (departamento_Mb != null)
-                    {
-                        misProyectos = proyecto_dao.consultarProyectosDuenio(departamento_Mb.getId_departamento_tab());
-                    }
+
+                misProyectos = proyecto_dao.consultarProyectosDuenioPorCorreo(empleado_Mb.getCorreoEmpleado());
 
 //                System.out.println("****************************");
 //                for (Proyecto_MB p : misProyectos)
@@ -107,19 +98,22 @@ public class Ver_Proyectos_View_SRV extends HttpServlet
 //                    System.out.println(p.toString());
 //                }
 //                System.out.println("****************************");
-                    request.setAttribute("proyectos", misProyectos);
-                    dispatcher = getServletContext().getRequestDispatcher("/views/jefes/Paginas/MisProyectos_view.jsp");
-                    dispatcher.forward(request, response);
-                } else
-                {
-                    System.out.println("error inicia sesion");
-                }
+                request.setAttribute("proyectos", misProyectos);
+                dispatcher = getServletContext().getRequestDispatcher("/views/jefes/Paginas/MisProyectos_view.jsp");
+                dispatcher.forward(request, response);
+                break;
+            case "listarProyectosDepto":
+                departamento_Mb = departamento_Dao.obtenerDepartamentoPorIdSAM(empleado_Mb.getDeptoID());
+                misProyectos = proyecto_dao.consultarProyectosDepartamento(departamento_Mb.getId_departamento_tab());
+                request.setAttribute("proyectos", misProyectos);
+                dispatcher = getServletContext().getRequestDispatcher("/views/jefes/Paginas/ProyectosDepto_view.jsp");
+                dispatcher.forward(request, response);
                 break;
             case "verificaEstado":
                 muestraVistaDependiendoEstado(estado, Integer.parseInt(noFolio), respuesta);
                 break;
             case "consultaColaborador":
-                Colaborador_DAO colaborador_Dao =  new Colaborador_DAO();
+                Colaborador_DAO colaborador_Dao = new Colaborador_DAO();
                 colaborador_Dao.consultaColaboradorPorId(Integer.parseInt(noFolio), respuesta);
                 break;
             default:

@@ -90,14 +90,12 @@ public class Residencia_SRV extends HttpServlet
         {
             case "agregar":
                 noFolio = request.getParameter("idProyecto");
-                System.out.println("Estamos en residencia_SRV: " + noFolio);
                 request.setAttribute("noFolio", noFolio);
                 dispatcher = getServletContext().getRequestDispatcher("/views/jefes/Paginas/modal/Calificacion_editar_modal.jsp");
                 dispatcher.forward(request, response);
                 break;
             case "registroOK":
                 noFolio = request.getParameter("idFolio");
-                System.out.println("FOLIII: " + noFolio);
                 String porcentaje = request.getParameter("porcentaje");
                 Residencia_DAO residencia_Dao = new Residencia_DAO();
                 residencia_Dao.actualizaCalificacionResidencia(Integer.parseInt(noFolio), Double.parseDouble(porcentaje), respuesta);

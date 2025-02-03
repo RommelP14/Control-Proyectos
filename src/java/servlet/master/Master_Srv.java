@@ -84,21 +84,27 @@ public class Master_Srv extends HttpServlet
 
     public void vistaNavBar(int vista, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws IOException, ServletException
     {
+        String url = "";
+        RequestDispatcher dispatcher = null;
         switch (vista)
         {
             case Utils.constantes.Constantes.JEFE_DEPARTAMENTO:
                 session.setAttribute("credencial", Utils.constantes.Constantes.JEFE_DEPARTAMENTO);
-                String url = "/views/Bienvenida/BienvenidaJefe.jsp";
-                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
+                url = "/views/Bienvenida/BienvenidaJefe.jsp";
+                dispatcher = getServletContext().getRequestDispatcher(url);
                 dispatcher.forward(request, response);
                 break;
             case Utils.constantes.Constantes.DOCENTE:
                 session.setAttribute("credencial", Utils.constantes.Constantes.DOCENTE);
-//                response.sendRedirect(request.getContextPath() + "/views/Bienvenida/BienvenidaJefe.jsp");
+                url = "/views/Bienvenida/BienvenidaDocente.jsp";
+                dispatcher = getServletContext().getRequestDispatcher(url);
+                dispatcher.forward(request, response);
                 break;
             case Utils.constantes.Constantes.ALUMNO:
                 session.setAttribute("credencial", Utils.constantes.Constantes.ALUMNO);
-//                response.sendRedirect(request.getContextPath() + "/views/Bienvenida/BienvenidaJefe.jsp");
+                url = "/views/Bienvenida/BienvenidaAlumno.jsp";
+                dispatcher = getServletContext().getRequestDispatcher(url);
+                dispatcher.forward(request, response);
                 break;
             default:
                 System.out.println("No Hay Redirección checa el servlet Master_Srv");

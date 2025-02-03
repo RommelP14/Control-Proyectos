@@ -1,7 +1,7 @@
 <%-- 
-    Document   : vistaalumnos
-    Created on : 14-ene-2025, 13:21:22
-    Author     : mauro
+    Document   : BienvenidaAlumno
+    Created on : 3 feb 2025, 10:05:52
+    Author     : romme
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -9,9 +9,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Control Proyectos</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Hola alumno</h1>
     </body>
 </html>

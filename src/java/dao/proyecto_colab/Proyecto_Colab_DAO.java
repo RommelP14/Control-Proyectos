@@ -6,9 +6,13 @@ package dao.proyecto_colab;
 
 import Utils.constantes.VariablesSistema;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import manage.bean.proyecto_colab.Proyecto_Colab_MB;
 import manageBean.conexion.Conexion;
 import manageBean.general.GenericResponse;
 
@@ -19,6 +23,76 @@ import manageBean.general.GenericResponse;
 public class Proyecto_Colab_DAO
 {
     private Conexion conexion;
+
+    public Proyecto_Colab_MB consultaProyectoProyectoColabParaVerDatos(int noFolio, GenericResponse respuesta)
+    {
+        conexion = new Conexion();
+        conexion.connect(VariablesSistema.USERNAME_BD, VariablesSistema.PASSWORD_BD);
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Proyecto_Colab_MB proyecto_colab_Mb = null;
+
+        try
+        {
+            String query = "SELECT \n"
+                    + "    p.noFolio, \n"
+                    + "    COALESCE(p.nombre, 'Aún no registrado') AS nombreProyecto, \n"
+                    + "    COALESCE(c.nombre, 'Aún no registrado') AS nombreColaborador, \n"
+                    + "    COALESCE(c.correo, 'Aún no registrado') AS correoColaborador, \n"
+                    + "    COALESCE(pc.fecha_aprobacion, 'Aún no registrado') AS fecha_aprobacion, \n"
+                    + "    COALESCE(pc.fecha_liberacion, 'Aún no registrado') AS fecha_liberacion\n"
+                    + "FROM proyectos_tab p\n"
+                    + "LEFT JOIN colaboradores_tab c ON p.noFolio = c.noFolio\n"
+                    + "LEFT JOIN proyecto_colab_tab pc ON p.noFolio = pc.noFolio\n"
+                    + "WHERE p.noFolio = ?";
+
+            pstmt = conexion.getCon().prepareStatement(query);
+            pstmt.setInt(1, noFolio);
+            rs = pstmt.executeQuery();
+
+            if (rs.next())
+            {
+                String nombreProyecto = rs.getString("nombreProyecto");
+                String nombreColaborador = rs.getString("nombreColaborador");
+                String correoColaborador = rs.getString("correoColaborador");
+                String fecha_aprobacion = rs.getString("fecha_aprobacion");
+                String fecha_liberacion = rs.getString("fecha_liberacion");
+
+                proyecto_colab_Mb = new Proyecto_Colab_MB(noFolio, fecha_aprobacion, fecha_liberacion, nombreProyecto, nombreColaborador, correoColaborador);
+            } else
+            {
+                respuesta.setStatus(-10);
+                respuesta.setMensaje("No se encontro el proyecto con ese noFolio");
+            }
+        } catch (SQLException e)
+        {
+            System.out.println("Error al consultar titulacion: " + e.getMessage());
+            respuesta.setStatus(-3);
+            respuesta.setMensaje("Ha ocurrido un error en consultar un proyecto de titulacion");
+        } catch (Exception e)
+        {
+            System.out.println("Error general en consultarProyectoTitulacion: " + e.getMessage());
+        } finally
+        {
+            try
+            {
+                if (rs != null)
+                {
+                    rs.close();
+                }
+                if (pstmt != null)
+                {
+                    pstmt.close();
+                }
+                conexion.disconnect();
+            } catch (SQLException e)
+            {
+                System.out.println("Error al cerrar recursos: " + e.getMessage());
+            }
+        }
+        return proyecto_colab_Mb;
+    }
 
     public void insertaProyectoColab(int noFolio, String estado_aprobacion_proyecto_colab, GenericResponse response)
     {

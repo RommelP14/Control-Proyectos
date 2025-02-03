@@ -52,7 +52,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="${pageContext.request.contextPath}/app/ver/Ver_Proyectos_View_SRV" id="" >
+                            <a href="${pageContext.request.contextPath}/app/ver/Ver_Proyectos_View_SRV.do?accion=listarProyectosDepto" id="" >
                                 <i class="fa fa-list" aria-hidden="true"></i>
                                 Ver Proyectos
                             </a>

@@ -23,7 +23,7 @@ public class Proyecto_MB
     /*Atributos para poder consultar los datos y mostrarlos en tabla*/
     private double porcentaje_avance;
     private String estado_aprobacion;
-
+    
     public Proyecto_MB(int noFolio, String nombre, String planteamiento, String alcances, String justificacion, int id_duenio, int id_departamento_tab, String estado, String tipo_proyecto)
     {
         this.noFolio = noFolio;
@@ -56,7 +56,7 @@ public class Proyecto_MB
         this.porcentaje_avance = porcentaje_avance;
         this.estado_aprobacion = estado_aprobacion;
     }
-
+    
     /**
      * @return the noFolio
      */
