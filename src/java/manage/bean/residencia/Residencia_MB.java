@@ -10,6 +10,7 @@ package manage.bean.residencia;
  */
 public class Residencia_MB
 {
+
     private int id_residencia;
     private int noFolio;
     private String fecha_inicio;
@@ -23,8 +24,11 @@ public class Residencia_MB
     private String nombreProyecto;
     private String nombreColaborador;
     private String correoColaborador;
+    private String nombreE;
+    private String correoDuenio;
 
-    public Residencia_MB(int noFolio, String fecha_inicio, String primer_seguimiento, String segundo_seguimiento, String fecha_fin, double calificacion, String nombreProyecto, String nombreColaborador, String correoColaborador)
+    public Residencia_MB(int noFolio, String fecha_inicio, String primer_seguimiento, String segundo_seguimiento, String fecha_fin, double calificacion, String nombreProyecto,
+             String nombreColaborador, String correoColaborador, String nombreE, String correoDuenio)
     {
         this.noFolio = noFolio;
         this.fecha_inicio = fecha_inicio;
@@ -35,9 +39,10 @@ public class Residencia_MB
         this.nombreProyecto = nombreProyecto;
         this.nombreColaborador = nombreColaborador;
         this.correoColaborador = correoColaborador;
+        this.nombreE = nombreE;
+        this.correoDuenio = correoDuenio;
     }
 
-    
     public Residencia_MB(int id_residencia, int noFolio, String fecha_inicio, String primer_seguimiento, String segundo_seguimiento, String fecha_fin, double calificacion, String estado_aprobacion_residencia)
     {
         this.id_residencia = id_residencia;
@@ -237,6 +242,39 @@ public class Residencia_MB
     {
         this.correoColaborador = correoColaborador;
     }
+
+    /**
+     * @return the nombreE
+     */
+    public String getNombreE()
+    {
+        return nombreE;
+    }
+
+    /**
+     * @param nombreE the nombreE to set
+     */
+    public void setNombreE(String nombreE)
+    {
+        this.nombreE = nombreE;
+    }
+
+    /**
+     * @return the correoDuenio
+     */
+    public String getCorreoDuenio()
+    {
+        return correoDuenio;
+    }
+
+    /**
+     * @param correoDuenio the correoDuenio to set
+     */
+    public void setCorreoDuenio(String correoDuenio)
+    {
+        this.correoDuenio = correoDuenio;
+    }
+
     @Override
     public String toString()
     {

@@ -6,6 +6,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="table" style="/*font-size: 12px;*/" id="divGrpPreparacion">
+    <input type="hidden" id="accionInput" name="accion">
+
     <table id="tablaProyectos" class="table table-striped table-bordered tablesorter table-responsive no-footer dtr-inline dataTable table_margen" 
            style="width: 100%; /*font-size: 14px*/">
         <colgroup>
@@ -48,3 +50,20 @@
         </tbody>
     </table>
 </div>
+<script>
+    function getParameterByName(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+    let accionValor = getParameterByName('accion');
+    if (accionValor) {
+        sessionStorage.setItem('accion', accionValor);
+    } else {
+        accionValor = sessionStorage.getItem('accion');
+    }
+    if (accionValor) {
+        document.getElementById('accionInput').value = accionValor;
+    }
+</script>
+
+

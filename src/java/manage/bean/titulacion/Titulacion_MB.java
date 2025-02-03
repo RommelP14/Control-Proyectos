@@ -21,6 +21,8 @@ public class Titulacion_MB
     private String nombreProyecto;
     private String nombreColaborador;
     private String correoColaborador;
+    private String nombreE;
+    private String correoDuenio;
 
     public Titulacion_MB(int id_titulacion, String fecha_aprobacion, String fecha_liberacion, String estado_aprobacion_titulacion)
     {
@@ -37,7 +39,8 @@ public class Titulacion_MB
         this.estado_aprobacion_titulacion = estado_aprobacion_titulacion;
     }
 
-    public Titulacion_MB(int noFolio, String fecha_aprobacion, String fecha_liberacion, String nombreProyecto, String nombreColaborador, String correoColaborador)
+    public Titulacion_MB(int noFolio, String fecha_aprobacion, String fecha_liberacion, String nombreProyecto, 
+            String nombreColaborador, String correoColaborador, String nombreE, String correoDuenio)
     {
         this.noFolio = noFolio;
         this.fecha_aprobacion = fecha_aprobacion;
@@ -45,9 +48,10 @@ public class Titulacion_MB
         this.nombreProyecto = nombreProyecto;
         this.nombreColaborador = nombreColaborador;
         this.correoColaborador = correoColaborador;
+        this.nombreE = nombreE;
+        this.correoDuenio = correoDuenio;
     }
 
-    
     /**
      * @return the id_titulacion
      */
@@ -177,10 +181,41 @@ public class Titulacion_MB
         this.noFolio = noFolio;
     }
 
+    /**
+     * @return the nombreE
+     */
+    public String getNombreE()
+    {
+        return nombreE;
+    }
+
+    /**
+     * @param nombreE the nombreE to set
+     */
+    public void setNombreE(String nombreE)
+    {
+        this.nombreE = nombreE;
+    }
+
+    /**
+     * @return the correoDuenio
+     */
+    public String getCorreoDuenio()
+    {
+        return correoDuenio;
+    }
+
+    /**
+     * @param correoDuenio the correoDuenio to set
+     */
+    public void setCorreoDuenio(String correoDuenio)
+    {
+        this.correoDuenio = correoDuenio;
+    }
+    
     @Override
     public String toString()
     {
         return "Titulacion_MB{" + "id_titulacion=" + id_titulacion + ", fecha_aprobacion=" + fecha_aprobacion + ", fecha_liberacion=" + fecha_liberacion + ", estado_aprobacion_titulacion=" + estado_aprobacion_titulacion + '}';
     }
-
 }

@@ -16,11 +16,13 @@ public class Proyecto_Colab_MB
     private String fecha_aprobacion;
     private String fecha_liberacion;
     private String estado_aprobacion_proyecto_colab;
-    
+
     /*Atributos para poder consultar los datos de un proyecto de proyecto_colab*/
-     private String nombreProyecto;
-     private String nombreColaborador;
-     private String correoColaborador;
+    private String nombreProyecto;
+    private String nombreColaborador;
+    private String correoColaborador;
+    private String nombreE;
+    private String correoDuenio;
 
     public Proyecto_Colab_MB(int id_proyecto_colab, int noFolio, String fecha_aprobacion, String fecha_liberacion, String estado_aprobacion_proyecto_colab)
     {
@@ -39,7 +41,8 @@ public class Proyecto_Colab_MB
         this.estado_aprobacion_proyecto_colab = estado_aprobacion_proyecto_colab;
     }
 
-    public Proyecto_Colab_MB(int noFolio, String fecha_aprobacion, String fecha_liberacion, String nombreProyecto, String nombreColaborador, String correoColaborador)
+    public Proyecto_Colab_MB(int noFolio, String fecha_aprobacion, String fecha_liberacion, String nombreProyecto, 
+            String nombreColaborador, String correoColaborador, String nombreE, String correoDuenio)
     {
         this.noFolio = noFolio;
         this.fecha_aprobacion = fecha_aprobacion;
@@ -47,6 +50,8 @@ public class Proyecto_Colab_MB
         this.nombreProyecto = nombreProyecto;
         this.nombreColaborador = nombreColaborador;
         this.correoColaborador = correoColaborador;
+        this.nombreE = nombreE;
+        this.correoDuenio = correoDuenio;
     }
 
     /**
@@ -177,7 +182,39 @@ public class Proyecto_Colab_MB
     {
         this.correoColaborador = correoColaborador;
     }
-        
+
+    /**
+     * @return the nombreE
+     */
+    public String getNombreE()
+    {
+        return nombreE;
+    }
+
+    /**
+     * @param nombreE the nombreE to set
+     */
+    public void setNombreE(String nombreE)
+    {
+        this.nombreE = nombreE;
+    }
+
+    /**
+     * @return the correoDuenio
+     */
+    public String getCorreoDuenio()
+    {
+        return correoDuenio;
+    }
+
+    /**
+     * @param correoDuenio the correoDuenio to set
+     */
+    public void setCorreoDuenio(String correoDuenio)
+    {
+        this.correoDuenio = correoDuenio;
+    }
+
     @Override
     public String toString()
     {

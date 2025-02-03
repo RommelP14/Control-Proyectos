@@ -6,6 +6,11 @@
 
 <%@page import="manageBean.empleado.Empleado_MB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    // Obtener el objeto empleado desde la sesión
+    Empleado_MB e = (Empleado_MB) session.getAttribute("empleado");
+    String nombrePuesto = (e != null) ? e.getNombrePuesto() : "";
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -30,7 +35,19 @@
     <body>
         <%@include file="/views/templates/header.jsp" %>
         <div id="cont" class="container">
+            <%
+                if ("Docente".equals(nombrePuesto))
+                {
+            %>
+            <%@include file="/views/templates/navbarDocenteDepto.jsp" %>
+            <%
+            } else
+            {
+            %>
             <%@include file="/views/templates/navbarJefeDepto.jsp" %>
+            <%
+                }
+            %>
             <div id="panel" name="panel" class="panel panel-primary">
                 <div class="panel-heading">
                     <div style="display: flex; justify-content: space-between; align-items: center;">

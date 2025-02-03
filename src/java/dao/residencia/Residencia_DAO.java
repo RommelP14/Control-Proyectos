@@ -39,17 +39,20 @@ public class Residencia_DAO
         {
             String query = "SELECT \n"
                     + "    p.noFolio, \n"
-                    + "    COALESCE(p.nombre, 'Aun no registrado') AS nombreProyecto, \n"
-                    + "    COALESCE(c.nombre, 'Aun no registrado') AS nombreColaborador, \n"
-                    + "    COALESCE(c.correo, 'Aun no registrado') AS correoColaborador, \n"
-                    + "    COALESCE(r.fecha_inicio, 'Aun no registrado') AS fecha_inicio, \n"
-                    + "    COALESCE(r.primer_seguimiento, 'Aun no registrado') AS primer_seguimiento, \n"
-                    + "    COALESCE(r.segundo_seguimiento, 'Aun no registrado') AS segundo_seguimiento, \n"
-                    + "    COALESCE(r.fecha_fin, 'Aun no registrado') AS fecha_fin, \n"
+                    + "    COALESCE(p.nombre, 'Aún no registrado') AS nombreProyecto, \n"
+                    + "    COALESCE(c.nombre, 'Aún no registrado') AS nombreColaborador, \n"
+                    + "    COALESCE(c.correo, 'Aún no registrado') AS correoColaborador, \n"
+                    + "    COALESCE(d.nombreE, 'Aún no registrado') AS nombreDuenio, \n"
+                    + "    COALESCE(d.correo, 'Aún no registrado') AS correoDuenio, \n"
+                    + "    COALESCE(r.fecha_inicio, 'Aún no registrado') AS fecha_inicio, \n"
+                    + "    COALESCE(r.primer_seguimiento, 'Aún no registrado') AS primer_seguimiento, \n"
+                    + "    COALESCE(r.segundo_seguimiento, 'Aún no registrado') AS segundo_seguimiento, \n"
+                    + "    COALESCE(r.fecha_fin, 'Aún no registrado') AS fecha_fin, \n"
                     + "    COALESCE(r.calificacion, 0.0) AS calificacion\n"
                     + "FROM proyectos_tab p\n"
                     + "LEFT JOIN colaboradores_tab c ON p.noFolio = c.noFolio\n"
                     + "LEFT JOIN residencia_tab r ON p.noFolio = r.noFolio\n"
+                    + "LEFT JOIN duenio_tab d ON p.id_duenio = d.id_duenio  -- Se une con la tabla duenio_tab\n"
                     + "WHERE p.noFolio = ?";
 
             pstmt = conexion.getCon().prepareStatement(query);
@@ -66,10 +69,12 @@ public class Residencia_DAO
                 String fechaSegundoSeguimiento = rs.getString("segundo_seguimiento");
                 String fechaFinal = rs.getString("fecha_fin");
                 double calificacion = rs.getDouble("calificacion");
+                String nombreDuenio = rs.getString("nombreDuenio");
+                String correoDuenio = rs.getString("correoDuenio");
 
                 residencia_mb = new Residencia_MB(noFolio, fechaInicio, fechaPrimerSeguimiento,
                         fechaSegundoSeguimiento, fechaFinal, calificacion, nombreProyecto,
-                        nombreColaborador, correoColaborador);
+                        nombreColaborador, correoColaborador, nombreDuenio, correoDuenio);
             } else
             {
                 respuesta.setStatus(-10);

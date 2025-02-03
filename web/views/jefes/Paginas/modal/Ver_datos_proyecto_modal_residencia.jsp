@@ -6,6 +6,38 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="small">Nombre del dueño</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-hashtag"></i></span>
+                <input type="text" 
+                       class="form-control input-sm" 
+                       id="nombreduenio_residencia" 
+                       name="nombreduenio_residencia" 
+                       autocomplete="off"
+                       readonly
+                       value="${residencia_Mb.nombreE}">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="small">Correo Colaborador</label>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-at"></i></span>
+                <input type="text" 
+                       class="form-control input-sm" 
+                       id="correoDuenio_residencia" 
+                       name="correoDuenio_residencia" 
+                       autocomplete="off"
+                       readonly
+                       value="${residencia_Mb.correoDuenio}">
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row" >
     <div class="col-md-4">
         <div class="form-group">

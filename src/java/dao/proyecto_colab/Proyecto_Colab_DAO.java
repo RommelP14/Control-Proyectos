@@ -22,6 +22,7 @@ import manageBean.general.GenericResponse;
  */
 public class Proyecto_Colab_DAO
 {
+
     private Conexion conexion;
 
     public Proyecto_Colab_MB consultaProyectoProyectoColabParaVerDatos(int noFolio, GenericResponse respuesta)
@@ -40,11 +41,14 @@ public class Proyecto_Colab_DAO
                     + "    COALESCE(p.nombre, 'Aún no registrado') AS nombreProyecto, \n"
                     + "    COALESCE(c.nombre, 'Aún no registrado') AS nombreColaborador, \n"
                     + "    COALESCE(c.correo, 'Aún no registrado') AS correoColaborador, \n"
+                    + "    COALESCE(d.nombreE, 'Aún no registrado') AS nombreDuenio, \n"
+                    + "    COALESCE(d.correo, 'Aún no registrado') AS correoDuenio, \n"
                     + "    COALESCE(pc.fecha_aprobacion, 'Aún no registrado') AS fecha_aprobacion, \n"
                     + "    COALESCE(pc.fecha_liberacion, 'Aún no registrado') AS fecha_liberacion\n"
                     + "FROM proyectos_tab p\n"
                     + "LEFT JOIN colaboradores_tab c ON p.noFolio = c.noFolio\n"
                     + "LEFT JOIN proyecto_colab_tab pc ON p.noFolio = pc.noFolio\n"
+                    + "LEFT JOIN duenio_tab d ON p.id_duenio = d.id_duenio  -- Se une con la tabla duenio_tab\n"
                     + "WHERE p.noFolio = ?";
 
             pstmt = conexion.getCon().prepareStatement(query);
@@ -58,8 +62,11 @@ public class Proyecto_Colab_DAO
                 String correoColaborador = rs.getString("correoColaborador");
                 String fecha_aprobacion = rs.getString("fecha_aprobacion");
                 String fecha_liberacion = rs.getString("fecha_liberacion");
+                String nombreE = rs.getString("nombreDuenio");
+                String correoDuenio = rs.getString("correoDuenio");
 
-                proyecto_colab_Mb = new Proyecto_Colab_MB(noFolio, fecha_aprobacion, fecha_liberacion, nombreProyecto, nombreColaborador, correoColaborador);
+                proyecto_colab_Mb = new Proyecto_Colab_MB(noFolio, fecha_aprobacion, 
+                        fecha_liberacion, nombreProyecto, nombreColaborador, correoColaborador, nombreE, correoDuenio);
             } else
             {
                 respuesta.setStatus(-10);

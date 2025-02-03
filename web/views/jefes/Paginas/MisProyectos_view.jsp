@@ -5,6 +5,11 @@
 --%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    // Obtener el objeto empleado desde la sesión
+    Empleado_MB e = (Empleado_MB) session.getAttribute("empleado");
+    String nombrePuesto = (e != null) ? e.getNombrePuesto() : "";
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -35,7 +40,17 @@
                     <%@include file="/views/templates/spinner.estandarITT.jsp" %>
                 </div>
             </div>
-            <%@include file="/views/templates/navbarJefeDepto.jsp"%>
+            <%
+                if ("Docente".equals(nombrePuesto))
+                {
+            %>
+            <%@include file="/views/templates/navbarDocenteDepto.jsp" %>
+            <%            } else
+            {
+            %>
+            <%@include file="/views/templates/navbarJefeDepto.jsp" %>
+            <%                }
+            %>
             <div id="containerPrincipalContacto">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
@@ -47,7 +62,18 @@
                     </div>
                     <div class="panel panel-body" style="overflow-x: auto;">
                         <%@include file="/views/jefes/Paginas/tablaMisProyectos.jsp" %>
+                        <%
+                            if ("Docente".equals(nombrePuesto))
+                            {
+                        %>
+                        <%@include file="/views/docentes/botonesMisProyectosDocente.jsp" %>
+                        <%  } else
+                        {
+                        %>
                         <%@include file="/views/jefes/Paginas/botonesMisProyectos.jsp" %>
+                        <%
+                            }
+                        %>
                     </div>
                 </div>
             </div>

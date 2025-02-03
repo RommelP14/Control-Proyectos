@@ -1,3 +1,5 @@
+const accionGuardada = sessionStorage.getItem('accion');
+console.log(accionGuardada);
 
 $("#pageLoader").hide();
 $('[data-toggle="tooltip"]').tooltip();
@@ -173,11 +175,11 @@ function eliminarProyecto(idProyecto) {
         },
         success: function (response) {
             if (response.status === 0) {
-                MensajeRedirect(iconoCorrecto, 'Proyecto eliminado.', 'Se eliminó el Proyecto correctamente', '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
+                MensajeRedirect(iconoCorrecto, 'Proyecto eliminado.', 'Se eliminó el Proyecto correctamente', '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion='+accionGuardada);
             } else if (response.status === -200) {
-                MensajeRedirect(iconoError, 'Error al eliminar el Proyecto', 'No se pudo eliminar el Proyecto' + "<br><br> Contacte con el administrador del sistema.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
+                MensajeRedirect(iconoError, 'Error al eliminar el Proyecto', 'No se pudo eliminar el Proyecto' + "<br><br> Contacte con el administrador del sistema.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion='+accionGuardada);
             } else {
-                MensajeRedirect(iconoError, 'Error al eliminar el Proyecto', 'No se pudo eliminar el Proyecto' + "<br><br> Por favor, notifique a su administrador de este error.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
+                MensajeRedirect(iconoError, 'Error al eliminar el Proyecto', 'No se pudo eliminar el Proyecto' + "<br><br> Por favor, notifique a su administrador de este error.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion='+accionGuardada);
             }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -193,6 +195,7 @@ function eliminarProyecto(idProyecto) {
  * Consultar Proyecto
  */
 $('#btnIrBuscaProyecto').click(function () {
+    console.log("Dentro de aprobacion: " + accionGuardada);
     $.ajax({
         type: 'GET',
         url: "../../app/ver/Ver_Proyectos_View_SRV.do",
@@ -211,9 +214,9 @@ $('#btnIrBuscaProyecto').click(function () {
             {
                 armaUrlParaRevision(response.responseObject);
             } else if (response.status === -200) {
-                MensajeRedirect(iconoError, 'Error al consultar el Proyecto', 'No se pudo buscar el Proyecto' + "<br><br> Contacte con el administrador del sistema.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
+                MensajeRedirect(iconoError, 'Error al consultar el Proyecto', 'No se pudo buscar el Proyecto' + "<br><br> Contacte con el administrador del sistema.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion='+accionGuardada);
             } else {
-                MensajeRedirect(iconoError, 'Error al consultar el Proyecto', 'No se pudo buscar el Proyecto' + "<br><br> Por favor, notifique a su administrador de este error.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
+                MensajeRedirect(iconoError, 'Error al consultar el Proyecto', 'No se pudo buscar el Proyecto' + "<br><br> Por favor, notifique a su administrador de este error.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion='+accionGuardada);
             }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -244,7 +247,7 @@ $('#btnRegistroColaboradores').click(function () {
             if (response.status === 0) {
                 armaUrlParaRegistroColaborador(response.responseObject);
             } else {
-                MensajeRedirect(iconoError, 'Error al intentar registrar un colaborador', 'No se pudo registrar colaborador' + "<br><br> Por favor, notifique a su administrador de este error.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
+                MensajeRedirect(iconoError, 'Error al intentar registrar un colaborador', 'No se pudo registrar colaborador' + "<br><br> Por favor, notifique a su administrador de este error.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion='+accionGuardada);
             }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -276,7 +279,7 @@ $('#btnRegistroAvances').click(function () {
             if (response.status === 0) {
                 armaUrlParaRegistroAvances(response.responseObject);
             } else {
-                MensajeRedirect(iconoError, 'Error al intentar registrar un Avance', 'No se pudo registrar Avance' + "<br><br> Por favor, notifique a su administrador de este error.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos');
+                MensajeRedirect(iconoError, 'Error al intentar registrar un Avance', 'No se pudo registrar Avance' + "<br><br> Por favor, notifique a su administrador de este error.", '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion='+accionGuardada);
             }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -446,5 +449,5 @@ function getPDF2(folio) {
 
 // cancelar 
 function redirectProyectos() {
-    window.location.href = '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=listarMisProyectos';
+    window.location.href = '/ControlProyecto/app/ver/Ver_Proyectos_View_SRV.do?accion=' + accionGuardada;
 }

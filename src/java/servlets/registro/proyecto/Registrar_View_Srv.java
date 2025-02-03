@@ -38,8 +38,12 @@ public class Registrar_View_Srv extends HttpServlet
                 {
                     int credencial = Integer.parseInt(session.getAttribute("credencial").toString());
                     switch (credencial)
-                    {
+                    {   //En caso de que el docente llene algo diferente y se tenga que hacer otra vista, aqui redireccionamos a la vista diferente
                         case Utils.constantes.Constantes.JEFE_DEPARTAMENTO:
+                            request.setAttribute("empleado", empleado_mb);
+                            request.getRequestDispatcher("/views/Paginas/RegistroDuenio.jsp").forward(request, response);
+                            break;
+                        case Utils.constantes.Constantes.DOCENTE:
                             request.setAttribute("empleado", empleado_mb);
                             request.getRequestDispatcher("/views/Paginas/RegistroDuenio.jsp").forward(request, response);
                             break;

@@ -49,11 +49,11 @@
                         <div class="col-md-12">
                             <c:if test="${proyecto_Mb.estado eq 'Denegado'}">
                                 <h4>Estado: <b style="color: #B73C39"><c:out value="${proyecto_Mb.estado}"></c:out></b></h4>
-                            </c:if>
-                                
+                                </c:if>
+
                             <c:if test="${proyecto_Mb.estado eq 'Requiere revisión'}">
-                            <h4>Estado: <b style="color: #e67e22"><c:out value="${proyecto_Mb.estado}"></c:out></b></h4>
-                            </c:if>
+                                <h4>Estado: <b style="color: #e67e22"><c:out value="${proyecto_Mb.estado}"></c:out></b></h4>
+                                </c:if>
                         </div>
                         <form id="comparar_proyecto" name="comparar_proyecto">
                             <div class="col-md-6">
@@ -85,13 +85,16 @@
                         <div class="col-md-6">
                             <div id="pdfFolioA"></div>
                         </div>
-                        <div class="row text-center" style="margin: 1rem">
-                            <form id="form_registroTituResi_aprobado">
-                                <input type="hidden" id="idNoFolio" name="idNoFolio" value="${proyecto_Mb.noFolio}"/>
-                                <button class="btn btn-borrar btn-sm" id="denegar_proyecto">Denegar proyecto</button>
-                                <button class="btn btn-agregar btn-sm d-none" id="aceptar_proyecto">Aceptar proyecto</button>
-                            </form>
-                        </div>
+                    </div>
+                    <div class="row text-center" style="margin: 1rem">
+                        <form id="form_registroTituResi_aprobado">
+                            <input type="hidden" id="idNoFolio" name="idNoFolio" value="${proyecto_Mb.noFolio}"/>
+                            <button class="btn btn-borrar btn-sm" id="denegar_proyecto">Denegar proyecto</button>
+                            <button class="btn btn-agregar btn-sm d-none" id="aceptar_proyecto">Aceptar proyecto</button>
+                            <button type="button" class="btn btn-default" onclick="redirectProyectos()">
+                                <i class="fa fa-minus-circle"></i> Regresar
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -119,30 +122,30 @@
         <script src="${pageContext.request.contextPath}/js/jsgenerados/registro_tablas_T_R.js"></script>
 
         <script>
-            $(document).ready(function () {
-                $('#pageLoader').hide();
+                                    $(document).ready(function () {
+                                        $('#pageLoader').hide();
 
-                // Obtener el folio del proyecto en revisión correctamente desde el input
-                let noFolio = $("#noFolio").val().trim();
-                console.log("Folio detectado: " + noFolio);
+                                        // Obtener el folio del proyecto en revisión correctamente desde el input
+                                        let noFolio = $("#noFolio").val().trim();
+                                        console.log("Folio detectado: " + noFolio);
 
-                if (noFolio) {
-                    getPDF(noFolio);
-                } else {
-                    console.error("No se encontró el número de folio.");
-                }
+                                        if (noFolio) {
+                                            getPDF(noFolio);
+                                        } else {
+                                            console.error("No se encontró el número de folio.");
+                                        }
 
-                // Evento para detectar cambios en el select y cargar el proyecto seleccionado
-                $('#id_inputProyecto').on('change', function () {
-                    var id_proyecto = $(this).val();
-                    console.log("Proyecto seleccionado: " + id_proyecto);
-                    if (id_proyecto) {
-                        getPDF2(id_proyecto);
-                    } else {
-                        console.error("No se seleccionó un proyecto válido.");
-                    }
-                });
-            });
+                                        // Evento para detectar cambios en el select y cargar el proyecto seleccionado
+                                        $('#id_inputProyecto').on('change', function () {
+                                            var id_proyecto = $(this).val();
+                                            console.log("Proyecto seleccionado: " + id_proyecto);
+                                            if (id_proyecto) {
+                                                getPDF2(id_proyecto);
+                                            } else {
+                                                console.error("No se seleccionó un proyecto válido.");
+                                            }
+                                        });
+                                    });
         </script>
 
     </body>

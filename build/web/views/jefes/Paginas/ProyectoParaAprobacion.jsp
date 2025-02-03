@@ -57,6 +57,9 @@
                                 <input type="hidden" id="idNoFolio" name="idNoFolio" value="${proyecto_Mb.noFolio}"/>
                                 <button class="btn btn-borrar btn-sm" id="denegar_proyecto">Denegar proyecto</button>
                                 <button class="btn btn-agregar btn-sm d-none" id="aceptar_proyecto">Aceptar proyecto</button>
+                                <button type="button" class="btn btn-default" onclick="redirectProyectos()">
+                                    <i class="fa fa-minus-circle"></i> Regresar
+                                </button>
                             </form>
                         </div>
                     </div>

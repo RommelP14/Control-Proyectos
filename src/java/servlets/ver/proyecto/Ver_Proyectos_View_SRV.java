@@ -89,15 +89,8 @@ public class Ver_Proyectos_View_SRV extends HttpServlet
         switch (request.getParameter("accion"))
         {
             case "listarMisProyectos":
-
                 misProyectos = proyecto_dao.consultarProyectosDuenioPorCorreo(empleado_Mb.getCorreoEmpleado());
-
-//                System.out.println("****************************");
-//                for (Proyecto_MB p : misProyectos)
-//                {
-//                    System.out.println(p.toString());
-//                }
-//                System.out.println("****************************");
+                request.setAttribute("empleado", empleado_Mb);
                 request.setAttribute("proyectos", misProyectos);
                 dispatcher = getServletContext().getRequestDispatcher("/views/jefes/Paginas/MisProyectos_view.jsp");
                 dispatcher.forward(request, response);

@@ -39,11 +39,14 @@ public class Titulacion_DAO
                     + "    COALESCE(p.nombre, 'Aún no registrado') AS nombreProyecto, \n"
                     + "    COALESCE(c.nombre, 'Aún no registrado') AS nombreColaborador, \n"
                     + "    COALESCE(c.correo, 'Aún no registrado') AS correoColaborador, \n"
+                    + "    COALESCE(d.nombreE, 'Aún no registrado') AS nombreDuenio, \n"
+                    + "    COALESCE(d.correo, 'Aún no registrado') AS correoDuenio, \n"
                     + "    COALESCE(t.fecha_aprobacion, 'Aún no registrado') AS fecha_aprobacion, \n"
                     + "    COALESCE(t.fecha_liberacion, 'Aún no registrado') AS fecha_liberacion\n"
                     + "FROM proyectos_tab p\n"
                     + "LEFT JOIN colaboradores_tab c ON p.noFolio = c.noFolio\n"
                     + "LEFT JOIN titulacion_tab t ON p.noFolio = t.noFolio\n"
+                    + "LEFT JOIN duenio_tab d ON p.id_duenio = d.id_duenio  -- Se une con la tabla duenio_tab\n"
                     + "WHERE p.noFolio = ?";
 
             pstmt = conexion.getCon().prepareStatement(query);
@@ -57,8 +60,11 @@ public class Titulacion_DAO
                 String correoColaborador = rs.getString("correoColaborador");
                 String fecha_aprobacion = rs.getString("fecha_aprobacion");
                 String fecha_liberacion = rs.getString("fecha_liberacion");
+                String nombreDuenio = rs.getString("nombreDuenio");
+                String correoDuenio = rs.getString("correoDuenio");
 
-                titulacion_Mb = new Titulacion_MB(noFolio, fecha_aprobacion, fecha_liberacion, nombreProyecto, nombreColaborador, correoColaborador);
+                titulacion_Mb = new Titulacion_MB(noFolio, fecha_aprobacion, fecha_liberacion, nombreProyecto, 
+                        nombreColaborador, correoColaborador, nombreDuenio, correoDuenio);
             } else
             {
                 respuesta.setStatus(-10);

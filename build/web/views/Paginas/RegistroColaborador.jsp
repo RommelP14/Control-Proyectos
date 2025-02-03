@@ -115,7 +115,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        
+
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label class="small">Carrera</label>
@@ -174,7 +174,7 @@
                                     <div class="row">
                                         <div class="col-md-12" align="right">
                                             <button type="button" class="btn btn-default" onclick="redirectProyectos()">
-                                                <i class="fa fa-minus-circle"></i> Cancelar
+                                                <i class="fa fa-minus-circle"></i> Regresar
                                             </button>
                                             <button type="submit" class="btn btn-primary">
                                                 <i class="fas fa-save" aria-hidden="true"></i>  Guardar

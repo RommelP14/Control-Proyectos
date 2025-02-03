@@ -5,12 +5,17 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    // Obtener el objeto empleado desde la sesión
+    Empleado_MB e = (Empleado_MB) session.getAttribute("empleado");
+    String nombrePuesto = (e != null) ? e.getNombrePuesto() : "";
+%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Registrar proyecto</title>
-       <link href="/CDN-ITT/css/base.estandarITT.css" rel="stylesheet">
+        <link href="/CDN-ITT/css/base.estandarITT.css" rel="stylesheet">
         <link href="/CDN-ITT/css/general.estandarITT.css" rel="stylesheet">
         <link href="/CDN-ITT/css/font-awesome.estandarITT.css" rel="stylesheet">
         <link href="/CDN-ITT/css/tablas.estandarITT.css" rel="stylesheet">
@@ -28,7 +33,19 @@
     <body>
         <%@include file="/views/templates/header.jsp" %>
         <div class="container">
+            <%
+                if ("Docente".equals(nombrePuesto))
+                {
+            %>
+            <%@include file="/views/templates/navbarDocenteDepto.jsp" %>
+            <%
+            } else
+            {
+            %>
             <%@include file="/views/templates/navbarJefeDepto.jsp" %>
+            <%
+                }
+            %>
             <div id="cont">
                 <div id="registroproyectoP" name="panel" class="panel panel-primary">
                     <div class="panel-heading">
@@ -59,12 +76,24 @@
                                         <span></span>
                                         <select id="tipo" name="tipo" class="form-control input-sm" onchange="validarInputs(tipo)">
                                             <option value="0">Seleccione una opción</option>
+                                            <%                                                if ("Docente".equals(nombrePuesto))
+                                                {
+                                            %>
+                                            <option value="proyecto">Proyecto</option>
+                                            <%
+                                            } else
+                                            {
+                                            %>
                                             <option value="residencia">Residencia</option>
                                             <option value="titulacion">Titulación</option>
                                             <option value="proyecto">Proyecto</option>
+                                            <%
+                                                }
+                                            %>
                                         </select>
                                     </div>
                                 </div>
+
                                 <div class="form-group">
                                     <label class="small">Planteamiento del problema</label>
                                     <div>

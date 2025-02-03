@@ -24,7 +24,7 @@
                 <span class="sr-only">Toggle navigation</span>
                 <span class="fa fa-bars" />
             </button>
-            <strong><a class="navbar-brand" href="${pageContext.request.contextPath}/views/Bienvenida/BienvenidaJefe.jsp">Bienvenido</a></strong>
+            <strong><a class="navbar-brand" href="${pageContext.request.contextPath}/views/Bienvenida/BienvenidaDocente.jsp">Bienvenido</a></strong>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
