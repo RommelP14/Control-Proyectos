@@ -30,7 +30,9 @@ import org.apache.commons.text.similarity.LevenshteinDistance;
  */
 public class Proyectos_DAO
 {
+
     private Conexion conexion;
+
     public Proyecto_MB consultaProyectoPorId(int noFolio)
     {
         conexion = new Conexion();
@@ -95,7 +97,7 @@ public class Proyectos_DAO
         }
         return proyecto_mb;
     }
-    
+
     public void consultaProyectoPorId(int noFolio, GenericResponse respuesta)
     {
         conexion = new Conexion();
@@ -414,6 +416,91 @@ public class Proyectos_DAO
         } catch (Exception e)
         {
             System.out.println("Error general en consultarProyectos: " + e.getMessage());
+        } finally
+        {
+            // Cerrar conexión y recursos
+            if (rs != null)
+            {
+                try
+                {
+                    rs.close();
+                } catch (SQLException e)
+                {
+                    System.out.println("Error al cerrar ResultSet: " + e.getMessage());
+                }
+            }
+            if (pstmt != null)
+            {
+                try
+                {
+                    pstmt.close();
+                } catch (SQLException e)
+                {
+                    System.out.println("Error al cerrar PreparedStatement: " + e.getMessage());
+                }
+            }
+            conexion.disconnect();
+        }
+        return proyectos;
+    }
+
+    public List<Proyecto_MB> consultarProyectosAlumnos()
+    {
+        conexion = new Conexion();
+        conexion.connect(VariablesSistema.USERNAME_BD, VariablesSistema.PASSWORD_BD);
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        ArrayList<Proyecto_MB> proyectos = new ArrayList<>();
+
+        try
+        {
+            // Consulta para obtener los proyectos por correo 
+            String query = "SELECT \n"
+                    + "    p.noFolio,\n"
+                    + "    p.nombre,\n"
+                    + "    p.tipo_proyecto,\n"
+                    + "    COALESCE(a.porcentaje, 0.0) AS porcentaje_avance,\n"
+                    + "    CASE \n"
+                    + "        WHEN p.tipo_proyecto = 'Titulación' THEN COALESCE(t.estado_aprobacion_titulacion, 'Por aprobar')\n"
+                    + "        WHEN p.tipo_proyecto = 'Residencia' THEN COALESCE(r.estado_aprobacion_residencia, 'Por aprobar')\n"
+                    + "        WHEN p.tipo_proyecto = 'Proyecto' THEN COALESCE(pc.estado_aprobacion_proyecto_colab, 'Por aprobar')\n"
+                    + "        ELSE 'No aplica'\n"
+                    + "    END AS estado_aprobacion\n"
+                    + "FROM proyectos_tab p\n"
+                    + "LEFT JOIN (\n"
+                    + "    SELECT noFolio, MAX(porcentaje) AS porcentaje\n"
+                    + "    FROM avances_tab\n"
+                    + "    GROUP BY noFolio\n"
+                    + ") a ON p.noFolio = a.noFolio\n"
+                    + "LEFT JOIN titulacion_tab t ON p.noFolio = t.noFolio AND p.tipo_proyecto = 'Titulación'\n"
+                    + "LEFT JOIN residencia_tab r ON p.noFolio = r.noFolio AND p.tipo_proyecto = 'Residencia'\n"
+                    + "LEFT JOIN proyecto_colab_tab pc ON p.noFolio = pc.noFolio AND p.tipo_proyecto = 'Proyecto'\n"
+                    + "WHERE \n"
+                    + "    (p.tipo_proyecto = 'Titulación' AND t.estado_aprobacion_titulacion = 'Proyecto aceptado') OR\n"
+                    + "    (p.tipo_proyecto = 'Residencia' AND r.estado_aprobacion_residencia = 'Proyecto aceptado') OR\n"
+                    + "    (p.tipo_proyecto = 'Proyecto' AND pc.estado_aprobacion_proyecto_colab = 'Proyecto aceptado');";
+            pstmt = conexion.getCon().prepareStatement(query);
+            rs = pstmt.executeQuery();
+
+            while (rs.next())
+            {
+                int noFolio = rs.getInt("noFolio");
+                String nombre = rs.getString("nombre");
+                String tipo_proyecto = rs.getString("tipo_proyecto");
+                String estado_aprobacion = rs.getString("estado_aprobacion");
+                double porcentaje = rs.getDouble("porcentaje_avance");
+
+                Proyecto_MB proyecto_mb = new Proyecto_MB(noFolio, nombre, "", tipo_proyecto, porcentaje, estado_aprobacion);
+                proyectos.add(proyecto_mb);
+            }
+
+        } catch (SQLException e)
+        {
+            System.out.println("Error al consultar proyectos aprobados para vista alumno: " + e.getMessage());
+        } catch (Exception e)
+        {
+            System.out.println("Error general en consultarProyectos aprobados para vista alumno: " + e.getMessage());
         } finally
         {
             // Cerrar conexión y recursos
